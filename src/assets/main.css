@@ -1,0 +1,43 @@
+/* src/assets/main.css (or in App.vue in <style> section) */
+:root {
+  --primary-bg: #1c1c1c;     /* Dark Grey */
+  --secondary-bg: #2b2b2b;   /* Gunmetal Grey */
+  --olive-drab: #6b8e23;     /* Olive Drab */
+  --desert-sand: #edc9af;    /* Desert Sand */
+  --red-accent: #ff4136;     /* Red */
+  --orange-accent: #ff851b;  /* Orange */
+  --yellow-accent: #ffdc00;  /* Yellow */
+  --steel-blue: #4682b4;     /* Steel Blue */
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* Define classes for easier use */
+.bg-dark {
+  background-color: var(--primary-bg);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-bg);
+}
+
+.bg-light {
+  background-color: var(--desert-sand);
+}
+
+.text-primary {
+  color: var(--olive-drab);
+}
+
+.text-accent {
+  color: var(--red-accent);
+}
+
+.btn-orange {
+  background-color: var(--orange-accent);
+  color: white;
+}
+
+.btn-yellow {
+  background-color: var(--yellow-accent);
+  color: black;
+}
