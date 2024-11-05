@@ -12,71 +12,39 @@
         <div
           class="justify-content-between"
         >
-          <div class="navbar-nav"></div>
-          <div class="navbar-nav">
-            <!-- Example split danger button -->
-            <div class="btn-group" id="butonatlogin">
-              <button
-              class="btn btn-primary"
-              type="button"
-              id="login"
-              v-if="loggedIn"
-              @click="signOut"
-            >
-              <i class="bi bi-box-arrow-right"></i>
-            </button>
-            <button
-              class="btn btn-primary"
-              type="button"
-              id="login"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModalToggle"
-              v-else
-            >
-              <i class="bi bi-people"></i>
-            </button>
-            <div v-on:login= "isLoggedIn"/>
-              <button
+        <div class="navbar-nav">
+              <!-- Example split danger button -->
+              <div class="btn-group" id="butonatlogin">
+                <button
+                class="btn"
                 type="button"
-                class="btn dropdown-toggle dropdown-toggle-split"
-                id="bsep"
+                id="login"
                 v-if="loggedIn"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+                @click="signOut"
               >
-                <span class="visually-hidden">Toggle Dropdown</span>
-              </button>
-              <!-- <ul class="dropdown-menu dropdown-menu-end" id="menu-fix">
-                <li><router-link class="dropdown-item" v-if="user.role === 'admin'" id="dashboardlink" to="/dashboard">Dashboard</router-link></li>
-              </ul> -->
+                <i class="bi bi-box-arrow-right text-white"></i>
+                </button>
+                <button
+                  class="btn"
+                  type="button"
+                  id="login"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModalToggle"
+                  v-else
+                >
+                  <i class="bi bi-people text-white"></i>
+                </button>
+                <Login v-on:login= "isLoggedIn"/>
+              </div>
+              
             </div>
-            <!-- <div class="dropdown ms-4" id="shporta">
-              <button
-                class="btn btn-default dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="bi bi-bag"></i>
-                <router-link to="/BooksInCart"></router-link>
-              </button>
-              <ProductCart />
-            </div> -->
-            <!-- <router-link
-              to="/BooksInCart"
-              class="btn btn-primary border-0 shadow-0"
-              id="butonishporta"
-              ><i class="bi bi-bag"></i
-            ></router-link> -->
-          </div>
         </div>
       </div>
     </nav>
     <div class="container-fluid" id="container">
       <div class="row justify-content-md-center align-items-md-center h-100">
         <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/PurchasedBooks" id="navbar-links">Server</router-link>
+          <router-link to="/server" id="navbar-links">Server</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
           <router-link link to="/BooksInLibrary" id="navbar-links">Maps</router-link>
@@ -91,13 +59,12 @@
 
 <script>
 // import { isTokenAvaible, removeToken } from '@/methods/localStorage';
-// import Login from "../components/Login.vue"
+import Login from "../components/Login.vue"
 // import ProductCart from "../components/ProductCart.vue"
 // import { getCurrentUser } from '@/methods/userLogic';
 export default {
   name: "Header",
-  // components: { ProductCart, Login },
-
+  components: { Login },
   data() {
     return {
       loggedIn: false,
@@ -107,24 +74,24 @@ export default {
       collapse: false,
     };
   },
-  computed: {
-    checkLog(){
-      return this.$store.state.logged
-    },
+  // computed: {
+  //   checkLog(){
+  //     return this.$store.state.logged
+  //   },
     
-  },
-  watch: {
-    checkLog(newValue){
-      this.loggedIn = newValue;
-      if(newValue === true){
-        this.role();
-      }
-    }
-  },
+  // },
+  // watch: {
+  //   checkLog(newValue){
+  //     this.loggedIn = newValue;
+  //     if(newValue === true){
+  //       this.role();
+  //     }
+  //   }
+  // },
   
   methods: {
     isLoggedIn() {
-      this.loggedIn = false;
+      this.loggedIn = this.$store.getters.isAuthenticated;
     },
   //   async role(){
   //     const currentUser = await getCurrentUser();
@@ -139,24 +106,19 @@ export default {
 
   //     this.$router.push({ name: 'BookSearched', params: { bookTitle: this.title } });
   //   },
-  //   async signOut() {
-  //     try {
-  //       await this.$axios.post(`/users/logout`);
-  //       this.$router.replace({path: '/home'});
-  //       removeToken();
-  //       this.loggedIn = false;
-        
-  //     } catch (err) {
-  //       this.error = err.mesagge;
-  //     }
-  //   },
+      async signOut() {
+        if (this.$router.currentRoute.path !== '/home') {
+          await this.$router.replace({ path: '/home' });
+        }
+
+        this.$store.dispatch('clearToken');
+        this.loggedIn = false;
+        this.$toast.info("You have been logged out.");
+      },
   },
-  // created() {
-  //   this.isLoggedIn();
-  //   if(this.loggedIn){
-  //     this.role();
-  //   }
-  // }
+  mounted() {
+    this.isLoggedIn();
+  }
 };
 </script>
 <style>

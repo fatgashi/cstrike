@@ -12,16 +12,21 @@
     >
       <!-- Text slides with image -->
       <b-carousel-slide
-        caption-html="<h3 class='carousel-caption-title'>Face the Horde</h3>"
-        text-html="<p class='carousel-caption-text'>It’s you against them—hold your ground or fall.</p>"
         :img-src="require('@/assets/zm-wall5.webp')"
-      ></b-carousel-slide>
+      >
+        <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
+            <h3>Face the Horde</h3>
+            <p>It’s you against them—hold your ground or fall.</p>
+        </div>
+      </b-carousel-slide>
 
       <!-- Slides with custom text -->
       <b-carousel-slide 
-        caption-html="<h3 class='carousel-caption-title'>The Final Stand</h3>"
-        text-html="<p class='carousel-caption-text'>Gather your courage and brace for the ultimate showdown.</p>"
         :img-src="require('@/assets/zm-wall6.webp')">
+        <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
+            <h3>The Final Stand</h3>
+            <p>Gather your courage and brace for the ultimate showdown.</p>
+        </div>
       </b-carousel-slide>
     </b-carousel>
   </div>
@@ -42,8 +47,8 @@
   
   
 <style scoped>
-  .carousel-caption-title,
-  .carousel-caption-text {
-    text-shadow: 3px 3px 24px rgba(0, 0, 0, 0.6) !important;
-  }
+.carousel-content h3,
+.carousel-content p {
+  text-shadow: 3px 3px 24px rgba(0, 0, 0, 0.6) !important;
+}
 </style>

@@ -2,15 +2,14 @@
   <div>
     <Banner />
     <Infos />
-    <div class="row row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
-      <div ref="firstDiv" class="row">
-        <!-- Pass the computed height as a prop to Carousel -->
+    <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
+      <div ref="firstDiv" class="row carousel">
         <Carousel :dynamicHeight="heightString" />
       </div>
-      <div class="row">
+      <div class="row carousel">
         <Carousel1 :dynamicHeight="heightString"/>
       </div>
-      <div class="row">
+      <div class="row carousel">
         <Carousel2 :dynamicHeight="heightString"/>
       </div>
     </div>
@@ -75,8 +74,14 @@ export default {
   }
 }
 
-.row {
-  margin-right: 0px;
-  margin-left: 0px;
+.rowi {
+  --bs-gutter-x: 0;
+}
+
+.carousel {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 </style>

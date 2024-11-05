@@ -14,9 +14,9 @@
       <b-carousel-slide
         :img-src="require('@/assets/zm-wall3.webp')"
       >
-      <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-          <h3>Dark Streets Await</h3>
-          <p>Navigate through shadows, but don't let your guard down.</p>
+        <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
+            <h3>Dark Streets Await</h3>
+            <p>Navigate through shadows, but don't let your guard down.</p>
         </div>
       </b-carousel-slide>
 

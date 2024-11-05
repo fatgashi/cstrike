@@ -10,7 +10,7 @@
       <!-- Server Status Widget -->
       <div class="server-status mr-3">
         <p class="mb-1"><strong>Server IP:</strong> 51.77.72.157:27015</p>
-        <p class="mb-1"><strong>Status:</strong> <span class="badge badge-success">Online</span></p>
+        <p class="mb-1"><strong>Status:</strong> <span class="badge text-bg-success">Online</span></p>
         <p class="mb-1"><strong>Players:</strong> 12/32</p>
       </div>
       <!-- Call to Action Button -->

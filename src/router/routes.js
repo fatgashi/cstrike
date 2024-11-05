@@ -1,6 +1,7 @@
 
 import LayOut from "../Layout/Layout.vue";
 import Home from "../views/Home.vue";
+import Server from "../views/Server.vue";
 
 const routers = [
     {
@@ -13,6 +14,11 @@ const routers = [
                 name: "Home",
                 component: Home,
             },
+            {
+                path: "server",
+                name: "Server",
+                component: Server
+            }
         ]
     }
 ]
