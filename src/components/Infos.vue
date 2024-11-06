@@ -7,7 +7,7 @@
                 <div class="text-white">
                     <h4>Server Info</h4>
                     <p>View real-time stats for our top servers and join the action!</p>
-                    <button class="btn btn-warning text-white">View Server</button>
+                    <router-link to="/server"><button class="btn btn-warning text-white">View Server</button></router-link>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
@@ -23,7 +23,7 @@
                     <i class="fas fa-gem fa-3x mb-3 text-success"></i>
                     <h4>VIP Membership</h4>
                     <p>Unlock exclusive VIP features and level up your experience.</p>
-                    <button class="btn btn-success">Learn More</button>
+                    <router-link to="/vip-info" ><button class="btn btn-success">Learn More</button></router-link>
                 </div>
             </div>
         </div>

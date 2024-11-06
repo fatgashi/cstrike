@@ -46,7 +46,7 @@
             <h6 class="text" id="footercontact">Contact</h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px" />
             <p>
-            <a href="mailto:oralmeds.library@gmail.com" id="footeremail"><i class="fas fa-envelope mr-3 "></i>Email us</a>
+            Discord: emosbg
             </p>
           </div>
           <!-- Grid column -->

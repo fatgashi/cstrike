@@ -9,9 +9,9 @@
     <div class="d-flex justify-content-center align-items-center mt-3">
       <!-- Server Status Widget -->
       <div class="server-status mr-3">
-        <p class="mb-1"><strong>Server IP:</strong> 51.77.72.157:27015</p>
-        <p class="mb-1"><strong>Status:</strong> <span class="badge text-bg-success">Online</span></p>
-        <p class="mb-1"><strong>Players:</strong> 12/32</p>
+        <p class="mb-1"><strong>Server IP:</strong> <span style="color: rgb(242, 142, 38);">51.77.72.157:27015</span></p>
+        <p class="mb-1"><strong>Status:</strong> <span style="background-color:rgb(242, 142, 38);" class="badge text-white">Online</span></p>
+        <p class="mb-1"><strong>Players:</strong> <span style="color: rgb(242, 142, 38);">{{players}}/32</span></p>
       </div>
       <!-- Call to Action Button -->
       <!-- <a href="#vip" class="btn btn-danger btn-lg ml-3">Buy VIP Now</a> -->
@@ -22,7 +22,12 @@
 
 <script>
 export default {
-
+  props: {
+    players: {
+      type: Number,
+      default: 0
+    }
+  }
 }
 </script>
 

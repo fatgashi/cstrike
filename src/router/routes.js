@@ -2,6 +2,7 @@
 import LayOut from "../Layout/Layout.vue";
 import Home from "../views/Home.vue";
 import Server from "../views/Server.vue";
+import Vip from "../views/Vip.vue";
 
 const routers = [
     {
@@ -18,8 +19,17 @@ const routers = [
                 path: "server",
                 name: "Server",
                 component: Server
+            },
+            {
+                path: "vip-info",
+                name: "VipInfo",
+                component: Vip
             }
         ]
+    },
+    {
+        path: "*",
+        redirect: "/home"
     }
 ]
 

@@ -65,8 +65,11 @@
             this.$store.dispatch('updateLogged', true);
             this.$store.dispatch('updateUser', data.user)
             this.$emit('login');
+            this.$setupSessionTimeout();
             this.$toast.success("You logged in successfully! ");
             this.modal.hide();
+            this.username = ""
+            this.password = ""
           } catch(err) {
             this.error = err.message;
             this.$toast.error(err.response.data.message);

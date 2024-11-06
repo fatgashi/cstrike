@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Banner />
+    <div v-if="server">
+      <Banner :players="server.length" />
+    </div>
     <Infos />
     <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
       <div ref="firstDiv" class="row carousel">
@@ -39,6 +41,7 @@ export default {
   data() {
     return {
       heightString: "0px", // Default height in px
+      server: []
     };
   },
   methods: {
@@ -46,8 +49,6 @@ export default {
       if (this.$refs.firstDiv) {
         const height = this.$refs.firstDiv.clientHeight;
         this.heightString = `${height}px`;
-      } else {
-        console.log("firstDiv reference is not available");
       }
     },
   },
@@ -60,6 +61,14 @@ export default {
 
     // Update height on window resize
     window.addEventListener("resize", this.matchHeight);
+  },
+  async created(){
+    try {
+        const response = await this.$axios.get('/game/serverInfo');
+        this.server = response.data.state.raw.players;
+    } catch (error) {
+        console.error("Error fetching server info:", error);
+    }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.matchHeight);

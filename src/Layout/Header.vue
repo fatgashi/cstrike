@@ -74,20 +74,12 @@ export default {
       collapse: false,
     };
   },
-  // computed: {
-  //   checkLog(){
-  //     return this.$store.state.logged
-  //   },
+  computed: {
+    checkLog(){
+      return this.$store.state.logged
+    },
     
-  // },
-  // watch: {
-  //   checkLog(newValue){
-  //     this.loggedIn = newValue;
-  //     if(newValue === true){
-  //       this.role();
-  //     }
-  //   }
-  // },
+  },
   
   methods: {
     isLoggedIn() {
@@ -113,7 +105,7 @@ export default {
 
         this.$store.dispatch('clearToken');
         this.loggedIn = false;
-        this.$toast.info("You have been logged out.");
+        this.$toast.warning("You have been logged out.");
       },
   },
   mounted() {
