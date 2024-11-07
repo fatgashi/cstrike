@@ -10,7 +10,7 @@
             <h2 class="vip-header">Exclusive VIP Skins</h2>
             <p>As a VIP member, you gain access to exclusive character and weapon skins to stand out on the battlefield.</p>
             <div class="row">
-              <div class="col-md-6" v-for="(skin, index) in vipSkins" :key="index">
+              <div class="col-md-6 mb-4" v-for="(skin, index) in vipSkins" :key="index">
                 <div class="card">
                   <img :src="skin.image" :alt="skin.name" class="card-img-top">
                   <div class="card-body">
@@ -26,7 +26,7 @@
             <h2 class="vip-header">VIP Normal Guns</h2>
             <p>Unlock powerful guns without any ammo as a VIP member. Equip these to dominate your opponents.</p>
             <div class="row">
-              <div class="col-md-4" v-for="(gun, index) in vipNormalGuns" :key="index">
+              <div class="col-md-4 mb-4" v-for="(gun, index) in vipNormalGuns" :key="index">
                 <div class="card">
                   <img :src="gun.image" :alt="gun.name" class="card-img-top">
                   <div class="card-body">

@@ -53,7 +53,7 @@
       <div class="card text-white bg-dark mb-3 hoveri">
         <div class="card-header">Current Map</div>
         <div class="card-body">
-          <img src="../assets/maps/zm_gbox7.jpg" alt="Current Map" class="img-fluid mb-2">
+          <img :src="`https://image.gametracker.com/images/maps/160x120/cs/${server.map}.jpg`" :alt="server.map" id="cdnImage" />
           <p class="card-text">{{ server.map }}</p>
         </div>
       </div>
@@ -142,6 +142,11 @@ export default {
   font-weight: bold;
   font-size: 1.1em;
   background-color: rgb(242, 142, 38);
+}
+
+#cdnImage {
+  width: 100%;
+  object-fit: cover;
 }
 
 .hoveri:hover {

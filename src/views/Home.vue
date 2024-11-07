@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="server">
-      <Banner :players="server.length" />
+      <Banner :players="server" />
     </div>
     <Infos />
     <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       heightString: "0px", // Default height in px
-      server: []
+      server: 0
     };
   },
   methods: {
@@ -65,7 +65,7 @@ export default {
   async created(){
     try {
         const response = await this.$axios.get('/game/serverInfo');
-        this.server = response.data.state.raw.players;
+        this.server = response.data.state.numplayers;
     } catch (error) {
         console.error("Error fetching server info:", error);
     }
