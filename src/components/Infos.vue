@@ -13,8 +13,8 @@
             <div class="col-md-4 mb-4">
                 <div class="text-white">
                     <i class="fas fa-trophy fa-3x mb-3 text-danger"></i>
-                    <h4>Events & Tournaments</h4>
-                    <p>Join thrilling tournaments and win exclusive rewards!</p>
+                    <h4>Events & Updates</h4>
+                    <p>See the latest events & updates on our server!</p>
                     <button class="btn btn-danger">View Events</button>
                 </div>
             </div>

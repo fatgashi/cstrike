@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div v-if="server">
       <Banner :players="server" />
-    </div>
     <Infos />
     <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
       <div ref="firstDiv" class="row carousel">

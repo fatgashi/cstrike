@@ -5,7 +5,7 @@
   <!-- Server Summary Section -->
         <div class="row mb-3">
             <div class="col-md-8">
-            <div class="card text-white bg-dark mb-3 hoveri">
+            <div class="card text-white bg-dark mb-3 summary">
                 <div class="card-header">Server Summary</div>
                 <div class="card-body">
                 <h5 class="card-title">Name: <span class="fw-bolder">{{ server.name }}</span></h5>
@@ -168,4 +168,10 @@ export default {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
+.summary {
+  background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , url('../assets/zombie-banner.png'); /* Optional background image */
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+}
 </style>
