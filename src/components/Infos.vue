@@ -15,7 +15,7 @@
                     <i class="fas fa-trophy fa-3x mb-3 text-danger"></i>
                     <h4>Events & Updates</h4>
                     <p>See the latest events & updates on our server!</p>
-                    <button class="btn btn-danger">View Events</button>
+                    <router-link to="/events-updates"><button class="btn btn-danger">View Events</button></router-link> 
                 </div>
             </div>
             <div class="col-md-4 mb-4">

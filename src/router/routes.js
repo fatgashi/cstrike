@@ -1,8 +1,8 @@
-
 import LayOut from "../Layout/Layout.vue";
 import Home from "../views/Home.vue";
 import Server from "../views/Server.vue";
 import Vip from "../views/Vip.vue";
+import Events from "../views/Events.vue";
 
 const routers = [
     {
@@ -24,6 +24,11 @@ const routers = [
                 path: "vip-info",
                 name: "VipInfo",
                 component: Vip
+            },
+            {
+                path: "events-updates",
+                name: "Events",
+                component: Events
             }
         ]
     },
