@@ -47,10 +47,10 @@
           <router-link to="/server" id="navbar-links">Server</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
-          <router-link link to="/events-updates" id="navbar-links">Updates</router-link>
+          <router-link to="/events-updates" id="navbar-links">Updates</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/BooksInCart" id="navbar-links">Offers</router-link>
+          <router-link to="/offers" id="navbar-links">Offers</router-link>
         </div>
       </div>
     </div>

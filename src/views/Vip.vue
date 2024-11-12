@@ -104,7 +104,7 @@
           { name: "MP5 Gold", image: require("../assets/vipmenu/mp5.png") },
           { name: "Water Gun", image: require("../assets/vipmenu/water-gun.png") },
           { name: "Janus-3", image: require("../assets/vipmenu/janus-3.png") },
-          { name: "Plasma Gun", image: require("../assets/vipmenu/plasma-gun.png") },
+          { name: "Rail Cannon", image: require("../assets/chrismas/rail-cannon.jpg") },
           { name: "Thantos-7", image: require("../assets/vipmenu/thantos-7.png") },
           // Add more guns as needed
         ],

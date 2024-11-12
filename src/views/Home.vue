@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="position: relative;">
+    <div style="z-index: 2;">
       <Banner :players="server" />
     <Infos />
     <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
@@ -17,6 +18,7 @@
       <Modes />
     </div>
   </div>
+    </div>
 </template>
 
 <script>
