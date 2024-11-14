@@ -4,6 +4,7 @@ import Server from "../views/Server.vue";
 import Vip from "../views/Vip.vue";
 import Events from "../views/Events.vue";
 import Offers from "../views/Offers.vue";
+import Maps from "../views/Maps.vue";
 
 const routers = [
     {
@@ -35,6 +36,11 @@ const routers = [
                 path: "offers",
                 name: "Offers",
                 component: Offers
+            },
+            {
+                path: "maps",
+                name: "Maps",
+                component: Maps
             }
         ]
     },
