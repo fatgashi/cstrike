@@ -46,7 +46,24 @@
             <h6 class="text" id="footercontact">Contact</h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px" />
             <p>
-            Discord: emosbg
+              Discord:
+              <a href="https://discordapp.com/users/947193667188306011" target="_blank" class="important">
+                emosbg
+              </a>
+              ,
+              <a href="https://discordapp.com/users/1150374397606113370" target="_blank" class="important">
+                assos13-14
+              </a>
+              ,
+              <a href="https://discordapp.com/users/594462265630261250" target="_blank" class="important">
+                smack
+              </a>
+            </p>
+            <p>
+              Discord Server:
+              <a href="https://discord.gg/4sAjSxmJ" target="_blank" class="important">
+                ZM-WESTCSTRIKE.RO
+              </a>
             </p>
           </div>
           <!-- Grid column -->
@@ -76,6 +93,9 @@
     background-color: #101010;
     font-family: "Poppins", sans-serif;
     color: white;
+  }
+  .important {
+    color: rgb(242, 142, 38);
   }
   #footertitle {
     color: rgb(242, 142, 38);

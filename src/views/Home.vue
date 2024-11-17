@@ -4,10 +4,10 @@
       <Banner :players="server" />
     <Infos />
     <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
-      <div ref="firstDiv" class="row carousel">
+      <div ref="firstDiv" class="row carousel mb-3">
         <Carousel :dynamicHeight="heightString" />
       </div>
-      <div class="row carousel">
+      <div class="row carousel mb-3">
         <Carousel1 :dynamicHeight="heightString"/>
       </div>
       <div class="row carousel">

@@ -1,11 +1,11 @@
 <template>
     <div class="partner-section container">
       <div class="row align-items-center">
-        <div class="col-md-4 text-center">
+        <div class="col-md-4 text-center mb-3">
           <img :src="partner.logo" :alt="partner.name" class="partner-logo">
         </div>
         <div class="col-md-8 text-center">
-            <h2 style="color: #ff8000;">Our Partner</h2>
+            <h2 class="d-none d-md-block" style="color: #ff8000;">Our Partner</h2>
           <p>
             We are proud to partner with <strong>{{ partner.name }}</strong>, a leading platform for boosting Counter-Strike 1.6. 
             Visit their website to explore amazing services to improve your gaming experience.
