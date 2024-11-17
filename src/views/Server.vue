@@ -53,7 +53,7 @@
       <div class="card text-white bg-dark mb-3 hoveri">
         <div class="card-header">Current Map</div>
         <div class="card-body">
-          <img :src="`https://image.gametracker.com/images/maps/160x120/cs/${server.map}.jpg`" :alt="server.map" id="cdnImage" />
+          <img :src="require(`../assets/maps/${server.map}.jpg`)" :alt="server.map" id="cdnImage" />
           <p class="card-text">{{ server.map }}</p>
         </div>
       </div>

@@ -15,6 +15,7 @@
       </div>
     </div>
     <div>
+    <Partner />
       <Modes />
     </div>
   </div>
@@ -28,6 +29,7 @@ import Carousel2 from "../components/Carousel2.vue";
 import Banner from "../components/Banner.vue";
 import Infos from "../components/Infos.vue";
 import Modes from "../components/Modes.vue";
+import Partner from '../components/Partner.vue';
 
 export default {
   components: {
@@ -37,6 +39,7 @@ export default {
     Carousel1,
     Carousel2,
     Modes,
+    Partner,
   },
   data() {
     return {
