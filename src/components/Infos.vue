@@ -15,7 +15,7 @@
                 <div class="text-white">
                     <h4>Maps</h4>
                     <p>Explore our diverse collection of maps, ranging from small arenas to large battlefields.</p>
-                    <router-link to="/maps"><button class="btn btn-info">View Maps</button></router-link>
+                    <router-link to="/maps"><button class="btn btn-info text-white">View Maps</button></router-link>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3 mb-4">

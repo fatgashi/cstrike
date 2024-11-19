@@ -36,6 +36,7 @@
         maps: [
           // List of small maps
           { name: "zm_snow_vk2", image: require("../assets/maps/zm_snow_vk2.jpg"), size: "small" },
+          { name: "zm_big_vk", image: require("../assets/maps/zm_big_vk.jpg"), size: "medium" },
           { name: "zm_foda_v2", image: require("../assets/maps/zm_foda_v2.jpg"), size: "large" },
           { name: "zm_csbd_vk", image: require("../assets/maps/zm_csbd_vk.jpg"), size: "small" },
           { name: "zm_trakinax_tubo", image: require("../assets/maps/zm_trakinax_tubo.jpg"), size: "medium" },

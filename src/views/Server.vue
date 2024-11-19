@@ -8,9 +8,9 @@
             <div class="card text-white bg-dark mb-3 summary">
                 <div class="card-header">Server Summary</div>
                 <div class="card-body">
-                <h5 class="card-title">Name: <span class="fw-bolder">{{ server.name }}</span></h5>
-                <p class="card-text">Game: <span class="fw-bolder">Counter Strike 1.6 | Status: Alive</span></p>
-                <p class="card-text">Address: <span class="fw-bolder">{{ server.connect }}</span></p>
+                <h5 class="card-title"><span id="title">Name: </span><span class="fw-bolder">{{ server.name }}</span></h5>
+                <p class="card-text"><span id="title">Game: </span> <span class="fw-bolder">Counter Strike 1.6 | Status: Alive</span></p>
+                <p class="card-text"><span id="title">IP Address: </span> <span class="fw-bolder">{{ server.connect }}</span></p>
                 </div>
             </div>
 
@@ -53,7 +53,7 @@
       <div class="card text-white bg-dark mb-3 hoveri">
         <div class="card-header">Current Map</div>
         <div class="card-body">
-          <img :src="require(`../assets/maps/${server.map}.jpg`)" :alt="server.map" id="cdnImage" />
+          <img :src="getMapImage(server.map)" :alt="server.map" id="cdnImage" />
           <p class="card-text">{{ server.map }}</p>
         </div>
       </div>
@@ -126,7 +126,14 @@ export default {
             const secs = Math.floor(seconds % 60);
             
             return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
+        },
+        getMapImage(mapName) {
+          try {
+            return require(`../assets/maps/${mapName}.jpg`);
+          } catch {
+            return ""; // Return empty string if image is not found
+          }
+        },
     }
 }
 </script>
@@ -142,6 +149,10 @@ export default {
   font-weight: bold;
   font-size: 1.1em;
   background-color: rgb(242, 142, 38);
+}
+
+#title {
+  color: #ff8000;
 }
 
 #cdnImage {

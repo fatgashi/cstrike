@@ -1,16 +1,16 @@
 <template>
     <div class="partner-section container">
-      <div class="row align-items-center">
+      <h1 class="text-center mb-5" style="color: #ff8000; font-weight: bolder;">Our Partners</h1>
+      <div v-for="(part,index) in partner" :key="index" class="row align-items-center mb-5">
         <div class="col-md-4 text-center mb-3">
-          <img :src="partner.logo" :alt="partner.name" class="partner-logo">
+          <img :src="part.logo" :alt="part.name" class="partner-logo">
         </div>
         <div class="col-md-8 text-center">
-            <h2 class="d-none d-md-block" style="color: #ff8000;">Our Partner</h2>
+            <h2 class="fw-bold" style="color: #ff8000;">{{ part.name }}</h2>
           <p>
-            We are proud to partner with <strong>{{ partner.name }}</strong>, a leading platform for boosting Counter-Strike 1.6. 
-            Visit their website to explore amazing services to improve your gaming experience.
+            {{ part.text }}
           </p>
-          <a :href="partner.website" class="btn text-white" style="background-color: rgb(242, 142, 38);" target="_blank" rel="noopener">Visit Our Partner</a>
+          <a :href="part.website" class="btn text-white" style="background-color: rgb(242, 142, 38);" target="_blank" rel="noopener">Visit Our Partner</a>
         </div>
       </div>
     </div>
@@ -20,11 +20,20 @@
   export default {
     data() {
       return {
-        partner: {
-          name: "Top-Boost",
-          logo: require("../assets/partner/opboost.png"), // Replace with the uploaded logo
-          website: "https://top-boost.ro/", // Replace with your partner's website URL
-        },
+        partner: [
+          {
+            name: "Top-Boost",
+            text: "We are proud to partner with Top-Boost, a leading platform for boosting Counter-Strike 1.6. Visit their website to explore amazing services to improve your gaming experience.",
+            logo: require("../assets/partner/opboost.png"), // Replace with the uploaded logo
+            website: "https://top-boost.ro/", // Replace with your partner's website URL
+          },
+          {
+            name: "WESTCSTRIKE Romania",
+            text: "WESTCSTRIKE Romania is one of the most active and vibrant Counter-Strike communities. Join their forum to connect with players, share experiences, and stay updated on the latest events and server news.",
+            logo: require("../assets/partner/west.png"), // Replace with the uploaded logo
+            website: "https://westcstrike.ro/forum/index.php?/forum/1551-zombie-%C2%BB-zm/", // Replace with your partner's website URL
+          },
+      ],
       };
     },
   };

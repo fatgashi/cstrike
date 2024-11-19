@@ -47,6 +47,9 @@
           <router-link to="/server" id="navbar-links">Server</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
+          <router-link to="/maps" id="navbar-links">Maps</router-link>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
           <router-link to="/events-updates" id="navbar-links">Updates</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
