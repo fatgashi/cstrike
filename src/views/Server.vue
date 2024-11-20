@@ -15,7 +15,7 @@
             </div>
 
       <!-- Game Server Banners Section -->
-      <div class="card text-warning banner-section bg-dark mb-3">
+      <div class="card banner-section bg-dark mb-3" id="title">
         <div class="card-header text-white">Game Server Banner</div>
         <div class="card-body">
             <div class="d-flex justify-content-start align-items-center">
@@ -180,7 +180,7 @@ export default {
 }
 
 .summary {
-  background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , url('../assets/zombie-banner.png'); /* Optional background image */
+  background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url('../assets/zombie-banner.png'); /* Optional background image */
   background-size: cover;
   background-position: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);

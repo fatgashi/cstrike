@@ -4,14 +4,14 @@
   <div class="row d-flex flex-column justify-content-center align-items-center">
     <div class="text-center">
         <p class="header-text">Welcome to Zm-WestCStrike!</p>
-        <p class="lead">Your ultimate CS 1.6 community for thrilling battles and experience!</p>
+        <p class="lead fw-bold">Your ultimate CS 1.6 community for thrilling battles and experience!</p>
     </div>
     <div class="d-flex justify-content-center align-items-center mt-3">
       <!-- Server Status Widget -->
       <div class="server-status mr-3">
-        <p class="mb-1"><strong>Server IP:</strong> <span style="color: rgb(242, 142, 38);">51.77.72.157:27015</span></p>
-        <p class="mb-1"><strong>Status:</strong> <span style="background-color:rgb(242, 142, 38);" class="badge text-white">Online</span></p>
-        <p class="mb-1"><strong>Players:</strong> <span style="color: rgb(242, 142, 38);">{{players}}/32</span></p>
+        <p class="mb-1"><strong>Server IP:</strong> <span style="color: #ff8000">51.77.72.157:27015</span></p>
+        <p class="mb-1"><strong>Status:</strong> <span style="background-color: #ff8000" class="badge text-white">Online</span></p>
+        <p class="mb-1"><strong>Players:</strong> <span style="color: #ff8000">{{players}}/32</span></p>
       </div>
       <!-- Call to Action Button -->
       <!-- <a href="#vip" class="btn btn-danger btn-lg ml-3">Buy VIP Now</a> -->

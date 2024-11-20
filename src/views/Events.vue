@@ -2,38 +2,84 @@
     <div>
         <br>
         <div class="latest-updates container mt-4">
-          <!-- Header -->
-          <h1 class="text-center mb-4">Latest Server Updates</h1>
-      
+          <div class="text-center mb-4">
+            <button
+              class="btn mx-2 text-white"
+              style="background-color: #ff8000;"
+              :class="{ active: showUpdates }"
+              @click="showUpdates = true"
+            >
+              Show Updates
+            </button>
+            <button
+              class="btn mx-2 text-white"
+              style="background-color: green;"
+              :class="{ active: !showUpdates }"
+              @click="showUpdates = false"
+            >
+              Show Events
+            </button>
+          </div>          
           <!-- Updates Section -->
-          <section v-for="(update, index) in updates" :key="index" class="update-section mb-5">
-            <div class="row align-items-center">
-                <h2 class="update-title text-center">{{ update.title }}</h2>
-                <p class="update-description text-center">{{ update.description }}</p>
-              <!-- Image Column -->
-              <div class="col-md-5">
-                <img :src="update.image" :alt="update.title" class="img-fluid rounded shadow-sm mb-4">
-              </div>
-              <!-- Content Column -->
-              <div class="col-md-7">            
-                <!-- Weapon Details -->
-                <div v-if="update.items && update.items.length" class="item-details mt-3">
-                  <h4>{{ update.shortDesc }}</h4>
-                  <div class="row">
-                    <div class="col-md-6" v-for="(item, i) in update.items" :key="i">
-                      <div class="card item-card mb-3">
-                        <img :src="item.image" :alt="item.name" class="card-img-top">
-                        <div class="card-body">
-                          <h5 class="card-title">{{ item.name }}</h5>
-                          <p class="card-text">{{ item.description }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+           <div v-if="showUpdates">
+             <section v-for="(update, index) in updates" :key="index" class="update-section mb-5">
+               <h1 class="text-center mb-4 fw-bolder">Latest Server Updates</h1>
+               <div class="row align-items-center">
+                   <h2 class="update-title text-center fw-bolder">{{ update.title }}</h2>
+                   <p class="update-description text-center">{{ update.description }}</p>
+                 <!-- Image Column -->
+                 <div class="col-md-5">
+                   <img :src="update.image" :alt="update.title" class="img-fluid rounded shadow-sm mb-4">
+                 </div>
+                 <!-- Content Column -->
+                 <div class="col-md-7">            
+                   <!-- Weapon Details -->
+                   <div v-if="update.items && update.items.length" class="item-details mt-3">
+                     <h4 class="fw-bolder">{{ update.shortDesc }}</h4>
+                     <div class="row">
+                       <div class="col-md-6" v-for="(item, i) in update.items" :key="i">
+                         <div class="card item-card mb-3">
+                           <img :src="item.image" :alt="item.name" class="card-img-top">
+                           <div class="card-body">
+                             <h5 class="card-title fw-bolder">{{ item.name }}</h5>
+                             <p class="card-text">{{ item.description }}</p>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </section>
+           </div>
+
+          <div v-else>
+            <div class="events-view container mt-4">
+              <h1 class="text-center mb-4 fw-bolder">Server Events</h1>
+              <div class="event-section text-white p-4 rounded">
+                <h2 class="text-center fw-bolder" style="color: #ff8000;">Monthly VIP Rewards</h2>
+                <p class="mt-3">
+                  Compete to be in the Top 3 players in the server leaderboard and
+                  win exclusive VIP rewards! The event runs every month from the 1st
+                  to the 30th.
+                </p>
+                <ul class="list-group mt-3">
+                  <li class="list-group-item bg-dark text-white">
+                    <strong>Top 1:</strong> VIP for 1 month + 5000 points
+                  </li>
+                  <li class="list-group-item bg-dark text-white">
+                    <strong>Top 2:</strong> VIP for 2 weeks + 3000 points
+                  </li>
+                  <li class="list-group-item bg-dark text-white">
+                    <strong>Top 3:</strong> VIP for 1 week + 1000 points
+                  </li>
+                </ul>
+                <p class="mt-4 text-center">
+                  Push your limits, claim the top spot, and earn amazing rewards!
+                </p>
               </div>
             </div>
-          </section>
+          </div>
         </div>
     </div>
   </template>
@@ -42,6 +88,7 @@
   export default {
     data() {
       return {
+        showUpdates: true,
         updates: [
           {
             title: "New Winter Update",
@@ -106,6 +153,10 @@
     background-color: #1c1c1c;
     padding: 20px;
     border-radius: 8px;
+  }
+
+  .btn.active {
+    border: 3px solid #fff;
   }
   
   .update-title {

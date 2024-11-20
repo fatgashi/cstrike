@@ -15,8 +15,8 @@
         :img-src="require('@/assets/zm-wall3.webp')"
       >
         <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-            <h3>Dark Streets Await</h3>
-            <p>Navigate through shadows, but don't let your guard down.</p>
+            <h3 class="fw-bolder">Dark Streets Await</h3>
+            <p class="fw-bold">Navigate through shadows, but don't let your guard down.</p>
         </div>
       </b-carousel-slide>
 
@@ -24,8 +24,8 @@
       <b-carousel-slide 
         :img-src="require('@/assets/zm-wall.webp')">
         <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-          <h3>Fight for Your Life</h3>
-          <p>Engage in relentless battles against the infected.</p>
+          <h3 class="fw-bolder">Fight for Your Life</h3>
+          <p class="fw-bold">Engage in relentless battles against the infected.</p>
         </div>
       </b-carousel-slide>
     </b-carousel>

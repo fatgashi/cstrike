@@ -8,7 +8,7 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-0 shadow-0">
       <div class="container-fluid" id="navbarnew">
-        <router-link to="/home" id="logo">Zm-WestCStrike</router-link>
+        <router-link to="/home" id="logo"><span class="fw-bolder">Zm-WestCStrike</span></router-link>
         <div
           class="justify-content-between"
         >
@@ -50,7 +50,7 @@
           <router-link to="/maps" id="navbar-links">Maps</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/events-updates" id="navbar-links">Updates</router-link>
+          <router-link to="/events-updates" id="navbar-links">Events</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
           <router-link to="/offers" id="navbar-links">Offers</router-link>

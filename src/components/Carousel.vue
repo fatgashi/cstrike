@@ -15,8 +15,8 @@
         :img-src="require('@/assets/zm-wall4.webp')"
       >
       <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-          <h3>Survive the Apocalypse</h3>
-          <p>Face hordes of the undead and test your survival skills.</p>
+          <h3 class="fw-bolder">Survive the Apocalypse</h3>
+          <p class="fw-bold">Face hordes of the undead and test your survival skills.</p>
         </div>
       </b-carousel-slide>
 
@@ -24,8 +24,8 @@
       <b-carousel-slide 
         :img-src="require('@/assets/zm-wall2.webp')">
         <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-          <h3>Enter the Zombie Zone</h3>
-          <p>Explore the decaying city, but beware of what's lurking.</p>
+          <h3 class="fw-bolder">Enter the Zombie Zone</h3>
+          <p class="fw-bold">Explore the decaying city, but beware of what's lurking.</p>
         </div>
       </b-carousel-slide>
     </b-carousel>
@@ -50,5 +50,9 @@
 .carousel-content h3,
 .carousel-content p {
   text-shadow: 3px 3px 24px rgba(0, 0, 0, 0.6) !important;
+}
+
+#title {
+  color: #ff8000;
 }
 </style>

@@ -10,7 +10,7 @@
           <p>
             {{ part.text }}
           </p>
-          <a :href="part.website" class="btn text-white" style="background-color: rgb(242, 142, 38);" target="_blank" rel="noopener">Visit Our Partner</a>
+          <a :href="part.website" class="btn text-white" style="background-color: #ff8000" target="_blank" rel="noopener">Visit Our Partner</a>
         </div>
       </div>
     </div>

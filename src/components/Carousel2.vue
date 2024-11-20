@@ -15,8 +15,8 @@
         :img-src="require('@/assets/zm-wall5.webp')"
       >
         <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-            <h3>Face the Horde</h3>
-            <p>It’s you against them—hold your ground or fall.</p>
+            <h3 class="fw-bolder">Face the Horde</h3>
+            <p class="fw-bold">It’s you against them—hold your ground or fall.</p>
         </div>
       </b-carousel-slide>
 
@@ -24,8 +24,8 @@
       <b-carousel-slide 
         :img-src="require('@/assets/zm-wall6.webp')">
         <div class="carousel-content d-flex justify-content-center align-items-center flex-column" :style="{ height: dynamicHeight }">
-            <h3>The Final Stand</h3>
-            <p>Gather your courage and brace for the ultimate showdown.</p>
+            <h3 class="fw-bolder">The Final Stand</h3>
+            <p class="fw-bold">Gather your courage and brace for the ultimate showdown.</p>
         </div>
       </b-carousel-slide>
     </b-carousel>

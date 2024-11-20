@@ -1,10 +1,13 @@
 import LayOut from "../Layout/Layout.vue";
 import Home from "../views/Home.vue";
-import Server from "../views/Server.vue";
-import Vip from "../views/Vip.vue";
-import Events from "../views/Events.vue";
-import Offers from "../views/Offers.vue";
-import Maps from "../views/Maps.vue";
+const Server = () =>  import("../views/Server.vue");
+const Vip = () => import("../views/Vip.vue");
+const Events = () => import("../views/Events.vue");
+const Offers = () => import("../views/Offers.vue");
+const Maps = () => import("../views/Maps.vue");
+import About from "../views/About.vue";
+const MediumMaps = () => import("../views/MediumMaps.vue");
+const LargeMaps = () => import("../views/LargeMaps.vue");
 
 const routers = [
     {
@@ -41,6 +44,21 @@ const routers = [
                 path: "maps",
                 name: "Maps",
                 component: Maps
+            },
+            {
+                path: "medium-maps",
+                name: "MediumMaps",
+                component: MediumMaps
+            },
+            {
+                path: "large-maps",
+                name: "LargeMaps",
+                component: LargeMaps
+            },
+            {
+                path: "about",
+                name: "About",
+                component: About
             }
         ]
     },

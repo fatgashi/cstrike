@@ -3,18 +3,18 @@
         <br><br>
         <div class="vip-info container">
           <!-- Header -->
-          <h1 class="text-center mb-4" style="color: #ff8000;">VIP Benefits</h1>
+          <h1 class="text-center mb-4 fw-bolder" style="color: #ff8000;">VIP Benefits</h1>
       
           <!-- VIP Skins Section -->
           <section class="vip-section">
-            <h2 class="vip-header">Exclusive VIP Skins</h2>
+            <h2 class="vip-header fw-bolder">Exclusive VIP Skins</h2>
             <p>As a VIP member, you gain access to exclusive character and weapon skins to stand out on the battlefield.</p>
             <div class="row">
               <div class="col-md-6 mb-4" v-for="(skin, index) in vipSkins" :key="index">
                 <div class="card">
                   <img :src="skin.image" :alt="skin.name" class="card-img-top">
                   <div class="card-body">
-                    <h5 class="card-title">{{ skin.name }}</h5>
+                    <h5 class="card-title fw-bolder">{{ skin.name }}</h5>
                   </div>
                 </div>
               </div>
@@ -23,14 +23,14 @@
       
           <!-- VIP Menu Guns Section -->
           <section class="vip-section">
-            <h2 class="vip-header">VIP Normal Guns</h2>
+            <h2 class="vip-header fw-bolder">VIP Normal Guns</h2>
             <p>Unlock powerful guns without any ammo as a VIP member. Equip these to dominate your opponents.</p>
             <div class="row">
               <div class="col-md-4 mb-4" v-for="(gun, index) in vipNormalGuns" :key="index">
                 <div class="card">
                   <img :src="gun.image" :alt="gun.name" class="card-img-top">
                   <div class="card-body">
-                    <h5 class="card-title">{{ gun.name }}</h5>
+                    <h5 class="card-title fw-bolder">{{ gun.name }}</h5>
                   </div>
                 </div>
               </div>
@@ -38,14 +38,14 @@
           </section>
           <!-- VIP Menu Guns Section -->
           <section class="vip-section">
-            <h2 class="vip-header">VIP Menu Guns</h2>
+            <h2 class="vip-header fw-bolder">VIP Menu Guns</h2>
             <p>Unlock powerful guns and special weapons from VIP MENU. Equip these and make extra damage to your opponents.</p>
             <div class="row">
               <div class="col-md-4 mb-4" v-for="(gun, index) in vipGuns" :key="index">
                 <div class="card">
                   <img :src="gun.image" :alt="gun.name" class="card-img-top">
                   <div class="card-body">
-                    <h5 class="card-title">{{ gun.name }}</h5>
+                    <h5 class="card-title fw-bolder">{{ gun.name }}</h5>
                   </div>
                 </div>
               </div>
@@ -53,14 +53,14 @@
           </section>
 
           <section class="vip-section">
-            <h2 class="vip-header">Exclusive Zombie Classes</h2>
+            <h2 class="vip-header fw-bolder">Exclusive Zombie Classes</h2>
             <p>As a VIP member, you gain access to unique zombie classes, each with special abilities.</p>
             <div class="row">
                 <div class="col-md-4 mb-4" v-for="(zombie, index) in zombieClasses" :key="index">
                 <div class="card">
                     <img :src="zombie.image" :alt="zombie.name" class="card-img-top">
                     <div class="card-body">
-                    <h5 class="card-title">{{ zombie.name }}</h5>
+                    <h5 class="card-title fw-bolder">{{ zombie.name }}</h5>
                     <p class="card-text text-white">{{ zombie.description }}</p>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
       
           <!-- VIP Benefits Section -->
           <section class="vip-section">
-            <h2 class="vip-header">Extra Benefits</h2>
+            <h2 class="vip-header fw-bolder">Extra Benefits</h2>
             <ul class="list-group">
               <li class="list-group-item" v-for="(benefit, index) in vipBenefits" :key="index">
                 {{ benefit }}
@@ -137,9 +137,10 @@
         vipBenefits: [
           "1000 HP and 100 Armor on Every Round",
           "5x Jumps",
-          "Gain ammo Faster",
+          "Gain Ammo Faster",
+          "Gain Level Faster",
           "Extra Damage",
-          "New Model Knife",
+          "Special Model Knife",
           // Add more benefits as needed
         ]
       };

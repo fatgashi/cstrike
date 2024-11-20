@@ -3,7 +3,7 @@
         <br><br>
         <div class="offers container">
           <!-- Header -->
-          <h1 class="text-center mb-4">Special Offers</h1>
+          <h1 class="text-center mb-4 fw-bolder">Special Offers</h1>
       
           <!-- Offers Section -->
           <section v-for="(offer, index) in offers" :key="index" class="offer-section mb-5" style="position: relative;">
@@ -14,7 +14,7 @@
               </div>
               <!-- Content Column -->
               <div class="col-md-7">
-                <h2 class="offer-title">{{ offer.title }}</h2>
+                <h2 class="offer-title fw-bolder">{{ offer.title }}</h2>
                 <p class="offer-description">
                     {{ offer.description }}
                     <router-link v-if="offer.link" :to="offer.link" class="text-decoration-none" style="color: #ff8000">
@@ -22,8 +22,8 @@
                     </router-link>
                 </p>
                 <div class="offer-details mt-3">
-                  <p><strong>Price:</strong> {{ offer.price }}</p>
-                  <a :href="offer.buttonLink" target="_blank" class="text-decoration-none"><button class="btn text-white" style="background-color: rgb(242, 142, 38);">Claim Offer</button></a>
+                  <p class="fw-bolder"><strong>Price:</strong> {{ offer.price }}</p>
+                  <a :href="offer.buttonLink" target="_blank" class="text-decoration-none"><button class="btn text-white" style="background-color: #ff8000">Claim Offer</button></a>
                 </div>
               </div>
             </div>
