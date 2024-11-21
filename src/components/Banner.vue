@@ -16,6 +16,21 @@
       <!-- Call to Action Button -->
       <!-- <a href="#vip" class="btn btn-danger btn-lg ml-3">Buy VIP Now</a> -->
     </div>
+    <div class="mt-3 text-center">
+            <p>
+                If you are a steam user you can join our server by this button!
+            </p>
+            <a
+                href="steam://connect/51.77.72.157:27015"
+                class="btn text-white"
+                style="background-color: #ff8000;"
+                target="_self"
+                rel="noopener"
+            >
+                Join the Server
+            </a>
+      </div>
+      <br>
   </div>
 </div>
 </template>
@@ -31,10 +46,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @media only screen and (max-width: 600px) {
     .header-text {
         font-size: 24px !important;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .banner-section {
+      height: auto !important;
     }
 }
 .banner-section {
@@ -42,6 +62,7 @@ export default {
   background-size: cover;
   background-position: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  min-height: 400px;
 }
 
 .server-status {

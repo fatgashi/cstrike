@@ -8,9 +8,25 @@
             <div class="card text-white bg-dark mb-3 summary">
                 <div class="card-header">Server Summary</div>
                 <div class="card-body">
-                <h5 class="card-title"><span id="title">Name: </span><span class="fw-bolder">{{ server.name }}</span></h5>
-                <p class="card-text"><span id="title">Game: </span> <span class="fw-bolder">Counter Strike 1.6 | Status: Alive</span></p>
-                <p class="card-text"><span id="title">IP Address: </span> <span class="fw-bolder">{{ server.connect }}</span></p>
+                <h5 class="card-title fw-bolder"><span id="title">Name: </span><span>{{ server.name }}</span></h5>
+                <p class="card-text fw-bolder"><span id="title">Game: </span> <span>Counter Strike 1.6 | Status: Alive</span></p>
+                <p class="card-text fw-bolder"><span id="title">IP Address: </span> <span>{{ server.connect }}</span></p>
+                <p class="card-text fw-bolder"><span id="title">Join By Domain: </span> <span>connect cs.zm-westcstrike.com</span></p>
+                <p>
+                  If you are a steam user you can join our server by this button!
+                </p>
+                <p class="card-text fw-bolder"><span id="title">Join By Button: </span> <span>
+                  <a
+                    href="steam://connect/51.77.72.157:27015"
+                    class="btn text-white"
+                    style="background-color: #ff8000;"
+                    target="_self"
+                    rel="noopener"
+                  >
+                    Join the Server
+                  </a>
+                  </span>
+                </p>
                 </div>
             </div>
 

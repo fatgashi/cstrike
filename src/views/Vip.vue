@@ -140,7 +140,7 @@
           "Gain Ammo Faster",
           "Gain Level Faster",
           "Extra Damage",
-          "Special Model Knife",
+          "Special Model Knife (War Hammer)",
           // Add more benefits as needed
         ]
       };

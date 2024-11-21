@@ -124,7 +124,7 @@
             ]
           },
           {
-            title: "Winter In Game Effects",
+            title: "Winter In Game Effects and Knifes",
             description: "Equip yourself with exclusive holiday outfits and immerse yourself in the seasonal spirit while taking down your enemies.",
             shortDesc: "Effects and Players Skin",
             image: require("../assets/chrismas/chrismas-update1.webp"),
@@ -138,6 +138,31 @@
                 name: "Players Skin",
                 description: "Transform into a frosty fighter with this exclusive winter-themed player skin. Featuring icy blue tones and festive details, this skin helps you blend into snowy environments while spreading holiday cheer on the battlefield.",
                 image: require("../assets/chrismas/chrismas-skin.png")
+              },
+              {
+                name: "X-MAS Dual Katana (Speed)",
+                description: "Swift and deadly, the X-MAS Dual Katana grants incredible speed, allowing you to outmaneuver and strike down your enemies with precision. Perfect for players who value agility and quick reflexes.",
+                image: require("../assets/chrismas/katana.png")
+              },
+              {
+                name: "X-MAS Ruyi Stick (Jump)",
+                description: "Leap into action with the X-MAS Ruyi Stick, a festive weapon that enhances your jump height, giving you a tactical advantage in reaching high ground or evading enemies.",
+                image: require("../assets/chrismas/stick.png")
+              },
+              {
+                name: "X-MAS Shadow Axe (Damage)",
+                description: "Unleash devastating power with the X-MAS Shadow Axe, designed to deliver maximum damage with every swing. Ideal for players who prioritize raw strength and impact.",
+                image: require("../assets/chrismas/axe.png")
+              },
+              {
+                name: "X-MAS Hammer (Knockback)",
+                description: "Send your enemies flying with the X-MAS Hammer, a mighty weapon that excels in knockback, giving you control over the battlefield and creating distance when needed.",
+                image: require("../assets/chrismas/hammer.png")
+              },
+              {
+                name: "X-MAS War Hammer (Vip Only)",
+                description: "The ultimate weapon for VIP players, the X-MAS War Hammer combines the speed of the Dual Katana, the jump boost of the Ruyi Stick, the damage of the Shadow Axe, and the knockback of the Hammer, with additional bonus damage. A true masterpiece of destruction for the battlefield.",
+                image: require("../assets/chrismas/war-hammer.png")
               }
             ]
           }
