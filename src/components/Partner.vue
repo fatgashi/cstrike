@@ -22,12 +22,6 @@
       return {
         partner: [
           {
-            name: "Top-Boost",
-            text: "We are proud to partner with Top-Boost, a leading platform for boosting Counter-Strike 1.6. Visit their website to explore amazing services to improve your gaming experience.",
-            logo: require("../assets/partner/opboost.png"), // Replace with the uploaded logo
-            website: "https://top-boost.ro/", // Replace with your partner's website URL
-          },
-          {
             name: "WESTCSTRIKE Romania",
             text: "WESTCSTRIKE Romania is one of the most active and vibrant Counter-Strike communities. Join their forum to connect with players, share experiences, and stay updated on the latest events and server news.",
             logo: require("../assets/partner/west.png"), // Replace with the uploaded logo
