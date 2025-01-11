@@ -91,76 +91,61 @@
         showUpdates: true,
         updates: [
           {
-            title: "New Winter Update",
-            description: "Our latest winter update brings a frosty feel to the battlefield with exclusive skins and new weapons.",
+            title: "New Spring Update",
+            description: "Our latest spring update brings an amazing feel to the battlefield with exclusive skins and new weapons.",
             shortDesc: "Wepons and Skins",
-            image: require("../assets/chrismas/chrismas-update.webp"),
+            image: require("../assets/spring/spring-update.webp"),
             items: [
               {
-                name: "AK Long",
-                description: "Unleash powerful rounds with the AK Long, a modified classic with extended range and increased accuracy. Perfect for taking down enemies from a distance in any environment.",
-                image: require("../assets/chrismas/ak-long.jpg")
+                name: "Ethereal",
+                description: "The Ethereal is a futuristic energy-based weapon featured in Counter-Strike 1.6, showcasing a sleek, high-tech design with glowing, dynamic energy cores. Its vivid blue and green accents give it a sci-fi aesthetic, making it stand out in the zombie game mode. Perfectly balanced between style and functionality, the Ethereal is ideal for players seeking a unique, visually stunning weapon to dominate the battlefield.",
+                image: require("../assets/spring/etheral-gun.png")
               },
               {
-                name: "M1887 XMAS",
-                description: "Celebrate the season with the M1887 XMAS edition, a festive twist on a powerful shotgun. With its holiday-themed design, it brings a touch of cheer to even the most intense firefights.",
-                image: require("../assets/chrismas/m1887-xmas.png")
+                name: "M3 Black Dragon",
+                description: "The M3 Black Dragon is a stunning shotgun with a bold golden and black dragon-scaled design, exuding power and elegance. Its intricate details, including dragon motifs and a sleek finish, make it a standout weapon in Counter-Strike 1.6. This gun combines aesthetic appeal with devastating close-range firepower, perfect for players looking to dominate in style while battling zombies or opponents.",
+                image: require("../assets/spring/black-dragon.png")
               },
               {
-                name: "Rail Cannon",
-                description: "Blast through the battlefield with the Rail Cannon, a high-tech weapon that delivers devastating power with every shot. Ideal for players who demand maximum impact with minimal shots.",
-                image: require("../assets/chrismas/rail-cannon.jpg")
+                name: "Barlog-XI",
+                description: "The Barlog-XI is a menacing shotgun with a fiery red and black design, adorned with demonic horn-like embellishments for a sinister aesthetic. This weapon exudes power and aggression, making it perfect for intense combat scenarios in Counter-Strike 1.6 zombie modes. Its intimidating appearance complements its devastating performance, offering players a visually striking and highly effective tool for survival.",
+                image: require("../assets/spring/barlog.png")
               },
               {
-                name: "VSK-94",
-                description: "Stealth and precision come together with the VSK-94, a compact sniper rifle engineered for silent, lethal accuracy. Perfect for ambushing foes and dominating long-range encounters.",
-                image: require("../assets/chrismas/vsk-94.png")
-              },
-              {
-                name: "Deagle",
-                description: "The iconic Deagle returns with unmatched stopping power and style. Known for its heavy rounds and high impact, this gun is ideal for players who want to make every shot count.",
-                image: require("../assets/chrismas/deagle.jpg")
+                name: "Star Chaser AR",
+                description: "The Star Chaser AR is a dazzling weapon infused with cosmic energy, featuring swirling, ethereal effects and a futuristic design. Its mesmerizing visual effects, resembling a burst of stardust and glowing orbs, make it stand out as a truly unique firearm in Counter-Strike 1.6. Perfect for players who want to combine style and impact, this gun is both a visual spectacle and a powerful tool on the battlefield.",
+                image: require("../assets/spring/star-chaser.png")
               },
             ]
           },
           {
-            title: "Winter In Game Effects and Knifes",
+            title: "Spring In Game Effects and Knifes",
             description: "Equip yourself with exclusive holiday outfits and immerse yourself in the seasonal spirit while taking down your enemies.",
-            shortDesc: "Effects and Players Skin",
-            image: require("../assets/chrismas/chrismas-update1.webp"),
+            shortDesc: "Knifes",
+            image: require("../assets/spring/spring-update1.webp"),
             items: [
               {
-                name: "Winter View",
-                description: "The Winter Wonderland update transforms the game with snowy landscapes, twinkling lights, and holiday-themed player skins. Battle it out in a frosty environment with seasonal decorations, bringing a magical holiday feel to every map.",
-                image: require("../assets/chrismas/snow.png")
-              },
-              {
-                name: "Players Skin",
-                description: "Transform into a frosty fighter with this exclusive winter-themed player skin. Featuring icy blue tones and festive details, this skin helps you blend into snowy environments while spreading holiday cheer on the battlefield.",
-                image: require("../assets/chrismas/chrismas-skin.png")
-              },
-              {
-                name: "X-MAS Dual Katana (Speed)",
+                name: "Dual Katana (Speed)",
                 description: "Swift and deadly, the X-MAS Dual Katana grants incredible speed, allowing you to outmaneuver and strike down your enemies with precision. Perfect for players who value agility and quick reflexes.",
                 image: require("../assets/chrismas/katana.png")
               },
               {
-                name: "X-MAS Ruyi Stick (Jump)",
+                name: "Ruyi Stick (Jump)",
                 description: "Leap into action with the X-MAS Ruyi Stick, a festive weapon that enhances your jump height, giving you a tactical advantage in reaching high ground or evading enemies.",
                 image: require("../assets/chrismas/stick.png")
               },
               {
-                name: "X-MAS Shadow Axe (Damage)",
+                name: "Shadow Axe (Damage)",
                 description: "Unleash devastating power with the X-MAS Shadow Axe, designed to deliver maximum damage with every swing. Ideal for players who prioritize raw strength and impact.",
                 image: require("../assets/chrismas/axe.png")
               },
               {
-                name: "X-MAS Hammer (Knockback)",
+                name: "Hammer (Knockback)",
                 description: "Send your enemies flying with the X-MAS Hammer, a mighty weapon that excels in knockback, giving you control over the battlefield and creating distance when needed.",
                 image: require("../assets/chrismas/hammer.png")
               },
               {
-                name: "X-MAS War Hammer (Vip Only)",
+                name: "War Hammer (Vip Only)",
                 description: "The ultimate weapon for VIP players, the X-MAS War Hammer combines the speed of the Dual Katana, the jump boost of the Ruyi Stick, the damage of the Shadow Axe, and the knockback of the Hammer, with additional bonus damage. A true masterpiece of destruction for the battlefield.",
                 image: require("../assets/chrismas/war-hammer.png")
               }

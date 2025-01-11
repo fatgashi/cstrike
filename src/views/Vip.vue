@@ -88,7 +88,7 @@
       return {
         // List of VIP Skins
         vipSkins: [
-          { name: "Christmas Skin", image: require("../assets/vip-skins/christmas-skin.jpg") },
+          // { name: "Christmas Skin", image: require("../assets/vip-skins/christmas-skin.jpg") },
           { name: "Ghost Face", image: require("../assets/vip-skins/ghost-face.webp") },
           // Add more skins as needed
         ],
@@ -103,7 +103,7 @@
         vipGuns: [
           { name: "MP5 Gold", image: require("../assets/vipmenu/mp5.png") },
           { name: "Water Gun", image: require("../assets/vipmenu/water-gun.png") },
-          { name: "Janus-3", image: require("../assets/vipmenu/janus-3.png") },
+          { name: "Star Chaser AR", image: require("../assets/spring/star-chaser.png") },
           { name: "Rail Cannon", image: require("../assets/chrismas/rail-cannon.jpg") },
           { name: "Thantos-7", image: require("../assets/vipmenu/thantos-7.png") },
           // Add more guns as needed
@@ -129,6 +129,11 @@
           name: "Boomer",
           description: "You have an extra infection granade.",
           image: require("../assets/vip-zombie/boomer.png")
+        },
+        {
+          name: "Vampire",
+          description: "You have 3 extra blinks + speed.",
+          image: require("../assets/vip-zombie/vampire.png")
         },
         // Add more zombie classes as needed
       ],
