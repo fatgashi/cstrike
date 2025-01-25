@@ -12,9 +12,12 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { getToken } from './config/localStorage.js';
 import { getTokenExpiration, logout } from './config/userLogic.js';
+import VueApexCharts from 'vue-apexcharts'
 
 Vue.use(Toast);
 Vue.use(BootstrapVue)
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 Vue.prototype.$axios = AxiosInstace;
 
 Vue.prototype.$setupSessionTimeout = function(){

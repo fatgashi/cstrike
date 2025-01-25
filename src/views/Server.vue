@@ -188,7 +188,11 @@
         <tbody v-if="players.length">
           <tr v-for="(player, index) in players" :key="player._id">
             <td>{{ (currentPage - 1) * limit + index + 1 }}</td>
-            <td>{{ player.name }}</td>
+            <td>
+              <router-link :to="{ name: 'PlayerDetails', params: { playerName: player.name } }" class="text-white">
+                {{ player.name }}
+              </router-link>
+            </td>
             <td>{{ formatTime(player.totalTime) }}</td>
           </tr>
         </tbody>

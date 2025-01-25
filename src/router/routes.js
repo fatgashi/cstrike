@@ -8,6 +8,7 @@ const Maps = () => import("../views/Maps.vue");
 import About from "../views/About.vue";
 const MediumMaps = () => import("../views/MediumMaps.vue");
 const LargeMaps = () => import("../views/LargeMaps.vue");
+const PlayerData = () => import("../views/PlayerData.vue");
 
 const routers = [
     {
@@ -59,7 +60,13 @@ const routers = [
                 path: "about",
                 name: "About",
                 component: About
-            }
+            },
+            {
+                path: '/player/:playerName',
+                name: 'PlayerDetails',
+                component: PlayerData,
+                props: true,
+            },
         ]
     },
     {
