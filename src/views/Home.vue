@@ -2,22 +2,23 @@
   <div style="position: relative;">
     <div style="z-index: 2;">
       <Banner :players="server" />
-    <Infos />
-    <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
-      <div ref="firstDiv" class="row carousel mb-3">
-        <Carousel :dynamicHeight="heightString" />
+      <Infos />
+      <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
+        <div ref="firstDiv" class="row carousel mb-3">
+          <Carousel :dynamicHeight="heightString" />
+        </div>
+        <div class="row carousel mb-3">
+          <Carousel1 :dynamicHeight="heightString"/>
+        </div>
+        <div class="row carousel">
+          <Carousel2 :dynamicHeight="heightString"/>
+        </div>
       </div>
-      <div class="row carousel mb-3">
-        <Carousel1 :dynamicHeight="heightString"/>
+      <div>
+        <Top15 />
+        <Partner />
+        <Modes />
       </div>
-      <div class="row carousel">
-        <Carousel2 :dynamicHeight="heightString"/>
-      </div>
-    </div>
-    <div>
-    <Partner />
-      <Modes />
-    </div>
   </div>
     </div>
 </template>
@@ -30,6 +31,7 @@ import Banner from "../components/Banner.vue";
 import Infos from "../components/Infos.vue";
 import Modes from "../components/Modes.vue";
 import Partner from '../components/Partner.vue';
+import Top15 from '../components/Top15.vue';
 
 export default {
   components: {
@@ -40,6 +42,7 @@ export default {
     Carousel2,
     Modes,
     Partner,
+    Top15
   },
   data() {
     return {
