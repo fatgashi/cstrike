@@ -65,6 +65,9 @@
             this.$store.dispatch('updateLogged', true);
             this.$store.dispatch('updateUser', data.user)
             this.$emit('login');
+            if(data.user.role === 'admin'){
+              this.$router.push('/dashboard/home')
+            }
             this.$setupSessionTimeout();
             this.$toast.success("You logged in successfully! ");
             this.modal.hide();

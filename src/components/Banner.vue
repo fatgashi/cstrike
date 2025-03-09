@@ -1,86 +1,125 @@
 <template>
-  <!-- Bootstrap Banner Section -->
-<div class="banner-section container-fluid text-white d-flex justify-content-center align-items-center" style="background-color: #333; height: 18rem;">
-  <div class="row d-flex flex-column justify-content-center align-items-center">
-    <div class="text-center">
-        <p class="header-text">Welcome to Zm-WestCStrike!</p>
-        <p class="lead fw-bold">Your ultimate CS 1.6 community for thrilling battles and experience!</p>
-    </div>
-    <div class="d-flex justify-content-center align-items-center mt-3">
-      <!-- Server Status Widget -->
-      <div class="server-status mr-3">
-        <p class="mb-1"><strong>Server IP:</strong> <span style="color: #ff8000">51.77.72.157:27015</span></p>
-        <p class="mb-1"><strong>Status:</strong> <span style="background-color: #ff8000" class="badge text-white">Online</span></p>
-        <p class="mb-1"><strong>Players:</strong> <span style="color: #ff8000">{{players}}/32</span></p>
+  <div class="hero-section">
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Content -->
+    <div class="hero-content">
+      <h1 class="fade-in">Welcome to <span style="color: rgb(242, 142, 38);">Zm-WestCStrike</span></h1>
+      <p class="fade-in">Your ultimate CS 1.6 community for thrilling battles and experiences!</p>
+      <div class="server-info fade-in">
+        <p>Server IP: <span class="fw-bold">51.77.72.157:27015</span></p>
+        <p>Status: <span class="online fw-bolder">Online</span></p>
+        <p>Players: <span>{{players}}/32</span></p>
       </div>
-      <!-- Call to Action Button -->
-      <!-- <a href="#vip" class="btn btn-danger btn-lg ml-3">Buy VIP Now</a> -->
-    </div>
-    <div class="mt-3 text-center">
-            <p>
-                If you are a steam user you can join our server by this button!
-            </p>
-            <a
+      <button class="join-btn text-white"><a
                 href="steam://connect/51.77.72.157:27015"
                 class="btn text-white"
-                style="background-color: #ff8000;"
                 target="_self"
                 rel="noopener"
             >
                 Join the Server
-            </a>
-      </div>
-      <br>
+            </a></button>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
+import { TweenMax } from "gsap";
+
 export default {
   props: {
     players: {
       type: Number,
       default: 0
     }
+  },
+  mounted() {
+    this.initParticles();
+    this.animateContent();
+  },
+  methods: {
+    initParticles() {
+      window.particlesJS.load("particles-js", "/particles.json");
+    },
+    animateContent() {
+      TweenMax.staggerFrom(
+        ".fade-in",
+        1,
+        { opacity: 0, y: 20, ease: "power2.out" },
+        0.3
+      );
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-@media only screen and (max-width: 600px) {
-    .header-text {
-        font-size: 24px !important;
-    }
-}
-@media only screen and (max-width: 400px) {
-    .banner-section {
-      height: auto !important;
-    }
-}
-.banner-section {
-  background-image: url('../assets/cover3.jpg'); /* Optional background image */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  
+  /* Background Image */
+  background: url("../assets/cover01.webp") no-repeat center center;
   background-size: cover;
-  background-position: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-  min-height: 400px;
+
+  /* Dark Overlay */
+  background-color: rgba(0, 0, 0, 0.7);
+  background-blend-mode: overlay;
+  background-attachment: fixed;
 }
 
-.server-status {
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-  padding: 10px 15px;
-  border-radius: 10px;
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.header-text {
-    font-size: 40px;
-    font-weight: 700;
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
 }
 
-.btn-danger {
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 
-.btn-danger:hover {
-  background-color: #c9302c;
+h1 span {
+  color: #ff9f1c;
+}
+
+.server-info {
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.server-info .online {
+  color: #00ff00;
+}
+
+.join-btn {
+  background: #ff8000;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.3s;
+}
+
+.join-btn:hover {
+  background: #ff6b00;
 }
 </style>

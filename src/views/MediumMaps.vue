@@ -37,6 +37,7 @@
           // List of small maps
           { name: "zm_big_vk", image: require("../assets/maps/zm_big_vk.jpg"), size: "medium" },
           { name: "zm_trakinax_tubo", image: require("../assets/maps/zm_trakinax_tubo.jpg"), size: "medium" },
+          { name: "zm_emosbg_fx", image: require("../assets/maps/zm_emosbg_fx.jpg"), size: "medium" },
           { name: "zm_zhell", image: require("../assets/maps/zm_zhell.jpg"), size: "medium" },
           { name: "zm_ice_vk", image: require("../assets/maps/zm_ice_vk.jpg"), size: "medium" },
           { name: "zm_ice_attack2009", image: require("../assets/maps/zm_ice_attack2009.jpg"), size: "medium" },

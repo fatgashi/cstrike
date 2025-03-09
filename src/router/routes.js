@@ -9,6 +9,9 @@ import About from "../views/About.vue";
 const MediumMaps = () => import("../views/MediumMaps.vue");
 const LargeMaps = () => import("../views/LargeMaps.vue");
 const PlayerData = () => import("../views/PlayerData.vue");
+const DashboardLayout = () => import("../DashboardLayout/DashboardLayout.vue");
+const DashboardView = () => import("../Dashboard/DashboardView.vue");
+const DashboardBanlist = () => import("../Dashboard/DashboardBanListView.vue");
 
 const routers = [
     {
@@ -68,6 +71,31 @@ const routers = [
                 props: true,
             },
         ]
+    },
+    {
+        path: "/dashboard",
+        name: "Dashboard",
+        component: DashboardLayout,
+        redirect: "/dashboard/home",
+        meta: {
+            requireAdmin: true
+        },
+        children: [
+            {
+                path: "/dashboard/home",
+                name: "DashboardView",
+                component: DashboardView
+            },
+            {
+                path: "/dashboard/banlist",
+                name: "DashboardBanlist",
+                component: DashboardBanlist,
+                meta: {
+                    title: "Ban List"
+                }
+            },
+
+    ]
     },
     {
         path: "*",
