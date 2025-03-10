@@ -23,6 +23,7 @@ export default new Vuex.Store({
     clearToken(state) {
       state.token = null; // Sets token to null
       state.logged = false; // Optional: Reset logged status if needed
+      state.user = null;
     },
   },
   actions: {

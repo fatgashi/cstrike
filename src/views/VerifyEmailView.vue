@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   data() {
@@ -32,7 +31,7 @@ export default {
       }
 
       try {
-        await axios.get(`http://localhost:3000/api/user/verify-email?token=${token}`);
+        await this.$axios.get(`/user/verify-email?token=${token}`);
         this.verificationStatus = "✅ Email verified successfully! You can now log in.";
         this.$toast.success("✅ Email verified! Redirecting to login...");
         
