@@ -76,6 +76,12 @@ export default {
   background-attachment: fixed;
 }
 
+@supports (-webkit-touch-callout: none) {
+  .hero-section {
+    background-attachment: scroll !important;
+  }
+}
+
 #particles-js {
   position: absolute;
   width: 100%;

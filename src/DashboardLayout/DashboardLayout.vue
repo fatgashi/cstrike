@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard-container" :class="{ 'sidebar-collapsed': isCollapsed }">
       <!-- Sidebar -->
-      <aside class="sidebar" :class="{ 'align-items-start': !isCollapsed }">
+      <div class="sidebar" :class="{ 'align-items-start': !isCollapsed }">
         <button class="toggle-btn" :class="{'text-end me-3': !isCollapsed}" @click="toggleSidebar" v-if="!isMobile">
             <i v-if="isCollapsed" class="fa fa-arrow-right" aria-hidden="true"></i>
             <i v-else class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -20,14 +20,14 @@
             </li>
           </ul>
         </nav>
-      </aside>
+      </div>
   
       <!-- Main Content -->
-      <main class="main-content w-100">
+      <main class="main-content container">
         <header class="header">
           <h1 class="fw-bolder">{{ pageTitle }}</h1>
         </header>
-        <section class="content">
+        <section class="content container">
           <router-view></router-view>
         </section>
       </main>
@@ -87,9 +87,7 @@
   .dashboard-container {
     display: flex;
     min-height: 100vh;
-    overflow: hidden;
     transition: 0.3s;
-    width: 100% !important;
   }
   
   .sidebar {
@@ -104,7 +102,7 @@
   }
   
   .sidebar-collapsed .sidebar {
-    width: 60px;
+    width: 50px;
   }
   
   .sidebar-collapsed .nav-link span {

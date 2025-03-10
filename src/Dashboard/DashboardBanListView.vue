@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-4">
+    <div class="mt-4">
       <div class="card text-white" style="background-color: transparent !important;">
         <div class="card-header text-center fw-bolder">Ban List</div>
         <div class="card-body table-responsive">
