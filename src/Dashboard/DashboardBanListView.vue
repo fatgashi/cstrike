@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-4">
-      <div class="card text-black">
+      <div class="card text-white" style="background-color: transparent !important;">
         <div class="card-header text-center fw-bolder">Ban List</div>
         <div class="card-body table-responsive">
           <table class="table table-dark table-striped">
@@ -42,7 +42,8 @@
   </template>
   
   <script>
-  import axios from 'axios';
+import configuration from '../config/config';
+
   
   export default {
     data() {
@@ -54,7 +55,8 @@
     methods: {
       async fetchBanList(retry = 3) {
         try {
-          const response = await axios.get(`http://localhost:3000/api/rcon/banlist?list=${this.page}`);
+          const config = configuration();
+          const response = await this.$axios.get(`/rcon/banlist?list=${this.page}`, config);
           if (response.data.success) {
             this.banList = response.data.banList;
           }
@@ -91,3 +93,14 @@
   };
   </script>
   
+  <style scoped>
+  .card {
+        border-radius: 8px;
+        border: 1px solid #3a3a3a;
+    }
+    .card-header {
+        font-weight: bold;
+        font-size: 1.1em;
+        background-color: rgb(242, 142, 38);
+    }
+  </style>

@@ -14,6 +14,10 @@
                 <span v-if="!isCollapsed">{{ link.name }}</span>
               </router-link>
             </li>
+            <li @click="signOut" class="nav-link pointer">
+                <i class="fa fa-sign-out-alt"></i>
+                <span v-if="!isCollapsed">Logout</span>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -21,7 +25,7 @@
       <!-- Main Content -->
       <main class="main-content w-100">
         <header class="header">
-          <h1>{{ pageTitle }}</h1>
+          <h1 class="fw-bolder">{{ pageTitle }}</h1>
         </header>
         <section class="content">
           <router-view></router-view>
@@ -35,10 +39,10 @@
     data() {
       return {
         links: [
-          { name: "Home", path: "/dashboard/home", icon: "fas fa-home" },
+          { name: "Dashboard", path: "/dashboard/home", icon: "fas fa-home" },
           { name: "Ban List", path: "/dashboard/banlist", icon: "fas fa-users" },
-          { name: "Settings", path: "/dashboard/settings", icon: "fas fa-cog" },
-          { name: "Logout", path: "/logout", icon: "fas fa-sign-out-alt" }
+          { name: "Home", path: "/home", icon: "fas fa-home" },
+          { name: "Settings", path: "/dashboard/settings", icon: "fas fa-cog" }
         ],
         pageTitle: "Dashboard Home",
         isCollapsed: false,
@@ -62,6 +66,12 @@
         if (!this.isMobile) {
           this.isCollapsed = !this.isCollapsed;
         }
+      },
+      async signOut() {
+        this.$router.replace({ path: '/home' });
+
+        this.$store.dispatch('clearToken');
+        this.$toast.warning("You have been logged out.");
       },
       checkScreenSize() {
         this.isMobile = window.innerWidth < 768;
@@ -159,6 +169,10 @@
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .pointer {
+    cursor: pointer;
   }
   
   .content {

@@ -62,21 +62,17 @@
               return;
             }
             try {
-              const response = await this.$axios.post(`/user/register`, {
+              await this.$axios.post(`/user/register`, {
                 username: this.username,
                 email: this.email,
                 password: this.password,
                 dateOfBirth: this.dateBirth
               }).then(res => {
-    
+                
+                this.$router.push('/email-verification');
                 this.$toast.success(res.data.message);
                 return res.data;
               })
-              this.$store.dispatch('updateToken', response.token);
-              this.$store.dispatch('updateLogged', true);
-              this.$store.dispatch('updateUser', response.user)
-              this.$emit('login');
-              this.$setupSessionTimeout();
     
               this.modal.hide();
     

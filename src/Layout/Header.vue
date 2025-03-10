@@ -35,6 +35,19 @@
                   <i class="bi bi-people text-white"></i>
                 </button>
                 <Login v-on:login= "isLoggedIn"/>
+                <button
+                  type="button"
+                  class="btn dropdown-toggle dropdown-toggle-split"
+                  id="bsep"
+                  v-if="loggedIn && user.role === 'admin'"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" id="menu-fix">
+                  <li><router-link class="dropdown-item" id="dashboardlink" to="/dashboard">Dashboard</router-link></li>
+                </ul>
               </div>
               
             </div>
@@ -63,6 +76,7 @@
 <script>
 // import { isTokenAvaible, removeToken } from '@/methods/localStorage';
 import Login from "../components/Login.vue"
+import { getCurrentUser } from "../config/userLogic";
 // import ProductCart from "../components/ProductCart.vue"
 // import { getCurrentUser } from '@/methods/userLogic';
 export default {
@@ -88,12 +102,12 @@ export default {
     isLoggedIn() {
       this.loggedIn = this.$store.getters.isAuthenticated;
     },
-  //   async role(){
-  //     const currentUser = await getCurrentUser();
-  //     if(currentUser){
-  //       this.user = currentUser;
-  //     }
-  //   },
+    async role(){
+      const currentUser = await getCurrentUser();
+      if(currentUser){
+        this.user = currentUser;
+      }
+    },
   //   searchBooks() {
   //     if (this.title.trim() === '') {
   //       return;
@@ -108,11 +122,15 @@ export default {
 
         this.$store.dispatch('clearToken');
         this.loggedIn = false;
+        this.user = [];
         this.$toast.warning("You have been logged out.");
       },
   },
   mounted() {
     this.isLoggedIn();
+    if(this.loggedIn){
+      this.role();
+    }
   }
 };
 </script>

@@ -12,6 +12,8 @@ const PlayerData = () => import("../views/PlayerData.vue");
 const DashboardLayout = () => import("../DashboardLayout/DashboardLayout.vue");
 const DashboardView = () => import("../Dashboard/DashboardView.vue");
 const DashboardBanlist = () => import("../Dashboard/DashboardBanListView.vue");
+const EmailVerification = () => import("../views/EmailVerification.vue");
+const VerifyEmailView = () => import("../views/VerifyEmailView.vue");
 
 const routers = [
     {
@@ -70,6 +72,8 @@ const routers = [
                 component: PlayerData,
                 props: true,
             },
+            { path: '/email-verification', component: EmailVerification, meta: { requiresGuest: true } },
+            { path: '/verify-email', component: VerifyEmailView, meta: { requiresGuest: true } },
         ]
     },
     {

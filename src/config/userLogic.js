@@ -24,8 +24,6 @@ export async function isAdmin(){
         const user = await axios.get(`/user/profile`, config).then(res => {
             return res.data;
         });
-
-        console.log(user);
         
         return user.role == 'admin' ? true : false;
 
