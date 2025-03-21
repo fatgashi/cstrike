@@ -27,7 +27,8 @@
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control bg-dark text-white" id="inputRegisterRePassword" minlength="8" placeholder="Confirm Password" v-model="confirmPassword" required />
                     <label for="inputRegisterPassword">Confirm Password</label>
-                  </div>
+                </div>
+                <div id="emailHelp" class="form-text text-white mb-2">We'll never share your data with anyone else!</div>
                 <button type="submit" style="background-color: rgb(242, 142, 38);" class="btn text-white">Register</button>
             </form>
           </div>

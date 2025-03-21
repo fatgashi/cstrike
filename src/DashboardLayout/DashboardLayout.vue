@@ -25,7 +25,16 @@
       <!-- Main Content -->
       <main class="main-content container">
         <header class="header">
-          <h1 class="fw-bolder">{{ pageTitle }}</h1>
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bolder">{{ pageTitle }}</h1>
+            <div class="dropdown">
+              <img v-if="user.profilePhoto"  class="profile-photo dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" :src="getImageUrl(user.profilePhoto)" alt="Avatar">
+              <img v-else :src="avatarUrl" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover;">
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><router-link class="dropdown-item" to="/home">Home</router-link></li>
+              </ul>
+            </div>
+          </div>
         </header>
         <section class="content container">
           <router-view></router-view>
@@ -35,18 +44,21 @@
   </template>
   
   <script>
+import { getCurrentUser } from '../config/userLogic';
+
   export default {
     data() {
       return {
         links: [
           { name: "Dashboard", path: "/dashboard/home", icon: "fas fa-home" },
           { name: "Ban List", path: "/dashboard/banlist", icon: "fas fa-users" },
-          { name: "Home", path: "/home", icon: "fas fa-home" },
-          { name: "Settings", path: "/dashboard/settings", icon: "fas fa-cog" }
+          // { name: "Home", path: "/home", icon: "fas fa-home" },
+          // { name: "Settings", path: "/dashboard/settings", icon: "fas fa-cog" }
         ],
         pageTitle: "Dashboard Home",
         isCollapsed: false,
-        isMobile: false
+        isMobile: false,
+        user: {},
       };
     },
     watch: {
@@ -54,9 +66,10 @@
         this.pageTitle = to.meta.title || "Dashboard";
       }
     },
-    mounted() {
+    async mounted() {
       this.checkScreenSize();
       window.addEventListener("resize", this.checkScreenSize);
+      this.user = await getCurrentUser();
     },
     beforeDestroy() {
       window.removeEventListener("resize", this.checkScreenSize);
@@ -66,6 +79,13 @@
         if (!this.isMobile) {
           this.isCollapsed = !this.isCollapsed;
         }
+      },
+      avatarUrl() {
+        const name = encodeURIComponent(this.user.username);
+        return `https://ui-avatars.com/api/?rounded=true&name=${name}&background=0D8ABC&color=fff`;
+      },
+      getImageUrl(path) {
+        return `http://zm-westcstrike.com/${path}`;
       },
       async signOut() {
         this.$router.replace({ path: '/home' });
@@ -86,6 +106,7 @@
   <style scoped>
   .dashboard-container {
     display: flex;
+    max-width: 100% !important;
     min-height: 100vh;
     transition: 0.3s;
   }
@@ -182,5 +203,14 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100% !important;
   }
+
+  .profile-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 10px;
+}
   </style>
   

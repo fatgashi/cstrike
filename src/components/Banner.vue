@@ -67,7 +67,7 @@ export default {
   overflow: hidden;
   
   /* Background Image */
-  background: url("../assets/cover01.webp") no-repeat center center;
+  background: url("../assets/spring/spring-update1.webp") no-repeat center center;
   background-size: cover;
 
   /* Dark Overlay */

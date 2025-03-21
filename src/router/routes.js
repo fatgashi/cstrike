@@ -6,6 +6,7 @@ const Events = () => import("../views/Events.vue");
 const Offers = () => import("../views/Offers.vue");
 const Maps = () => import("../views/Maps.vue");
 import About from "../views/About.vue";
+const ProfileView = () => import("../views/ProfileView.vue");
 const MediumMaps = () => import("../views/MediumMaps.vue");
 const LargeMaps = () => import("../views/LargeMaps.vue");
 const PlayerData = () => import("../views/PlayerData.vue");
@@ -14,6 +15,13 @@ const DashboardView = () => import("../Dashboard/DashboardView.vue");
 const DashboardBanlist = () => import("../Dashboard/DashboardBanListView.vue");
 const EmailVerification = () => import("../views/EmailVerification.vue");
 const VerifyEmailView = () => import("../views/VerifyEmailView.vue");
+const Forum = () => import("../views/Forum.vue");
+const AdminApplications = () => import("../views/AdminApplications.vue");
+const AdminApplicationDetails = () => import("../views/AdminApplicationDetails.vue");
+const ApplyForAdmin = () => import("../views/ApplyForAdmin.vue");
+const ForgotPassword = () => import("../views/ForgotPasswordView.vue");
+const ResetPassword = () => import("../views/ResetPasswordView.vue");
+const RulesView = () => import("../views/RulesView.vue");
 
 const routers = [
     {
@@ -72,8 +80,37 @@ const routers = [
                 component: PlayerData,
                 props: true,
             },
+            {
+                path: "/forum",
+                component: Forum
+            },
+            {
+                path: "/forum/admin-applications",
+                component: AdminApplications
+            },
+            {
+                path: "/forum/rules",
+                component: RulesView
+            },
+            {
+                path: "/forum/apply-for-admin",
+                component: ApplyForAdmin,
+                meta: { requireClient: true }
+            },
+            {
+                path: "/profile",
+                component: ProfileView,
+                meta: { requireAuthentication: true }
+            },
+            {
+                path: "/forum/admin-applications/:id",
+                component: AdminApplicationDetails,
+                props: true
+            },
             { path: '/email-verification', component: EmailVerification, meta: { requiresGuest: true } },
             { path: '/verify-email', component: VerifyEmailView, meta: { requiresGuest: true } },
+            { path: "/forgot-password", component: ForgotPassword, meta: { requiresGuest: true } },
+            { path: "/reset-password", component: ResetPassword, meta: { requiresGuest: true } }
         ]
     },
     {
@@ -82,7 +119,7 @@ const routers = [
         component: DashboardLayout,
         redirect: "/dashboard/home",
         meta: {
-            requireAdmin: true
+            requireSuperAdmin: true
         },
         children: [
             {

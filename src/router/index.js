@@ -1,9 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import routes from "./routes.js";
-import { isAdmin, getCurrentUser } from "../config/userLogic.js"; // Import user check
+import { getCurrentUser, isClient, isSuperAdmin } from "../config/userLogic.js"; // Import user check
 
 Vue.use(VueRouter);
+
+export const eventBus = new Vue();
 
 const router = new VueRouter({
     mode: "history",
@@ -11,26 +13,60 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    // Check if the route requires admin access
-    if (to.matched.some((record) => record.meta.requireAdmin)) {
-        const adminStatus = await isAdmin();
-        if (adminStatus === true) {
-            next(); // Allow access for admin
-        } else {
-            next("/home"); // Redirect non-admin users
+    try {
+        // Check if the route requires Super Admin access
+        if (to.matched.some((record) => record.meta.requireSuperAdmin)) {
+            const adminStatus = await isSuperAdmin();
+            if (adminStatus === true) {
+                return next(); // Allow access for superadmin
+            } else {
+                return next("/home"); // Redirect non-superadmin users
+            }
         }
-    }
-    // Prevent logged-in users from accessing guest-only routes
-    else if (to.matched.some((record) => record.meta.requiresGuest)) {
-        const user = await getCurrentUser();
-        if (user) {
-            next("/home"); // Redirect logged-in users to dashboard
-        } else {
-            next(); // Allow access for guests
+
+        // Check if the route requires Client access
+        if (to.matched.some((record) => record.meta.requireClient)) {
+            const clientStatus = await isClient();
+            if (clientStatus === 'client') {
+                return next();
+            }
+            else if(clientStatus === 'admin') {
+                return next("/home");
+            }
+            else if(clientStatus === 'superadmin') {
+                return next("/home");
+            }
+             else {
+                eventBus.$emit("showLoginModal");
+                return next();
+            }
         }
-    } 
-    else {
-        next(); // Continue for unrestricted routes
+
+        // Check if the route requires Authentication
+        if (to.matched.some((record) => record.meta.requireAuthentication)) {
+            const authenticated = await getCurrentUser();
+            if (authenticated) {
+                return next();
+            } else {
+                return next("/home");
+            }
+        }
+
+        // Prevent logged-in users from accessing guest-only routes
+        if (to.matched.some((record) => record.meta.requiresGuest)) {
+            const user = await getCurrentUser();
+            if (user) {
+                return next("/home");
+            } else {
+                return next();
+            }
+        }
+
+        // Default case: continue to the route
+        return next();
+    } catch (error) {
+        console.error("Error in beforeEach guard:", error);
+        return next("/home"); // Redirect to home if any error occurs
     }
 });
 

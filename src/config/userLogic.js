@@ -33,6 +33,41 @@ export async function isAdmin(){
 
 }
 
+export async function isSuperAdmin(){
+    const config = configuration();
+
+    try {
+        if(isTokenAvaible()){
+            const user = await axios.get(`/user/profile`, config).then(res => {
+                return res.data;
+            });
+            
+            
+            return user.role == 'superadmin' ? true : false;
+        }
+        return false;
+    } catch(err) {
+        return err.message;
+    }
+
+}
+
+export async function isClient(){
+    const config = configuration();
+
+    try {
+        const user = await axios.get(`/user/profile`, config).then(res => {
+            return res.data;
+        });
+        
+        return user.role;
+
+    } catch(err) {
+        return err.message;
+    }
+
+}
+
 export async function getCurrentUser(){
     const config = configuration();
 

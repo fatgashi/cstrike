@@ -33,20 +33,20 @@
                   v-else
                 >
                   <i class="bi bi-people text-white"></i>
-                </button>
-                <Login v-on:login= "isLoggedIn"/>
+                </button>                 
                 <button
                   type="button"
                   class="btn dropdown-toggle dropdown-toggle-split"
                   id="bsep"
-                  v-if="loggedIn && user.role === 'admin'"
+                  v-if="loggedIn"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" id="menu-fix">
-                  <li><router-link class="dropdown-item" id="dashboardlink" to="/dashboard">Dashboard</router-link></li>
+                  <li><router-link v-if="user.role === 'superadmin'" class="dropdown-item" id="dashboardlink" to="/dashboard">Dashboard</router-link></li>
+                  <li><router-link class="dropdown-item" id="dashboardlink" to="/profile">Profile</router-link></li>
                 </ul>
               </div>
               
@@ -58,6 +58,9 @@
       <div class="row justify-content-md-center align-items-md-center h-100">
         <div class="col d-flex justify-content-center align-items-center">
           <router-link to="/server" id="navbar-links">Server</router-link>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <router-link to="/forum" id="navbar-links">Forum</router-link>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
           <router-link to="/maps" id="navbar-links">Maps</router-link>
@@ -74,14 +77,11 @@
 </template>
 
 <script>
-// import { isTokenAvaible, removeToken } from '@/methods/localStorage';
-import Login from "../components/Login.vue"
+
 import { getCurrentUser } from "../config/userLogic";
-// import ProductCart from "../components/ProductCart.vue"
-// import { getCurrentUser } from '@/methods/userLogic';
+import { eventBus } from "../router";
 export default {
   name: "Header",
-  components: { Login },
   data() {
     return {
       loggedIn: false,
@@ -90,12 +90,6 @@ export default {
       user: [],
       collapse: false,
     };
-  },
-  computed: {
-    checkLog(){
-      return this.$store.state.logged
-    },
-    
   },
   
   methods: {
@@ -108,13 +102,10 @@ export default {
         this.user = currentUser;
       }
     },
-  //   searchBooks() {
-  //     if (this.title.trim() === '') {
-  //       return;
-  //     }
-
-  //     this.$router.push({ name: 'BookSearched', params: { bookTitle: this.title } });
-  //   },
+    openLoginModal() {
+      console.log("🔥 Triggering showLoginModal event from Header.vue");
+      eventBus.$emit("showLoginModal"); // ✅ Emit event to open login modal
+    },
       async signOut() {
         if (this.$router.currentRoute.path !== '/home') {
           await this.$router.replace({ path: '/home' });
@@ -131,7 +122,17 @@ export default {
     if(this.loggedIn){
       this.role();
     }
-  }
+
+    eventBus.$on("userLoggedIn", () => {
+      console.log("🔥 userLoggedIn event received in Header.vue");
+      this.isLoggedIn(); // ✅ Update login status in header
+      this.role(); // ✅ Fetch user role again
+    });
+  },
+  beforeDestroy() {
+    // ✅ Remove event listener to prevent memory leaks
+    eventBus.$off("userLoggedIn");
+  },
 };
 </script>
 <style>
@@ -145,6 +146,10 @@ export default {
   .nav-text,
   .nav-ico {
     font-size: 11px;
+  }
+
+  #logo {
+    font-size: 22px !important;
   }
 }
 body {
@@ -281,6 +286,10 @@ router-link {
   -webkit-box-shadow: none;
   border:rgb(242, 142, 38);
 
+}
+
+.dropdown-menu {
+  position: absolute !important;
 }
 .navbox {
   box-sizing: border-box;

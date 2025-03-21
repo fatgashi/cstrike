@@ -1,6 +1,6 @@
 import axios from "axios";
 import { removeToken } from "./localStorage";
-import router from "../router";
+// import router from "../router";
 import Vue from "vue";
 
 
@@ -12,15 +12,13 @@ instance.interceptors.response.use(
     (response) => response, // Return response if successful
     (error) => {
         if (error.response && error.response.status === 401) {
-            console.warn("Unauthorized request - logging out...");
             
             // Remove token from local storage
             removeToken();
 
-            // Redirect to home page
-            router.push("/home");
+            
 
-            Vue.$toast.warning("Session expired. Please log in again.", {
+            Vue.$toast.warning("You should login!", {
                 position: "top-right",
                 timeout: 5000, // Auto-close after 5s
             });
