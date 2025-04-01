@@ -78,7 +78,7 @@ export default {
       }
     },
     getImageUrl(path) {
-      return `http://zm-westcstrike.com/${path}`;
+      return `https://zm-westcstrike.com/${path}`;
     },
     async saveProfile() {
       const formData = new FormData();

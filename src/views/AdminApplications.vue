@@ -81,7 +81,7 @@ export default {
       return `https://ui-avatars.com/api/?rounded=true&name=${encodeURIComponent(user.username)}&size=32&background=0D8ABC&color=fff`;
     },
     getImageUrl(path) {
-      return `http://zm-westcstrike.com/${path}`;
+      return `https://zm-westcstrike.com/${path}`;
     },
     formatDateLong(date) {
       if (!date) return "";

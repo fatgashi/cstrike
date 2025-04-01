@@ -307,11 +307,11 @@ export default {
     },
 
     getImageUrl(path) {
-      return `http://zm-westcstrike.com/${path}`;
+      return `https://zm-westcstrike.com/${path}`;
     },
     getCommentImageUrl(commentPath) {
       const cleanPath = commentPath.replace(/^\/app\//, '');
-      return `http://zm-westcstrike.com/${cleanPath}`;
+      return `https://zm-westcstrike.com/${cleanPath}`;
     },
 
     formatDate(date) {
