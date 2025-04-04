@@ -307,7 +307,8 @@ export default {
     },
 
     getImageUrl(path) {
-      return `https://zm-westcstrike.com/${path}`;
+      const cleanPath = path.replace(/^\/app\//, '');
+      return `https://zm-westcstrike.com/${cleanPath}`;
     },
     getCommentImageUrl(commentPath) {
       const cleanPath = commentPath.replace(/^\/app\//, '');
