@@ -14,6 +14,15 @@
             <div class="text-center">
                 <button type="submit" style="background-color: rgb(242, 142, 38);" class="btn fw-bold text-white">📩 Send Reset Link</button>
             </div>
+            <p class="mt-2 text-center">If your email does not work or is not valid when you registered, please write to 
+              <a href="https://discordapp.com/users/947193667188306011" target="_blank" class="important">
+                emosbg 
+              </a>
+              or
+              <a href="https://discordapp.com/users/1150374397606113370" target="_blank" class="important">
+                assos13-14
+              </a>
+            </p>
             </form>
         </div>
       </div>

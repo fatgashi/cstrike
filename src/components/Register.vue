@@ -28,7 +28,7 @@
                     <input type="password" class="form-control bg-dark text-white" id="inputRegisterRePassword" minlength="8" placeholder="Confirm Password" v-model="confirmPassword" required />
                     <label for="inputRegisterPassword">Confirm Password</label>
                 </div>
-                <div id="emailHelp" class="form-text text-white mb-2">We'll never share your data with anyone else!</div>
+                <div id="emailHelp" class="form-text fw-bolder text-white mb-3">If you are already registered in server cs1.6, you can login with your name and password!</div>
                 <button type="submit" style="background-color: rgb(242, 142, 38);" class="btn text-white">Register</button>
             </form>
           </div>

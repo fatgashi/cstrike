@@ -20,6 +20,9 @@
                   <div class="my-2">
                     Did you forget your password? <span class="resetp" @click.prevent="closeModalAndNavigate">Reset it here!</span>
                   </div>
+                  <div class="my-2">
+                    You can login with your in-game cs.16 name and password!
+                  </div>
                 </div>
                 <button type="submit" class="btn btn-success">Login</button>
             </form>

@@ -135,7 +135,7 @@
       async saveChanges() {
         try {
           const config = configuration();
-          await this.$axios.put(`/user/users/${this.editUser._id}`, this.editUser, config);
+          await this.$axios.put(`/user/users/${this.editUser.ID}`, this.editUser, config);
           this.modal.hide(); // hide modal
           this.fetchUsers();
           this.$toast.success("User updated successfully.");

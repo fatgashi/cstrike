@@ -78,18 +78,26 @@
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <div class="d-flex align-items-center">
-                  <img v-if="comment.adminId.profilePhoto" class="profile-photo-comments" :src="getImageUrl(comment.adminId.profilePhoto)" alt="Avatar">
-                  <img v-else :src="commentAvatarUrl(comment.adminId.username)" alt="CommnetAvatar">
+                  <!-- ✅ Remove profile photo, just show Avatar URL based on username -->
+                  <img :src="commentAvatarUrl(comment.adminUsername)" class="profile-photo-comments" alt="CommentAvatar">
                   <div class="d-flex flex-column ms-2">
-                    <strong>{{ comment.adminId.username }}</strong>
+                    <strong>{{ comment.adminUsername }}</strong>
                     <span class="text-white">({{ formatDate(comment.createdAt) }})</span>
                   </div>
                 </div>
               </div>
-              <button v-if="currentUser && comment.adminId._id === currentUser._id && application.status === 'pending'" class="btn bg-danger" @click="removeComment(comment._id)"><i class="fa fa-trash-o text-white" aria-hidden="true"></i></button>
+
+              <!-- ✅ Compare by username instead of _id -->
+              <button v-if="currentUser && comment.adminUsername === currentUser.username && application.status === 'pending'" 
+                class="btn bg-danger" 
+                @click="removeComment(comment._id)">
+                <i class="fa fa-trash-o text-white" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
+
           <p>{{ comment.comment }}</p>
+
           <div v-if="comment.photoAttachment" class="row">
             <div class="col-12 col-md-6">
               <img :src="getCommentImageUrl(comment.photoAttachment)" class="img-fluid" />
@@ -203,7 +211,7 @@ export default {
         // ✅ Check if user has already voted
         this.currentUser = await getCurrentUser();
         if (this.currentUser) {
-          this.hasVoted = this.votes.some(vote => vote.adminId._id === this.currentUser._id);
+          this.hasVoted = this.votes.some(vote => vote.adminUsername == this.currentUser.username);
         } else {
           this.hasVoted = true;
         }
