@@ -18,7 +18,11 @@
                  <th>Role</th>
                  <th>VIP</th>
                  <th>Suspended</th>
-                 <th>Actions</th>
+                 <th>AP</th>
+                <th>Points</th>
+                <th>Level</th>
+                <th>EXP</th>
+                 <th class="text-center">Actions</th>
                </tr>
              </thead>
              <tbody>
@@ -28,8 +32,15 @@
                  <td>{{ user.role }}</td>
                  <td>{{ user.isVIP ? '✅' : '❌' }}</td>
                  <td>{{ user.suspended ? '✅' : '❌' }}</td>
+                 <td>{{ user.AP || 0 }}</td>
+                <td>{{ user.POINTS || 0 }}</td>
+                <td>{{ user.LEVEL || 0 }}</td>
+                <td>{{ user.EXP || 0 }}</td>
                  <td>
-                   <button class="btn btn-sm btn-warning" @click="openEditModal(user)"><i class="fa fa-edit"></i> Edit</button>
+                   <button class="btn btn-sm btn-warning me-2 mb-2" @click="openEditModal(user)"><i class="fa fa-edit"></i> Edit</button>
+                   <button class="btn btn-sm btn-danger mb-2" @click="deleteUser(user.ID)">
+                    <i class="fa fa-trash"></i> Delete
+                  </button>
                  </td>
                </tr>
              </tbody>
@@ -84,6 +95,22 @@
                 <label>Hours Played</label>
                 <input type="number" class="form-control" v-model="editUser.hoursPlayed">
               </div>
+              <div class="form-group mt-2">
+                <label>+ Ammo Packs</label>
+                <input type="number" class="form-control" v-model.number="editUser.apAdd">
+              </div>
+              <div class="form-group mt-2">
+                <label>+ Points</label>
+                <input type="number" class="form-control" v-model.number="editUser.pointsAdd">
+              </div>
+              <div class="form-group mt-2">
+                <label>+ Level</label>
+                <input type="number" class="form-control" v-model.number="editUser.levelAdd">
+              </div>
+              <div class="form-group mt-2">
+                <label>+ EXP</label>
+                <input type="number" class="form-control" v-model.number="editUser.expAdd">
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -129,19 +156,58 @@
         }
       },
       openEditModal(user) {
-        this.editUser = { ...user }; // clone user
+        this.editUser = { 
+          ...user, 
+          apAdd: 0,
+          pointsAdd: 0,
+          levelAdd: 0,
+          expAdd: 0 
+      }; 
         this.modal.show(); // show modal
       },
       async saveChanges() {
         try {
           const config = configuration();
+
+          // 1. Update basic user info
           await this.$axios.put(`/user/users/${this.editUser.ID}`, this.editUser, config);
-          this.modal.hide(); // hide modal
+
+          // 2. If any stats are modified, call RCON update endpoint
+          const { apAdd, pointsAdd, levelAdd, expAdd } = this.editUser;
+          if (apAdd || pointsAdd || levelAdd || expAdd) {
+            await this.$axios.post(
+              `/rcon/updatePlayerData`,
+              {
+                playerName: this.editUser.username,
+                ammoPacksToAdd: apAdd,
+                pointsToAdd: pointsAdd,
+                levelToAdd: levelAdd,
+                expToAdd: expAdd
+              },
+              config
+            );
+          }
+
+          this.modal.hide();
           this.fetchUsers();
           this.$toast.success("User updated successfully.");
         } catch (error) {
           console.error("Error updating user:", error);
           this.$toast.error("Failed to update user.");
+        }
+      },
+      async deleteUser(id) {
+        const confirmed = confirm("Are you sure you want to delete this user?");
+        if (!confirmed) return;
+
+        try {
+          const config = configuration();
+          await this.$axios.delete(`/user/users/${id}`, config);
+          this.fetchUsers();
+          this.$toast.success("User deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          this.$toast.error("Failed to delete user.");
         }
       }
     },
