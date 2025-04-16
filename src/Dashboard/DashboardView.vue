@@ -67,54 +67,66 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content bg-dark text-white">
             <div class="modal-header">
-              <h5 class="modal-title">Edit User</h5>
+              <h5 class="modal-title">Edit Registered User</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="form-group">
                 <label>Username</label>
-                <input type="text" class="form-control" v-model="editUser.username">
+                <input type="text" class="form-control" v-model="editUser.username" :disabled="loadingSave">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" v-model="editUser.email" :disabled="loadingSave">
               </div>
               <div class="form-group">
                 <label>Role</label>
-                <select class="form-control" v-model="editUser.role">
+                <select class="form-control" v-model="editUser.role" :disabled="loadingSave">
                   <option value="client">Client</option>
                   <option value="admin">Admin</option>
                   <option value="superadmin">SuperAdmin</option>
                 </select>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" v-model="editUser.isVIP">
+                <input class="form-check-input" type="checkbox" v-model="editUser.isVIP" :disabled="loadingSave">
                 <label class="form-check-label">VIP</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" v-model="editUser.suspended">
+                <input class="form-check-input" type="checkbox" v-model="editUser.suspended" :disabled="loadingSave">
                 <label class="form-check-label">Suspended</label>
               </div>
               <div class="form-group">
                 <label>Hours Played</label>
-                <input type="number" class="form-control" v-model="editUser.hoursPlayed">
+                <input type="number" class="form-control" v-model="editUser.hoursPlayed" :disabled="loadingSave">
               </div>
               <div class="form-group mt-2">
                 <label>+ Ammo Packs</label>
-                <input type="number" class="form-control" v-model.number="editUser.apAdd">
+                <input type="number" class="form-control" v-model.number="editUser.apAdd" :disabled="loadingSave">
               </div>
               <div class="form-group mt-2">
                 <label>+ Points</label>
-                <input type="number" class="form-control" v-model.number="editUser.pointsAdd">
+                <input type="number" class="form-control" v-model.number="editUser.pointsAdd" :disabled="loadingSave">
               </div>
               <div class="form-group mt-2">
                 <label>+ Level</label>
-                <input type="number" class="form-control" v-model.number="editUser.levelAdd">
+                <input type="number" class="form-control" v-model.number="editUser.levelAdd" :disabled="loadingSave">
               </div>
               <div class="form-group mt-2">
                 <label>+ EXP</label>
-                <input type="number" class="form-control" v-model.number="editUser.expAdd">
+                <input type="number" class="form-control" v-model.number="editUser.expAdd" :disabled="loadingSave">
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success" @click="saveChanges">Save Changes</button>
+              <button 
+                type="button" 
+                class="btn btn-success"
+                :disabled="loadingSave"
+                @click="saveChanges"
+              >
+                <span v-if="loadingSave" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Save Changes
+              </button>
             </div>
           </div>
         </div>
@@ -134,7 +146,8 @@
         currentPage: 1,
         totalPages: 1,
         limit: 10,
-        editUser: {}
+        editUser: {},
+        loadingSave: false
       };
     },
     methods: {
@@ -166,6 +179,7 @@
         this.modal.show(); // show modal
       },
       async saveChanges() {
+        this.loadingSave = true;
         try {
           const config = configuration();
 
@@ -193,7 +207,9 @@
           this.$toast.success("User updated successfully.");
         } catch (error) {
           console.error("Error updating user:", error);
-          this.$toast.error("Failed to update user.");
+          this.$toast.error(error.response?.data?.message || "Failed to update user.");
+        } finally {
+          this.loadingSave = false;
         }
       },
       async deleteUser(id) {
