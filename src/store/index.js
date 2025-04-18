@@ -50,7 +50,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["token", "logged"], // Specify which state properties to persist
+      paths: ["token", "logged", "user"], // Specify which state properties to persist
     }),
   ],
 })

@@ -112,6 +112,7 @@ export default {
         }
 
         this.$store.dispatch('clearToken');
+        eventBus.$emit("userLoggedOut");
         this.loggedIn = false;
         this.user = [];
         this.$toast.warning("You have been logged out.");

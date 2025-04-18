@@ -1,6 +1,10 @@
 <template>
   <div style="position: relative;">
     <div style="z-index: 2;">
+      <div v-if="isLoggedIn && showDailyBanner" class="alert mb-0 alert-warning text-center">
+      🎁 You haven't claimed your <strong>Daily Reward</strong> yet!
+        <button class="btn btn-success ms-3" @click="claimReward">Claim Now</button>
+      </div>
       <Banner :players="server" />
       <Infos />
       <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
@@ -32,6 +36,9 @@ import Infos from "../components/Infos.vue";
 import Modes from "../components/Modes.vue";
 import Partner from '../components/Partner.vue';
 import Top15 from '../components/Top15.vue';
+import configuration from "../config/config";
+import { getCurrentUser } from "../config/userLogic";
+import { eventBus } from "../router/index";
 
 export default {
   components: {
@@ -47,7 +54,8 @@ export default {
   data() {
     return {
       heightString: "0px", // Default height in px
-      server: 0
+      server: 0,
+      showDailyBanner: false
     };
   },
   methods: {
@@ -57,6 +65,41 @@ export default {
         this.heightString = `${height}px`;
       }
     },
+    async checkDailyReward() {
+      try {
+        const config = configuration();
+        const res = await this.$axios.get("/rcon/canClaimDailyReward", config);
+        this.showDailyBanner = res.data.canClaim;
+      } catch (err) {
+        console.error("Error checking daily reward:", err);
+      }
+    },
+    async claimReward() {
+      try {
+        const config = configuration();
+        const res = await this.$axios.post("/rcon/claim-daily-reward", {}, config);
+        this.$toast.success(res.data.message || "Reward claimed!");
+        this.showDailyBanner = false;
+      } catch (err) {
+        this.$toast.error(err.response?.data?.message || "Failed to claim reward.");
+      }
+    },
+    listenToAuthChanges() {
+      eventBus.$on("userLoggedIn", async () => {
+        if (this.$store.state.user) {
+          await this.checkDailyReward();
+        }
+      });
+
+      eventBus.$on("userLoggedOut", () => {
+        this.showDailyBanner = false;
+      });
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return !!this.$store.state.user;
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -72,12 +115,17 @@ export default {
     try {
         const response = await this.$axios.get('/game/serverInfo');
         this.server = response.data.state.numplayers;
+        const user = await getCurrentUser();
+      if (user) await this.checkDailyReward();
+      this.listenToAuthChanges();
     } catch (error) {
         console.error("Error fetching server info:", error);
     }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.matchHeight);
+    eventBus.$off("userLoggedIn");
+    eventBus.$off("userLoggedOut");
   },
 };
 </script>
@@ -91,6 +139,13 @@ export default {
 
 .rowi {
   --bs-gutter-x: 0;
+}
+
+.alert-warning {
+  background: rgb(242, 142, 38);
+  color: #1a1a1a;
+  font-weight: bold;
+  border-radius: 0% !important;
 }
 
 .carousel {

@@ -45,6 +45,7 @@
   
   <script>
 import { getCurrentUser } from '../config/userLogic';
+import { eventBus } from '../router/index';
 
   export default {
     data() {
@@ -91,6 +92,7 @@ import { getCurrentUser } from '../config/userLogic';
         this.$router.replace({ path: '/home' });
 
         this.$store.dispatch('clearToken');
+        eventBus.$emit("userLoggedOut");
         this.$toast.warning("You have been logged out.");
       },
       checkScreenSize() {
