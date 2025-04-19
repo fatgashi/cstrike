@@ -1,51 +1,79 @@
 <template>
-    <div>
-      <div class="modal fade" ref="myModal" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered ">
-        <div class="modal-content bg-dark text-white">
-          <div class="modal-header text-white" id="modalheader">
-            <h5 class="modal-title text-white" id="exampleModalToggleLabel">Login</h5>
+  <div>
+    <div
+      class="modal fade"
+      ref="myModal"
+      id="exampleModalToggle"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white rounded-4 shadow-lg border-0">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title" id="exampleModalToggleLabel">🔐 Login</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body text-white">
+          <div class="modal-body">
+            <p class="mb-4 small text-white">
+              If you are registered in our server you can login here. If you are not registered yet,
+              go to our server and type <code>/reg</code>.
+            </p>
+
             <form @submit.prevent="login">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control bg-dark text-white" id="inputEmail" placeholder="Username" aria-describedby="emailHelp" autocomplete="off" v-model="username"  required />
-                    <label for="inputEmail">Username</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="password" class="form-control bg-dark text-white" id="inputPassword" placeholder = "Password" v-model="password"  required />
-                    <label for="inputPassword">Password</label>
-                  <!--<div id="resetpassword" class="form-text text-white">Reset your <a class="resetp" href="#">password</a></div>-->
-                  <div class="my-2">
-                    Did you forget your password? <span class="resetp" @click.prevent="closeModalAndNavigate">Reset it here!</span>
-                  </div>
-                  <div class="my-2">
-                    You can login with your in-game cs.16 name and password!
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-success">Login</button>
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control bg-dark text-white border-secondary"
+                  id="inputEmail"
+                  placeholder="Username"
+                  autocomplete="off"
+                  v-model="username"
+                  required
+                />
+                <label for="inputEmail">nickname</label>
+              </div>
+
+              <div class="form-floating mb-2">
+                <input
+                  type="password"
+                  class="form-control bg-dark text-white border-secondary"
+                  id="inputPassword"
+                  placeholder="Password"
+                  v-model="password"
+                  required
+                />
+                <label for="inputPassword">password</label>
+              </div>
+
+              <div class="text-end mb-3">
+                <span class="resetp" @click.prevent="closeModalAndNavigate">
+                  🔁 Forgot your password?
+                </span>
+              </div>
+
+              <div class="d-grid">
+                <button style="background: rgb(242, 142, 38);" type="submit" class="btn fw-bold shadow-sm">
+                  Login
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer" id="modalfooter">
-            <button class="btn text-white" style="background-color: rgb(242, 142, 38);" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Register</button>
           </div>
         </div>
       </div>
     </div>
-    <Register/>
-    </div>
-    </template>
+  </div>
+</template>
+
     <script>
-    import Register from './Register.vue'
+    // import Register from './Register.vue'
     import { Modal } from 'bootstrap';
     import { eventBus } from '../router/index';
     
     export default {
       name: "LoginModal",
       components: { 
-        Register,
-    
+        // Register,
       },
       data(){
         return {
@@ -109,13 +137,6 @@
     </script>
     
     <style scoped>
-    #exampleModalToggleLabel{
-      border-bottom: 1px solid orange;
-    }
-    
-    .modal-dialog{
-      font-family: "Roboto", sans-serif;
-    }
       #modalheader{
         border:none !important;
       }
@@ -123,10 +144,26 @@
         border:none !important;
         justify-content:start;
       }
-      .resetp{
-        border-bottom:0.5px solid orange;
-        text-decoration:none;
-        color:white;
+
+      #exampleModalToggleLabel {
+        border-bottom: 2px solid orange;
+        padding-bottom: 4px;
+        font-weight: bold;
+      }
+
+      .modal-dialog {
+        font-family: "Roboto", sans-serif;
+      }
+
+      .resetp {
+        font-size: 0.9rem;
+        color: rgb(242, 142, 38);
         cursor: pointer;
+        text-decoration: underline;
+      }
+
+      .resetp:hover {
+        color: #ffc04d;
+        text-decoration: none;
       }
     </style>

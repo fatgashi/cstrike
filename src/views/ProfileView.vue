@@ -1,43 +1,99 @@
 <template>
+  <div>
+    <br><br>
     <div class="container">
-        <br>
-        <br>
-        <div class="profile-container">
-          <h2 class="text-white fw-bolder">Profile</h2>
+      <div class="profile-container bg-dark text-white rounded shadow-lg p-4">
+        <h2 class="text-center fw-bold mb-4">👤 Profile</h2>
+  
+        <div class="text-center mb-4">
+          <img
+            :src="profilePreview || getImageUrl(user.profilePhoto) || avatarUrl"
+            alt="Profile"
+            class="profile-photo mb-3"
+          />
           <div>
-            <form class="text-white" @submit.prevent="saveProfile" enctype="multipart/form-data">
-                <div class="d-flex justify-content-center align-items-center mb-4">
-                    <div v-if="profilePreview || user.profilePhoto">
-                      <img :src="profilePreview || getImageUrl(user.profilePhoto)" alt="Profile Photo" class="profile-photo" />
-                    </div>
-                    <div v-else>
-                      <img :src="avatarUrl" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover;">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Change profile picture:</label>
-                    <input class="form-control bg-dark text-white" type="file" id="formFile" @change="handleFileUpload" accept="image/*" >
-                </div>
-              
-              <label>Username:</label>
-              <input v-model="user.username" type="text" require />
-              
-              <label>Email:</label>
-              <input class="text-white" v-model="user.email" type="email" disabled />
-              
-              <label>Date of Birth:</label>
-              <input v-model="user.dateOfBirth" type="date" require />
-              
-              <label>Role:</label>
-              <input class="text-white" v-model="user.role" type="text" disabled />
-              
-              <button type="btn submit">Save Changes</button>
-            </form>
+            <label for="formFile" class="form-label">Change profile picture:</label>
+            <input
+              class="form-control bg-dark text-white border-secondary"
+              type="file"
+              id="formFile"
+              @change="handleFileUpload"
+              accept="image/*"
+            />
           </div>
         </div>
-        <br>
-        <br>
+  
+        <form @submit.prevent="saveProfile">
+          <div class="mb-3">
+            <label for="username">Username:</label>
+            <input
+              id="username"
+              v-model="user.username"
+              type="text"
+              class="form-control bg-dark text-white border-secondary"
+              required
+            />
+          </div>
+  
+          <div class="mb-3">
+            <label for="email">Email:</label>
+            <input
+              id="email"
+              v-model="user.email"
+              type="email"
+              class="form-control bg-secondary text-white"
+              disabled
+            />
+          </div>
+  
+          <div class="mb-3">
+            <label for="dob">Date of Birth:</label>
+            <input
+              id="dob"
+              v-model="user.dateOfBirth"
+              type="date"
+              class="form-control bg-dark text-white border-secondary"
+              required
+            />
+          </div>
+  
+          <div class="mb-4">
+            <label for="role">Role:</label>
+            <input
+              id="role"
+              v-model="user.role"
+              type="text"
+              class="form-control bg-secondary text-white"
+              disabled
+            />
+          </div>
+  
+          <div class="border-top pt-3 mt-3">
+            <h5 class="mb-3">🎮 Your In-Game Stats</h5>
+            <div class="row">
+              <div class="col-6 mb-2">
+                <strong>Ammo Packs:</strong> {{ user.stats && user.stats.AP || 0 }}
+              </div>
+              <div class="col-6 mb-2">
+                <strong>Points:</strong> {{ user.stats && user.stats.POINTS || 0 }}
+              </div>
+              <div class="col-6 mb-2">
+                <strong>Level:</strong> {{ user.stats && user.stats.LEVEL || 1 }}
+              </div>
+              <div class="col-6 mb-2">
+                <strong>EXP:</strong> {{ user.stats && user.stats.EXP || 0 }}
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn-success w-100 mt-4 fw-semibold">
+            Save Changes
+          </button>
+        </form>
+      </div>
     </div>
+    <br><br>
+  </div>
 </template>
 
 <script>
@@ -49,7 +105,7 @@ export default {
     return {
       user: {},
       profilePhoto: null,
-      profilePreview: null
+      profilePreview: null,
     };
   },
   async created() {
@@ -57,28 +113,30 @@ export default {
   },
   computed: {
     avatarUrl() {
-      if (!this.user.username) return "https://ui-avatars.com/api/?rounded=true&name=User&background=0D8ABC&color=fff";
+      if (!this.user.username) {
+        return "https://ui-avatars.com/api/?rounded=true&name=User&background=0D8ABC&color=fff";
+      }
       const name = encodeURIComponent(this.user.username);
       return `https://ui-avatars.com/api/?rounded=true&name=${name}&background=0D8ABC&color=fff`;
     },
   },
   methods: {
     async fetchUserProfile() {
-        const userData = await getCurrentUser();
-        if (userData.dateOfBirth) {
+      const userData = await getCurrentUser();
+      if (userData.dateOfBirth) {
         userData.dateOfBirth = new Date(userData.dateOfBirth).toISOString().split('T')[0];
-        }
-        this.user = userData;
+      }
+      this.user = userData;
     },
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
         this.profilePhoto = file;
-        this.profilePreview = URL.createObjectURL(file); // Create a dynamic preview URL
+        this.profilePreview = URL.createObjectURL(file);
       }
     },
     getImageUrl(path) {
-      return `https://zm-westcstrike.com/${path}`;
+      return path ? `https://zm-westcstrike.com/${path}` : null;
     },
     async saveProfile() {
       const formData = new FormData();
@@ -87,63 +145,41 @@ export default {
       if (this.profilePhoto) {
         formData.append('profilePhoto', this.profilePhoto);
       }
+
       try {
         const token = getToken();
         await this.$axios.put('/user/profile', formData, {
-          headers: { 'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-           }
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`,
+          },
         });
-        this.$toast.success('Profile updated successfully!');
-        await this.fetchUserProfile(); // Refresh user data after saving
-        this.profilePreview = null; // Reset preview after successful upload
+
+        this.$toast.success("Profile updated successfully!");
+        await this.fetchUserProfile();
+        this.profilePreview = null;
       } catch (error) {
         this.$toast.error(error.response?.data?.error || 'Failed to update profile.');
         console.error('Error updating profile:', error.response?.data?.error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .profile-container {
-  max-width: 500px;
+  max-width: 600px;
   margin: auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 1px solid #444;
+  border-radius: 12px;
 }
+
 .profile-photo {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
   object-fit: cover;
-  display: block;
-  margin-bottom: 10px;
-}
-label {
-  display: block;
-  margin-top: 10px;
-}
-input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-button {
-  margin-top: 15px;
-  padding: 10px;
-  width: 100%;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-button:hover {
-  background-color: #218838;
+  border-radius: 50%;
+  border: 2px solid #ffc107;
 }
 </style>

@@ -78,8 +78,11 @@
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <div class="d-flex align-items-center">
-                  <!-- ✅ Remove profile photo, just show Avatar URL based on username -->
-                  <img :src="commentAvatarUrl(comment.adminUsername)" class="profile-photo-comments" alt="CommentAvatar">
+                  <img
+                    :src="comment.profilePhoto ? getFullProfilePhotoUrl(comment.profilePhoto) : commentAvatarUrl(comment.adminUsername)"
+                    class="profile-photo-comments"
+                    alt="CommentAvatar"
+                  />
                   <div class="d-flex flex-column ms-2">
                     <strong>{{ comment.adminUsername }}</strong>
                     <span class="text-white">({{ formatDate(comment.createdAt) }})</span>
@@ -172,6 +175,10 @@ export default {
     };
   },
   methods: {
+    getFullProfilePhotoUrl(path) {
+      if (!path) return null;
+      return `https://zm-westcstrike.com/${path}`;
+    },
     async fetchApplication() {
       try {
         const response = await this.$axios.get(`/admin/get-applications/${this.$route.params.id}`);
