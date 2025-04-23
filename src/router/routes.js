@@ -22,6 +22,7 @@ const ApplyForAdmin = () => import("../views/ApplyForAdmin.vue");
 const ForgotPassword = () => import("../views/ForgotPasswordView.vue");
 const ResetPassword = () => import("../views/ResetPasswordView.vue");
 const RulesView = () => import("../views/RulesView.vue");
+const DashboardCommands = () => import("../Dashboard/DashboardCommand.vue");
 
 const routers = [
     {
@@ -133,6 +134,14 @@ const routers = [
                 component: DashboardBanlist,
                 meta: {
                     title: "Ban List"
+                }
+            },
+            {
+                path: "/dashboard/commands",
+                name: "DashboardCommands",
+                component: DashboardCommands,
+                meta: {
+                    title: "Command Page"
                 }
             },
 

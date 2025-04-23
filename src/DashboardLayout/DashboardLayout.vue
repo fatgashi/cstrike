@@ -53,6 +53,7 @@ import { eventBus } from '../router/index';
         links: [
           { name: "Dashboard", path: "/dashboard/home", icon: "fas fa-home" },
           { name: "Ban List", path: "/dashboard/banlist", icon: "fas fa-users" },
+          { name: "Command Page", path: "/dashboard/commands", icon: "fa fa-terminal" },
           // { name: "Home", path: "/home", icon: "fas fa-home" },
           // { name: "Settings", path: "/dashboard/settings", icon: "fas fa-cog" }
         ],
