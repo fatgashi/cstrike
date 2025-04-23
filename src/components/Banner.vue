@@ -5,8 +5,10 @@
     
     <!-- Content -->
     <div class="hero-content">
-      <h1 class="fade-in">Welcome to <span style="color: rgb(242, 142, 38);">Zm-WestCStrike</span></h1>
-      <p class="fade-in">Your ultimate CS 1.6 community for thrilling battles and experiences!</p>
+      <h1 class="fade-in">Play <span style="color: rgb(242, 142, 38);">Zm-WestCStrike</span> – CS 1.6 Zombie Server</h1>
+      <p class="fade-in">
+        Welcome to the <strong>best CS 1.6 Zombie Plague server</strong> – Zm-WestCStrike. Join our intense zombie survival battles and experience top-tier Counter-Strike 1.6 multiplayer gameplay.
+      </p>
       <div class="server-info fade-in">
         <p>Server IP: <span class="fw-bold">51.77.72.157:27015</span></p>
         <p>Status: <span class="online fw-bolder">Online</span></p>

@@ -66,6 +66,16 @@
           <!-- Grid column -->
         </div>
         <!-- Grid row -->
+        <div class="seo-text mt-4">
+          <div class="mt-4" style="color: #ccc; font-size: 14px;">
+            <p>
+              Looking for a top-tier <strong>CS 1.6 Zombie Plague server</strong>? Zm-WestCStrike is the best choice for <strong>Counter-Strike 1.6</strong> zombie survival and custom mod gameplay. Our active community and real-time battles offer a one-of-a-kind experience for fans of the genre.
+            </p>
+            <p>
+              Connect to our server at <strong>51.77.72.157:27015</strong> or join us through Steam. Enjoy nonstop zombie action, ranking systems, and events — all hosted on our high-performance servers.
+            </p>
+          </div>
+        </div>
       </div>
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3" id="footerdesc">
@@ -85,6 +95,12 @@
   #footeri {
     background-color:#212529;
     color: white;
+  }
+  footer .seo-text p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 8px;
   }
   #footerdesc {
     background-color: #101010;
