@@ -13,7 +13,11 @@ import "vue-toastification/dist/index.css";
 import { getToken } from './config/localStorage.js';
 import { getTokenExpiration, logout } from './config/userLogic.js';
 import VueApexCharts from 'vue-apexcharts'
+import VueMeta from 'vue-meta';
 
+Vue.use(VueMeta, {
+  refreshOnceOnNavigation: true
+});
 Vue.use(Toast);
 Vue.use(BootstrapVue)
 Vue.use(VueApexCharts)

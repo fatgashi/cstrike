@@ -41,6 +41,28 @@ import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router/index";
 
 export default {
+  name: "HomePage",
+  metaInfo() {
+    return {
+      title: 'CS 1.6 Zombie Server | Zm-WestCStrike',
+      meta: [
+        {
+          name: 'description',
+          content: 'Join Zm-WestCStrike – the ultimate CS 1.6 zombie plague server. Enjoy thrilling zombie battles, unique modes, and a great gaming community!'
+        },
+        {
+          name: 'keywords',
+          content: 'CS 1.6 zombie server, zombie plague server, Counter-Strike 1.6, zm-westcstrike, CS zombie mode, CS 1.6 multiplayer'
+        }
+      ],
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://zm-westcstrike.com/home'
+        }
+      ]
+    };
+  },
   components: {
     Banner,
     Infos,
