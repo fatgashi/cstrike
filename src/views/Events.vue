@@ -144,19 +144,14 @@
                 image: require("../assets/spring/etheral-gun.png")
               },
               {
-                name: "M3 Black Dragon",
-                description: "The M3 Black Dragon is a stunning shotgun with a bold golden and black dragon-scaled design, exuding power and elegance. Its intricate details, including dragon motifs and a sleek finish, make it a standout weapon in Counter-Strike 1.6. This gun combines aesthetic appeal with devastating close-range firepower, perfect for players looking to dominate in style while battling zombies or opponents.",
-                image: require("../assets/spring/black-dragon.png")
-              },
-              {
                 name: "Barlog-XI",
                 description: "The Barlog-XI is a menacing shotgun with a fiery red and black design, adorned with demonic horn-like embellishments for a sinister aesthetic. This weapon exudes power and aggression, making it perfect for intense combat scenarios in Counter-Strike 1.6 zombie modes. Its intimidating appearance complements its devastating performance, offering players a visually striking and highly effective tool for survival.",
                 image: require("../assets/spring/barlog.png")
               },
               {
-                name: "Star Chaser AR",
-                description: "The Star Chaser AR is a dazzling weapon infused with cosmic energy, featuring swirling, ethereal effects and a futuristic design. Its mesmerizing visual effects, resembling a burst of stardust and glowing orbs, make it stand out as a truly unique firearm in Counter-Strike 1.6. Perfect for players who want to combine style and impact, this gun is both a visual spectacle and a powerful tool on the battlefield.",
-                image: require("../assets/spring/star-chaser.png")
+                name: "AK47 Silver",
+                description: "The AK47 Silver is a sleek and modern variant of the classic AK47, featuring a polished silver finish that gives it a sophisticated yet deadly appearance. This weapon combines the iconic design of the AK47 with a contemporary twist, making it a standout choice for players in Counter-Strike 1.6 zombie modes. Its striking look is matched by its reliability and power, ensuring players can dominate the battlefield with style.",
+                image: require("../assets/spring/ak47-silver.png")
               },
             ]
           },

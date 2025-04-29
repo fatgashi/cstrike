@@ -23,6 +23,7 @@ const ForgotPassword = () => import("../views/ForgotPasswordView.vue");
 const ResetPassword = () => import("../views/ResetPasswordView.vue");
 const RulesView = () => import("../views/RulesView.vue");
 const DashboardCommands = () => import("../Dashboard/DashboardCommand.vue");
+const LevelRewards = () => import("../views/LevelRewards.vue");
 
 const routers = [
     {
@@ -102,6 +103,10 @@ const routers = [
                 path: "/profile",
                 component: ProfileView,
                 meta: { requireAuthentication: true }
+            },
+            {
+                path: "/level-rewards",
+                component: LevelRewards
             },
             {
                 path: "/forum/admin-applications/:id",

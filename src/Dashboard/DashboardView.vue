@@ -47,20 +47,48 @@
            </table>
        </div>
   
-      <!-- Pagination -->
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
+       <nav v-if="totalPages > 1" class="pagination-container">
+      <div class="d-flex justify-content-between align-items-center numbers-row">
+        <!-- Previous Button -->
+        <ul class="pagination mb-0 ms-3">
           <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a class="page-link" @click.prevent="changePage(currentPage - 1)">Previous</a>
-          </li>
-          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
-            <a class="page-link" @click.prevent="changePage(page)">{{ page }}</a>
-          </li>
-          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a class="page-link" @click.prevent="changePage(currentPage + 1)">Next</a>
+            <button class="page-link" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+              <span class="d-none d-sm-inline">previous</span>
+              <span class="d-sm-none">«</span> <!-- Compact icon for small screens -->
+            </button>
           </li>
         </ul>
-      </nav>
+
+        <!-- Numbered Pagination -->
+        <ul class="pagination mb-0">
+          <li
+            v-for="page in visiblePages"
+            :key="page"
+            class="page-item"
+            :class="{ active: page === currentPage }"
+          >
+            <button
+              class="page-link"
+              v-if="page !== '...'"
+              @click="changePage(page)"
+            >
+              {{ page }}
+            </button>
+            <span v-else class="page-link">...</span>
+          </li>
+        </ul>
+
+        <!-- Next Button -->
+        <ul class="pagination mb-0 me-3">
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
+              <span class="d-none d-sm-inline">next</span>
+              <span class="d-sm-none">»</span> <!-- Compact icon for small screens -->
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
   
       <!-- Edit Modal -->
       <div class="modal fade" id="editUserModal" ref="myModal1" tabindex="-1" role="dialog">
@@ -100,19 +128,34 @@
                 <input type="number" class="form-control" v-model="editUser.hoursPlayed" :disabled="loadingSave">
               </div>
               <div class="form-group mt-2">
-                <label>+ Ammo Packs</label>
+                <label>
+                  + Ammo Packs 
+                  <small class="text-white" v-if="editUser.AP !== undefined">(Current: {{ editUser.AP }})</small>
+                </label>
                 <input type="number" class="form-control" v-model.number="editUser.apAdd" :disabled="loadingSave">
               </div>
+
               <div class="form-group mt-2">
-                <label>+ Points</label>
+                <label>
+                  + Points 
+                  <small class="text-white" v-if="editUser.POINTS !== undefined">(Current: {{ editUser.POINTS }})</small>
+                </label>
                 <input type="number" class="form-control" v-model.number="editUser.pointsAdd" :disabled="loadingSave">
               </div>
+
               <div class="form-group mt-2">
-                <label>+ Level</label>
+                <label>
+                  + Level 
+                  <small class="text-white" v-if="editUser.LEVEL !== undefined">(Current: {{ editUser.LEVEL }})</small>
+                </label>
                 <input type="number" class="form-control" v-model.number="editUser.levelAdd" :disabled="loadingSave">
               </div>
+
               <div class="form-group mt-2">
-                <label>+ EXP</label>
+                <label>
+                  + EXP 
+                  <small class="text-white" v-if="editUser.EXP !== undefined">(Current: {{ editUser.EXP }})</small>
+                </label>
                 <input type="number" class="form-control" v-model.number="editUser.expAdd" :disabled="loadingSave">
               </div>
             </div>
@@ -149,6 +192,31 @@
         editUser: {},
         loadingSave: false
       };
+    },
+    computed: {
+      visiblePages() {
+        const totalPages = this.totalPages;
+        const currentPage = this.currentPage;
+
+        if (totalPages <= 7) {
+          // Show all pages if total pages are 7 or less
+          return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
+
+        const pages = [];
+        if (currentPage <= 4) {
+          // Show first 5 pages and '...'
+          pages.push(1, 2, 3, 4, 5, '...', totalPages);
+        } else if (currentPage >= totalPages - 3) {
+          // Show '...' and last 5 pages
+          pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+        } else {
+          // Show '...', current page range, and '...'
+          pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+        }
+
+        return pages;
+      },
     },
     methods: {
       async fetchUsers() {
@@ -239,5 +307,57 @@
   .table td {
     vertical-align: middle;
   }
-  </style>
+
+  @media (max-width: 768px) {
+    .pagination-container {
+      justify-content: center; /* Center pagination on smaller devices */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination-container {
+      align-items: start !important;
+    }
+    
+    .numbers-row {
+      justify-content: start !important;
+    }
+  }
+
+  .modal-body small.text-white {
+    font-weight: normal;
+    font-size: 0.85rem;
+    margin-left: 4px;
+  }
+
+.pagination .page-item .page-link {
+  color: #fff;
+  background-color: #222; /* Dark background for pagination buttons */
+  border-color: #444;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #ff8000; /* Highlighted background on hover */
+  border-color: #ff8000;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #ff8000; /* Active page button */
+  border-color: #ff8000;
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #666;
+  background-color: #333;
+  border-color: #444;
+  pointer-events: none;
+}
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+</style>
   

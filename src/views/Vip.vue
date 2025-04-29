@@ -84,6 +84,24 @@
   
   <script>
   export default {
+    name: "VipInfo",
+    metaInfo() {
+      return {
+        title: 'VIP Benefits | zm-westcstrike.com',
+        meta: [
+          {
+            name: 'description',
+            content: 'Discover all VIP perks including exclusive skins, guns, zombie classes, and gameplay advantages on zm-westcstrike CS 1.6 zombie server.'
+          }
+        ],
+        link: [
+          {
+            rel: 'canonical',
+            href: 'https://zm-westcstrike.com/vip-info'
+          }
+        ]
+      };
+    },
     data() {
       return {
         // List of VIP Skins
@@ -102,10 +120,11 @@
         // List of VIP Guns
         vipGuns: [
           { name: "MP5 Gold", image: require("../assets/vipmenu/mp5.png") },
-          { name: "Water Gun", image: require("../assets/vipmenu/water-gun.png") },
+          // { name: "Water Gun", image: require("../assets/vipmenu/water-gun.png") },
           { name: "Star Chaser AR", image: require("../assets/spring/star-chaser.png") },
           { name: "Rail Cannon", image: require("../assets/chrismas/rail-cannon.jpg") },
           { name: "Thantos-7", image: require("../assets/vipmenu/thantos-7.png") },
+          { name: "M3 Black Dragon", image: require("../assets/spring/black-dragon.png") },
           // Add more guns as needed
         ],
 
@@ -114,11 +133,6 @@
           name: "Revenant Ice",
           description: "Throw an Ice ball and freze you opponent!",
           image: require("../assets/vip-zombie/revenant-ice.png")
-        },
-        {
-          name: "Smoker",
-          description: "Drag your opponents when you are near them.",
-          image: require("../assets/vip-zombie/smoker.png")
         },
         {
           name: "Furien",
@@ -132,7 +146,7 @@
         },
         {
           name: "Vampire",
-          description: "You have 3 extra blinks + speed.",
+          description: "You have 3 extra blinks + speed + special ability to release a ghost.",
           image: require("../assets/vip-zombie/vampire.png")
         },
         // Add more zombie classes as needed

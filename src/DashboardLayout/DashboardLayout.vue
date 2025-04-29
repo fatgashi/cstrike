@@ -14,10 +14,6 @@
                 <span v-if="!isCollapsed">{{ link.name }}</span>
               </router-link>
             </li>
-            <li @click="signOut" class="nav-link pointer">
-                <i class="fa fa-sign-out-alt"></i>
-                <span v-if="!isCollapsed">Logout</span>
-            </li>
           </ul>
         </nav>
       </div>
@@ -27,16 +23,28 @@
         <header class="header">
           <div class="d-flex justify-content-between align-items-center">
             <h1 class="fw-bolder">{{ pageTitle }}</h1>
-            <div class="dropdown">
-              <img v-if="user.profilePhoto"  class="profile-photo dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" :src="getImageUrl(user.profilePhoto)" alt="Avatar">
-              <img v-else :src="avatarUrl" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover;">
-              <ul class="dropdown-menu dropdown-menu-dark">
-                <li><router-link class="dropdown-item" to="/home">Home</router-link></li>
+            <div class="dropdown text-end">
+              <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img 
+                  :src="user.profilePhoto ? getImageUrl(user.profilePhoto) : avatarUrl()" 
+                  alt="Profile" 
+                  class="profile-photo"
+                >
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow">
+                <li class="dropdown-header px-3 py-2">
+                  <strong>{{ user.username }}</strong><br>
+                  <small class="text-white">{{ user.role }}</small>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li><router-link to="/profile" class="dropdown-item">Profile</router-link></li>
+                <li><router-link to="/home" class="dropdown-item">Home</router-link></li>
+                <li><a @click="signOut" class="dropdown-item pointer">Logout</a></li>
               </ul>
             </div>
           </div>
         </header>
-        <section class="content container">
+        <section class="content container gx-0">
           <router-view></router-view>
         </section>
       </main>
@@ -201,19 +209,18 @@ import { eventBus } from '../router/index';
     margin-top: 20px;
     flex-grow: 1;
     background: white;
-    padding: 20px;
+    padding: 5px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100% !important;
   }
 
   .profile-photo {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  margin-bottom: 10px;
-}
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
   </style>
   

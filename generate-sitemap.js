@@ -17,7 +17,6 @@ const routes = [
   "/medium-maps",
   "/large-maps",
   "/about",
-  "/forum",
   "/forum/rules",
   "/forum/apply-for-admin",
 ];

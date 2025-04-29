@@ -92,7 +92,24 @@
   
   <script>
   export default {
-    name: "Rules"
+    name: "Rules",
+    metaInfo() {
+      return {
+        title: 'ZM Server Rules | zm-westcstrike.com',
+        meta: [
+          {
+            name: 'description',
+            content: 'Read the full ZM server rules including punishments, golden rules, and game mode guidelines. Stay informed and avoid penalties.'
+          }
+        ],
+        link: [
+          {
+            rel: 'canonical',
+            href: 'https://zm-westcstrike.com/forum/rules'
+          }
+        ]
+      };
+    },
   };
   </script>
   

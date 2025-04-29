@@ -44,9 +44,15 @@
                 >
                   <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" id="menu-fix">
-                  <li><router-link v-if="user.role === 'superadmin'" class="dropdown-item" id="dashboardlink" to="/dashboard">Dashboard</router-link></li>
-                  <li><router-link class="dropdown-item" id="dashboardlink" to="/profile">Profile</router-link></li>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark user-dropdown shadow-lg">
+                  <li class="dropdown-header px-3 py-2 text-center">
+                    <strong>{{ user.username }}</strong><br>
+                    <small class="text-muted">{{ user.role }}</small>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><router-link v-if="user.role === 'superadmin'" class="dropdown-item" to="/dashboard">Dashboard</router-link></li>
+                  <li><router-link class="dropdown-item" to="/profile">Profile</router-link></li>
+                  <li><a class="dropdown-item text-danger" @click="signOut" style="cursor: pointer;">Logout</a></li>
                 </ul>
               </div>
               
@@ -54,22 +60,16 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid" id="container">
-      <div class="row justify-content-md-center align-items-md-center h-100">
-        <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/server" id="navbar-links">Server</router-link>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/forum" id="navbar-links">Forum</router-link>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/maps" id="navbar-links">Maps</router-link>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/events-updates" id="navbar-links">Events</router-link>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center">
-          <router-link to="/offers" id="navbar-links">Offers</router-link>
+    <div>
+      <div class="row gx-0 justify-content-center align-items-center h-100 nav-links-wrapper">
+        <div v-for="link in filteredNavLinks" :key="link.to" class="col-auto nav-link-item">
+          <router-link
+            :to="link.to"
+            class="nav-link-button"
+            :class="{ active: $route.path.startsWith(link.to) }"
+          >
+            {{ link.label }}
+          </router-link>
         </div>
       </div>
     </div>
@@ -80,21 +80,39 @@
 
 import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router";
+import { Dropdown } from "bootstrap";
 export default {
   name: "Header",
   data() {
     return {
-      loggedIn: false,
+      navLinks: [
+        { label: "Home", to: "/home" },
+        { label: "Server", to: "/server" },
+        { label: "Forum", to: "/forum" },
+        { label: "Rewards", to: "/level-rewards" },
+        { label: "Maps", to: "/maps" },
+        { label: "Events", to: "/events-updates" },
+        { label: "Vip Benefits", to: "/vip-info" },
+        { label: "Offers", to: "/offers" },
+      ],
       title: '',
       error: "",
       user: [],
       collapse: false,
     };
   },
-  
+
+  computed: {
+    loggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+    filteredNavLinks() {
+      return this.navLinks;
+    }
+  },
   methods: {
     isLoggedIn() {
-      this.loggedIn = this.$store.getters.isAuthenticated;
+      return this.$store.getters.isAuthenticated;
     },
     async role(){
       const currentUser = await getCurrentUser();
@@ -107,27 +125,31 @@ export default {
       eventBus.$emit("showLoginModal"); // ✅ Emit event to open login modal
     },
       async signOut() {
+        const toggleBtn = document.querySelector('.dropdown-toggle');
+
+        if (toggleBtn) {
+          const dropdownInstance = Dropdown.getInstance(toggleBtn) || new Dropdown(toggleBtn);
+          dropdownInstance.hide();
+        }
+
         if (this.$router.currentRoute.path !== '/home') {
           await this.$router.replace({ path: '/home' });
         }
 
         this.$store.dispatch('clearToken');
         eventBus.$emit("userLoggedOut");
-        this.loggedIn = false;
         this.user = [];
         this.$toast.warning("You have been logged out.");
       },
   },
-  mounted() {
-    this.isLoggedIn();
-    if(this.loggedIn){
-      this.role();
+  async mounted() {
+    if (this.loggedIn) {
+      await this.role();
     }
 
-    eventBus.$on("userLoggedIn", () => {
+    eventBus.$on("userLoggedIn", async () => {
       console.log("🔥 userLoggedIn event received in Header.vue");
-      this.isLoggedIn(); // ✅ Update login status in header
-      this.role(); // ✅ Fetch user role again
+      await this.role(); // this.loggedIn updates automatically now
     });
   },
   beforeDestroy() {
@@ -313,6 +335,71 @@ router-link {
 .nav-ico {
   margin: 0px 5px 0px 5px;
   font-weight: bolder;
+}
+
+.nav-links-wrapper {
+  background-color: #111;
+  border-top: 2px solid #ff6600;
+  border-bottom: 2px solid #ff6600;
+  padding: 10px 0;
+  flex-wrap: wrap;
+}
+
+.nav-link-item {
+  margin: 5px 10px;
+}
+
+.nav-link-button {
+  background-color: #1a1a1a;
+  border: 2px solid #ff6600;
+  padding: 6px 16px;
+  color: #ffcc00;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.3s ease;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.nav-link-button:hover {
+  background-color: #ff6600;
+  color: #fff;
+  border-color: #ffcc00;
+}
+
+.nav-link-button.active {
+  background-color: #ff6600;
+  color: white;
+  border-color: #ffcc00;
+}
+
+.user-dropdown {
+  min-width: 200px;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  font-size: 0.95rem;
+}
+
+.user-dropdown .dropdown-header {
+  background-color: #ff6600;
+  color: white;
+  font-weight: bold;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.user-dropdown .dropdown-item {
+  color: #f0f0f0;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background-color: #333;
+  color: #ffcc00;
+}
+
+.user-dropdown .dropdown-divider {
+  border-top: 1px solid #444;
 }
 
 :root {
