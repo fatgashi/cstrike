@@ -47,7 +47,7 @@
            </table>
        </div>
   
-       <nav v-if="totalPages > 1" class="pagination-container">
+      <nav v-if="totalPages > 1" class="pagination-container">
       <div class="d-flex justify-content-between align-items-center numbers-row">
         <!-- Previous Button -->
         <ul class="pagination mb-0 ms-3">
@@ -357,6 +357,7 @@
 
 .pagination-container {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 </style>

@@ -58,7 +58,7 @@
             </p>
             <p>
               Discord Server:
-              <a href="https://discord.gg/4sAjSxmJ" target="_blank" class="important">
+              <a href="https://discord.gg/wAHXeZkc" target="_blank" class="important">
                 ZM-WESTCSTRIKE.RO
               </a>
             </p>
