@@ -25,7 +25,7 @@
             <h6 class="text" id="footertitle">Zm-WestCStrike </h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px" />
             <p>
-              Welcome to <span class="company">Zm-WestCStrike</span>  your number one cs1.6 server. We're dedicated to providing you the <span class="company">best</span> experience with a focus on fun.
+              Welcome to <br> <span class="company">Zm-WestCStrike</span>  your number one cs1.6 server. We're dedicated to providing you the <span class="company">best</span> experience with a focus on fun.
             </p>
           </div>
           <!-- Grid column -->
@@ -80,7 +80,7 @@
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3" id="footerdesc">
         © 2025 Copyright:
-        <a> ZM-WESTCSTRIKE </a>
+        <a style="font-family: 'Nosifer', cursive;"> ZM-WESTCSTRIKE </a>
       </div>
       <!-- Copyright -->
     </footer>
@@ -104,7 +104,6 @@
   }
   #footerdesc {
     background-color: #101010;
-    font-family: "Poppins", sans-serif;
     color: white;
   }
   .important {
@@ -112,7 +111,7 @@
   }
   #footertitle {
     color: #ff1a1a;
-    font-family: "Comfortaa", cursive;
+    font-family: 'Nosifer', cursive !important;
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
@@ -120,12 +119,12 @@
   }
   #footerproducts {
     color: #ff1a1a;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Nosifer', cursive !important;
     font-size: 18px;
   }
   #footercontact {
     color: #ff1a1a;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Nosifer', cursive !important;
     font-size: 18px;
   }
   #footerlinks {
@@ -149,6 +148,7 @@
   .company{
       color: #ff1a1a;
       border-bottom: 0.5px solid white;
+      font-family: 'Nosifer', cursive;
   }
   footer p {
       margin-bottom:5px;

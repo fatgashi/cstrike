@@ -3,7 +3,7 @@
     <div class="navbox flex-v-center flex-h-center flexing">
       <span class="nav-ico"><i class="far fa-check-circle"></i></span>
       <div class="d-flex justify-content-center align-items-center">
-        <span class="nav-text">Your Number One Server: <span style="font-weight: bolder;">51.77.72.157:27015</span></span>
+        <span class="nav-text" style="font-family: 'Orbitron', sans-serif;">Your Number One Server: <span style="font-weight: bolder;">51.77.72.157:27015</span></span>
       </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-0 shadow-0">
@@ -51,8 +51,8 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark user-dropdown shadow-lg">
                   <li class="dropdown-header px-3 py-2 text-center">
-                    <strong>{{ user.username }}</strong><br>
-                    <small class="text-muted">{{ user.role }}</small>
+                    <strong>{{ userData.username }}</strong><br>
+                    <small class="text-muted">{{ userData.role }}</small>
                   </li>
                   <li><hr class="dropdown-divider"></li>
                   <li><router-link v-if="user.role === 'superadmin'" class="dropdown-item" to="/dashboard">Dashboard</router-link></li>
@@ -110,6 +110,9 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.getters.isAuthenticated;
+    },
+    userData(){
+      return this.$store.state.user || {};
     },
     filteredNavLinks() {
       return this.navLinks;
@@ -182,7 +185,9 @@ export default {
 }
 body {
   margin: 0;
+  font-family: 'Poppins', sans-serif !important;
 }
+
 .collapse-show {
   margin-top: 5px;
 }
@@ -264,26 +269,46 @@ body {
 }
 
 @keyframes shakeCycle {
-  0%, 70% {
-    transform: translate(0, 0); /* no shake for first 70% (2.8s) */
+  0%, 85% {
+    transform: translate(0, 0);
+    opacity: 1;
+    filter: none;
   }
-  72% {
-    transform: translate(-6px, 2px);
+
+  86% {
+    transform: translate(-30px, 2px) rotate(1deg);
+    opacity: 0.8;
+    filter: blur(1px);
   }
-  74% {
-    transform: translate(6px, -3px);
+
+  87% {
+    transform: translate(30px, -3px) rotate(-1deg);
+    opacity: 0.6;
+    filter: blur(2px) contrast(1.5);
   }
-  76% {
-    transform: translate(-7px, 2px);
+
+  88% {
+    transform: translate(-34px, 2px) rotate(1.5deg);
+    opacity: 0.3;
+    filter: blur(3px) brightness(0.8);
   }
-  78% {
-    transform: translate(6px, -3px);
+
+  89% {
+    transform: translate(30px, -3px) rotate(-1.2deg);
+    opacity: 0.4;
+    filter: blur(2px);
   }
-  80% {
-    transform: translate(0, 0); /* done shaking */
+
+  90% {
+    transform: translate(0, 0);
+    opacity: 1;
+    filter: none;
   }
+
   100% {
-    transform: translate(0, 0); /* rest of the cycle idle */
+    transform: translate(0, 0);
+    opacity: 1;
+    filter: none;
   }
 }
 
@@ -462,6 +487,7 @@ router-link {
   color: #ff1a1a;
   font-weight: bold;
   border-radius: 6px;
+  font-family: 'Orbitron', sans-serif;
   text-decoration: none;
   transition: 0.3s ease;
   font-size: 0.9rem;
@@ -488,11 +514,15 @@ router-link {
 }
 
 .user-dropdown .dropdown-header {
-  background-color: #ff6600;
+  background-color: #ff1a1a;
   color: white;
   font-weight: bold;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+}
+
+.dropdown-toggle::after {
+    color: white !important;
 }
 
 .user-dropdown .dropdown-item {
@@ -501,7 +531,7 @@ router-link {
 
 .user-dropdown .dropdown-item:hover {
   background-color: #333;
-  color: #ffcc00;
+  color: #ff1a1a;
 }
 
 .user-dropdown .dropdown-divider {

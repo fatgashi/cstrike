@@ -3,7 +3,7 @@
     <div style="z-index: 2;">
       <div v-if="isLoggedIn && showDailyBanner" class="alert mb-0 alert-warning text-center">
       🎁 You haven't claimed your <strong>Daily Reward</strong> yet!
-        <button class="btn btn-success ms-3" @click="claimReward">Claim Now</button>
+        <button class="btn ms-3" style="background-color: #39ff14;" @click="claimReward">Claim Now</button>
       </div>
       <Banner :players="server" />
       <Infos />

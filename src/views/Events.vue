@@ -259,9 +259,39 @@
     border-radius: 8px;
   }
 
-  .btn.active {
-    border: 3px solid #fff;
-  }
+  .btn {
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid transparent;
+  padding: 8px 20px;
+  border-radius: 6px;
+  transition: 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn.active {
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+  transform: scale(1.05);
+}
+
+.btn-show-updates {
+  background-color: #ff1a1a;
+  color: #fff;
+}
+
+.btn-show-updates:hover {
+  background-color: #cc0000;
+}
+
+.btn-show-events {
+  background-color: #1f8b1f;
+  color: #fff;
+}
+
+.btn-show-events:hover {
+  background-color: #166616;
+}
   
   .update-title {
     color: #ff1a1a;

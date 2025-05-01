@@ -10,8 +10,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/main.css';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import { getToken } from './config/localStorage.js';
-import { getTokenExpiration, logout } from './config/userLogic.js';
 import VueApexCharts from 'vue-apexcharts'
 import VueMeta from 'vue-meta';
 
@@ -24,29 +22,11 @@ Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 Vue.prototype.$axios = AxiosInstace;
 
-Vue.prototype.$setupSessionTimeout = function(){
-  const token = getToken();
-  if (token) {
-      const expiresAt = getTokenExpiration(token);
-      const timeout = expiresAt - Date.now();
-
-      if (timeout > 0) {
-          setTimeout(() => {
-              logout();
-          }, timeout);
-      } else {
-          logout();
-      }
-  }
-};
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  created(){
-    this.$setupSessionTimeout();
-  },
   render: h => h(App),
 }).$mount('#app')

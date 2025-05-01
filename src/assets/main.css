@@ -8,8 +8,22 @@
   --orange-accent: #ff851b;  /* Orange */
   --yellow-accent: #ffdc00;  /* Yellow */
   --steel-blue: #4682b4;     /* Steel Blue */
-  font-family: 'Roboto Condensed', sans-serif;
 }
+
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Orbitron', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif !important;
+}
+
+button {
+  font-family: 'Orbitron', sans-serif !important;
+}
+.btn {
+  font-family: 'Orbitron', sans-serif !important;
+}
+
 
 /* Define classes for easier use */
 .bg-dark {

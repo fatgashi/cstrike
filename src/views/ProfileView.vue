@@ -114,10 +114,10 @@ export default {
   computed: {
     avatarUrl() {
       if (!this.user.username) {
-        return "https://ui-avatars.com/api/?rounded=true&name=User&background=0D8ABC&color=fff";
+        return "https://ui-avatars.com/api/?rounded=true&name=User&background=ff1a1a&color=fff";
       }
       const name = encodeURIComponent(this.user.username);
-      return `https://ui-avatars.com/api/?rounded=true&name=${name}&background=0D8ABC&color=fff`;
+      return `https://ui-avatars.com/api/?rounded=true&name=${name}&background=ff1a1a&color=fff`;
     },
   },
   methods: {
@@ -180,6 +180,6 @@ export default {
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #ffc107;
+  border: 2px solid white;
 }
 </style>
