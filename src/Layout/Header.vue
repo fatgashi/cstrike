@@ -8,7 +8,12 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-0 shadow-0">
       <div class="container-fluid" id="navbarnew">
-        <router-link to="/home" id="logo"><span class="fw-bolder">Zm-WestCStrike</span></router-link>
+        <router-link to="/home" id="logo">
+          <span class="fw-bolder">Zm-WestCStrike</span>
+          <span class="drop1"></span>
+          <span class="drop2"></span>
+          <span class="drop3"></span>
+        </router-link>
         <div
           class="justify-content-between"
         >
@@ -181,6 +186,114 @@ body {
 .collapse-show {
   margin-top: 5px;
 }
+
+#logo {
+  display: inline-block;
+  position: relative;
+  animation: shake 1s infinite;
+  font-family: 'Nosifer', cursive;
+  font-size: 27px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  animation: shakeCycle 4s infinite;
+}
+
+#logo span.fw-bolder {
+  color: #ff1a1a;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ff1a1a;
+  animation: flicker 2s infinite;
+  position: relative;
+}
+
+/* Blood drops (using pseudo elements) */
+#logo::before, #logo::after,
+#logo .drop1, #logo .drop2, #logo .drop3 {
+  content: '';
+  position: absolute;
+  margin-top: 7% !important;
+  width: 4px;
+  height: 8px;
+  background: radial-gradient(circle at center, #ff1a1a 40%, #990000 100%);
+  border-radius: 50%;
+  animation: drip-fall 1.5s infinite ease-in-out;
+  opacity: 1;
+}
+
+#logo::before {
+  left: 15%;
+  animation-delay: 0s;
+}
+#logo::after {
+  left: 40%;
+  animation-delay: 1.2s;
+}
+#logo .drop1 {
+  left: 60%;
+  animation-delay: 0.7s;
+}
+#logo .drop2 {
+  left: 80%;
+  animation-delay: 1.7s;
+}
+#logo .drop3 {
+  left: 30%;
+  animation-delay: 2.1s;
+}
+
+@keyframes drip-fall {
+  0% {
+    top: 0px;
+    height: 6px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  70% {
+    top: 18px;
+    height: 10px;
+    opacity: 0.8;
+  }
+  100% {
+    top: 40px;
+    height: 12px;
+    opacity: 0;
+  }
+}
+
+@keyframes shakeCycle {
+  0%, 70% {
+    transform: translate(0, 0); /* no shake for first 70% (2.8s) */
+  }
+  72% {
+    transform: translate(-6px, 2px);
+  }
+  74% {
+    transform: translate(6px, -3px);
+  }
+  76% {
+    transform: translate(-7px, 2px);
+  }
+  78% {
+    transform: translate(6px, -3px);
+  }
+  80% {
+    transform: translate(0, 0); /* done shaking */
+  }
+  100% {
+    transform: translate(0, 0); /* rest of the cycle idle */
+  }
+}
+
+/* Flickering horror light */
+@keyframes flicker {
+  0%, 100% { opacity: 1; color: #ff1a1a; }
+  30% { opacity: 0.6; color: #990000; }
+  60% { opacity: 0.9; color: #cc0000; }
+}
+
 .kategorit {
   display: block;
   text-align: center;
@@ -279,22 +392,15 @@ router-link {
   color: black;
 }
 
-#logo {
-  color: rgb(242, 142, 38);
-  font-family: "Comfortaa", cursive;
-  font-size: 27px;
-  font-weight: 500;
-  cursor: pointer;
-  text-decoration: none;
-}
+
 #login {
   color: white;
   font-size: 14px;
   cursor: pointer;
-  background-color: rgb(242, 142, 38);
+  background-color: #ff1a1a;
   font-weight: 600;
   font-family: "Poppins", sans-serif;
-  border:rgb(242, 142, 38);
+  border:#ff1a1a;
 
 }
 #login:focus {
@@ -303,11 +409,11 @@ router-link {
   -webkit-box-shadow: none;
 }
 #bsep{
-  background-color:rgb(242, 142, 38);
+  background-color:#ff1a1a;
   outline: none !important;
   box-shadow: none;
   -webkit-box-shadow: none;
-  border:rgb(242, 142, 38);
+  border:#ff1a1a;
 
 }
 
@@ -319,7 +425,7 @@ router-link {
   height: 40px;
   padding: 6px 10px;
   color: white;
-  background: rgb(242, 142, 38);
+  background: #ff1a1a;
   font-weight: bolder;
   font-family: "Roboto", sans-serif;
 }
@@ -339,8 +445,8 @@ router-link {
 
 .nav-links-wrapper {
   background-color: #111;
-  border-top: 2px solid #ff6600;
-  border-bottom: 2px solid #ff6600;
+  border-top: 2px solid #ff1a1a;
+  border-bottom: 2px solid #ff1a1a;
   padding: 10px 0;
   flex-wrap: wrap;
 }
@@ -351,9 +457,9 @@ router-link {
 
 .nav-link-button {
   background-color: #1a1a1a;
-  border: 2px solid #ff6600;
+  border: 2px solid #ff1a1a;
   padding: 6px 16px;
-  color: #ffcc00;
+  color: #ff1a1a;
   font-weight: bold;
   border-radius: 6px;
   text-decoration: none;
@@ -363,15 +469,15 @@ router-link {
 }
 
 .nav-link-button:hover {
-  background-color: #ff6600;
+  background-color: #ff1a1a;
   color: #fff;
-  border-color: #ffcc00;
+  border-color: #ff1a1a;
 }
 
 .nav-link-button.active {
-  background-color: #ff6600;
+  background-color: #ff1a1a;
   color: white;
-  border-color: #ffcc00;
+  border-color: #ff1a1a;
 }
 
 .user-dropdown {
@@ -400,13 +506,5 @@ router-link {
 
 .user-dropdown .dropdown-divider {
   border-top: 1px solid #444;
-}
-
-:root {
-  font-family: "Comfortaa", cursive;
-  font-family: "Poppins", sans-serif;
-  font-family: "Roboto", sans-serif;
-  /*background: rgb(242,142,38);
-  background: linear-gradient(80deg, rgba(242,142,38,1) 0%, rgba(253,100,79,1) 100%);*/
 }
 </style>

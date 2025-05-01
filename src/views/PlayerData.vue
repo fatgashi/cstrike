@@ -162,13 +162,13 @@ export default {
       categories: days,
       labels: {
         style: {
-          colors: '#fff',
+          colors: '#ff1a1a',
         },
       },
       title: {
         text: 'Days',
         style: {
-          color: '#fff',
+          color: '#ff1a1a',
         },
       },
     },
@@ -180,13 +180,13 @@ export default {
           return `${hours}h ${minutes}m`;
         },
         style: {
-          colors: '#fff',
+          colors: '#ff1a1a',
         },
       },
       title: {
         text: 'Playtime (Hours & Minutes)',
         style: {
-          color: '#fff',
+          color: '#ff1a1a',
         },
       },
     },
@@ -195,7 +195,7 @@ export default {
       align: 'center',
       style: {
         fontSize: '16px',
-        color: '#fff',
+        color: '#ff1a1a',
       },
     },
     stroke: {
@@ -203,10 +203,10 @@ export default {
       width: 2,
       
     },
-    colors: ['#ff8000'],
+    colors: ['#ff1a1a'],
     markers: {
       size: 5,
-      colors: ['#ff8000'],
+      colors: ['#ff1a1a'],
     },
     tooltip: {
       y: {
@@ -220,7 +220,7 @@ export default {
       theme: 'dark',
     },
     grid: {
-      borderColor: '#fff',
+      borderColor: '#ff1a1a',
       strokeDashArray: 3,
     },
   };
@@ -245,7 +245,7 @@ export default {
 .player-details .card-header {
   font-weight: bold;
   font-size: 1.3em;
-  background-color: #ff8000;
+  background-color: #ff1a1a;
 }
 
 .apexcharts-legend-text {
@@ -265,14 +265,14 @@ export default {
 .date-range-picker .form-label {
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #ff8000; /* Matches your orange theme */
+  color: #ff1a1a; /* Matches your orange theme */
 }
 
 /* Styling for the date inputs */
 .styled-date-input {
   background-color: #333; /* Dark background */
   color: #fff; /* White text */
-  border: 1px solid #ff8000; /* Orange border */
+  border: 1px solid #ff1a1a; /* Orange border */
   border-radius: 8px; /* Rounded corners */
   padding: 0.5rem; /* Padding for a better look */
   font-size: 1rem; /* Slightly larger text */

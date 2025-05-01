@@ -7,7 +7,7 @@
         <router-link to="/forum/admin-applications" class="text-decoration-none">
           <div class="card forum-card" :style="{ backgroundImage: 'url(' + require('@/assets/forum/admin-applications.webp') + ')' }">
             <div class="card-body text-center d-flex flex-column justify-content-center">
-              <h4 class="fw-bolder">Admin Applications</h4>
+              <h4 class="fw-bolder" style="color: #ff1a1a;">Admin Applications</h4>
               <p>View all admin applications and vote.</p>
             </div>
           </div>
@@ -19,7 +19,7 @@
         <router-link to="/forum/rules" class="text-decoration-none">
           <div class="card forum-card" :style="{ backgroundImage: 'url(' + require('@/assets/forum/rules.webp') + ')' }">
             <div class="card-body text-center d-flex flex-column justify-content-center">
-              <h4 class="fw-bolder">Rules</h4>
+              <h4 class="fw-bolder" style="color: #ff1a1a;">Rules</h4>
               <p>Read the server rules and guidelines.</p>
             </div>
           </div>
@@ -31,7 +31,7 @@
         <router-link to="" class="text-decoration-none">
           <div class="card forum-card" :style="{ backgroundImage: 'url(' + require('@/assets/forum/announcements.webp') + ')' }">
             <div class="card-body text-center d-flex flex-column justify-content-center">
-              <h4 class="fw-bolder">Announcements</h4>
+              <h4 class="fw-bolder" style="color: #ff1a1a;">Announcements</h4>
               <p>Stay updated with server news.</p>
             </div>
           </div>

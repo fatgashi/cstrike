@@ -3,13 +3,13 @@
         <br><br>
         <div class="maps-view container">
           <!-- Header -->
-          <h1 class="text-center mb-4 fw-bolder" style="color: #ff8000;">Map Selection</h1>
+          <h1 class="text-center mb-4 fw-bolder" style="color: #ff1a1a;">Map Selection</h1>
           
           <!-- Filter Buttons -->
           <div class="button-group text-center mb-4">
-            <router-link to="/maps"><button class="btn btn-outline-warning text-white mb-3">Small Maps</button></router-link>
-            <router-link to="/medium-maps"><button class="btn btn-outline-warning text-white mb-3">Medium Maps</button></router-link>
-            <button :class="{ active: selectedSize === 'large' }" class="btn btn-outline-warning text-white mb-3">Large Maps</button>
+            <router-link to="/maps"><button class="btn btn-outline-danger text-white mb-3">Small Maps</button></router-link>
+            <router-link to="/medium-maps"><button class="btn btn-outline-danger text-white mb-3">Medium Maps</button></router-link>
+            <button :class="{ active: selectedSize === 'large' }" class="btn btn-outline-danger text-white mb-3">Large Maps</button>
           </div>
       
           <!-- Map Cards Grid -->
@@ -117,18 +117,22 @@
   }
   
   .card-title {
-    color: #ff8000;
+    color: #ff1a1a;
     font-size: 1.2em;
     text-align: center;
   }
   
   .button-group button {
     margin: 0 10px;
-    color: #ff8000;
+    color: #ff1a1a;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #ff1a1a;
   }
   
   .button-group .active {
-    background-color: #ff8000;
+    background-color: #ff1a1a;
     color: #1c1c1c;
   }
   </style>

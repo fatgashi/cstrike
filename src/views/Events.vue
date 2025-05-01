@@ -5,7 +5,7 @@
           <div class="text-center mb-4">
             <button
               class="btn mx-2 text-white"
-              style="background-color: #ff8000;"
+              style="background-color: #ff1a1a;"
               :class="{ active: showUpdates }"
               @click="showUpdates = true"
             >
@@ -57,7 +57,7 @@
             <div class="events-view container mt-4">
               <h1 class="text-center mb-4 fw-bolder">Server Events</h1>
               <div class="event-section text-white p-4 rounded">
-                <h2 class="text-center fw-bolder" style="color: #ff8000;">Monthly VIP Rewards</h2>
+                <h2 class="text-center fw-bolder" style="color: #ff1a1a;">Monthly VIP Rewards</h2>
                 <p class="mt-3">
                   Compete to be in the Top 3 players in the server leaderboard and
                   win exclusive VIP rewards! The event runs every month from the 1st
@@ -65,13 +65,13 @@
                 </p>
                 <ul class="list-group mt-3">
                   <li class="list-group-item bg-dark text-white">
-                    <strong>Top 1:</strong> VIP for 1 month + 5000 points
+                    <strong style="color: #ff1a1a;">Top 1:</strong> VIP for 1 month + 5000 points
                   </li>
                   <li class="list-group-item bg-dark text-white">
-                    <strong>Top 2:</strong> VIP for 2 weeks + 3000 points
+                    <strong style="color: #ff1a1a;">Top 2:</strong> VIP for 2 weeks + 3000 points
                   </li>
                   <li class="list-group-item bg-dark text-white">
-                    <strong>Top 3:</strong> VIP for 1 week + 1000 points
+                    <strong style="color: #ff1a1a;">Top 3:</strong> VIP for 1 week + 1000 points
                   </li>
                 </ul>
                 <p class="mt-4 text-center">
@@ -79,7 +79,7 @@
                 </p>
               </div>
             </div>
-            <h2 class="text-center fw-bolder" style="color: #ff8000;">Last Month Top15</h2>
+            <h2 class="text-center fw-bolder" style="color: #ff1a1a;">Last Month Top15</h2>
             <div class="card text-white" style="background-color: transparent !important;">
               <div class="card-header text-center">Top 15 Players</div>
               <div class="card-body table-responsive">
@@ -122,6 +122,8 @@
             </div>
           </div>
         </div>
+        <br>
+        <br>
     </div>
   </template>
   
@@ -262,7 +264,7 @@
   }
   
   .update-title {
-    color: #ff8000;
+    color: #ff1a1a;
     font-size: 1.5em;
   }
   
@@ -272,7 +274,7 @@
   }
   
   .item-details h4 {
-    color: #ff8000;
+    color: #ff1a1a;
     margin-top: 15px;
   }
   
@@ -282,7 +284,7 @@
   }
   
   .card-title {
-    color: #ff8000;
+    color: #ff1a1a;
     font-size: 1.1em;
     text-align: center;
   }
@@ -350,7 +352,7 @@
     .card-header {
         font-weight: bold;
         font-size: 1.1em;
-        background-color: rgb(242, 142, 38);
+        background-color: #ff1a1a;
     }
   </style>
   

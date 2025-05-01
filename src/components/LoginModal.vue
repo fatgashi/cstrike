@@ -53,7 +53,7 @@
               </div>
 
               <div class="d-grid">
-                <button style="background: rgb(242, 142, 38);" type="submit" class="btn fw-bold shadow-sm">
+                <button style="background: #ff1a1a;" type="submit" class="btn fw-bold shadow-sm">
                   Login
                 </button>
               </div>
@@ -157,7 +157,7 @@
 
       .resetp {
         font-size: 0.9rem;
-        color: rgb(242, 142, 38);
+        color: #ff1a1a;
         cursor: pointer;
         text-decoration: underline;
       }

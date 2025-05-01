@@ -4,7 +4,7 @@
     <h2 class="text-center text-white mb-3 fw-bolder">Admin Applications</h2>
 
     <div class="text-end mb-3">
-      <router-link to="/forum/apply-for-admin" class="btn fw-bold text-white" style="background-color: rgb(242, 142, 38);">
+      <router-link to="/forum/apply-for-admin" class="btn fw-bold text-white" style="background-color: #ff1a1a;">
         Apply for Admin
       </router-link>
     </div>

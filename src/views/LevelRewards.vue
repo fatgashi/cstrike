@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <br>
-      <h2 class="text-start text-white mb-4 fw-bolder">Level Rewards</h2>
+      <h2 class="text-start mb-4 fw-bolder" style="color: #ff1a1a; font-family: 'Nosifer', cursive;">Level Rewards</h2>
   
       <!-- 🛑 Show if not logged in -->
       <div v-if="!isLoggedIn" class="alert alert-danger text-dark fw-bold text-center">
@@ -15,11 +15,11 @@
       <!-- ✅ Main view for logged in users -->
       <div v-else>
         <!-- 📢 Info Row -->
-        <div class="alert alert-info text-dark fw-bold" role="alert">
+        <div class="alert text-white fw-bold" style="background-color: #ff1a1a;" role="alert">
           🎯 You can earn up to <strong>~4000 Ammo Packs</strong> and <strong>~1000 Points</strong> by claiming all rewards!
           <br>
           ⚠️ <strong>Warning:</strong> If you have <strong>2000 Ammo Packs</strong>, you can't receive more until you spend some.
-          To check your stats go to <router-link to="/profile">Profile</router-link>.
+          To check your stats go to <router-link class="text-white" to="/profile">Profile</router-link>.
         </div>
   
         <!-- 📊 Progress Bar -->
@@ -50,7 +50,7 @@
                 :class="{
                   'bg-dark text-white': true,
                   'border-success': reward.claimed,
-                  'border-warning': reward.canClaim && !reward.claimed,
+                  'border-red': reward.canClaim && !reward.claimed,
                   'border-secondary': !reward.canClaim
                 }"
               >
@@ -65,7 +65,8 @@
                     <button
                       v-if="reward.canClaim && !reward.claimed"
                       @click="claimReward(reward.level)"
-                      class="btn btn-warning w-100 mt-2"
+                      class="btn w-100 mt-2"
+                      style="background-color: #ff1a1a;"
                     >
                       Claim Reward
                     </button>
@@ -175,6 +176,9 @@
   </script>
   
   <style scoped>
+  .border-red {
+    border-color: #ff1a1a !important;
+  }
   .card {
     border: 2px solid transparent;
     transition: 0.3s ease;

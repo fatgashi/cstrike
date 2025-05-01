@@ -3,7 +3,7 @@
         <br><br>
         <div class="vip-info container">
           <!-- Header -->
-          <h1 class="text-center mb-4 fw-bolder" style="color: #ff8000;">VIP Benefits</h1>
+          <h1 class="text-center mb-4 fw-bolder" style="color: #ff1a1a;">VIP Benefits</h1>
       
           <!-- VIP Skins Section -->
           <section class="vip-section">
@@ -176,7 +176,7 @@
   }
   
   .vip-header {
-    color: #ff8000;
+    color: #ff1a1a;
   }
   
   .vip-section {
@@ -199,7 +199,7 @@
   }
   
   .card-title {
-    color: #ff8000;
+    color: #ff1a1a;
     font-size: 1.2em;
     text-align: center;
   }

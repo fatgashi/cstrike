@@ -19,7 +19,7 @@
                   <a
                     href="steam://connect/51.77.72.157:27015"
                     class="btn text-white"
-                    style="background-color: #ff8000;"
+                    style="background-color: #ff1a1a;"
                     target="_self"
                     rel="noopener"
                   >
@@ -189,7 +189,7 @@
           <tr v-for="(player, index) in players" :key="player._id">
             <td>{{ (currentPage - 1) * limit + index + 1 }}</td>
             <td>
-              <router-link :to="{ name: 'PlayerDetails', params: { playerName: player.name } }" class="text-white">
+              <router-link :to="{ name: 'PlayerDetails', params: { playerName: player.name } }" class="players-link">
                 {{ player.name }}
               </router-link>
             </td>
@@ -315,6 +315,13 @@ export default {
 </script>
 
 <style>
+.players-link {
+  color: #ff1a1a;
+}
+
+.players-link:hover {
+  color: #cc0000;
+}
 .server-view .card {
   border-radius: 8px;
   background-color: #1c1c1c !important; /* Lighter gray for contrast */
@@ -324,11 +331,11 @@ export default {
 .server-view .card-header {
   font-weight: bold;
   font-size: 1.1em;
-  background-color: rgb(242, 142, 38);
+  background-color: #ff1a1a;
 }
 
 #title {
-  color: #ff8000;
+  color: #ff1a1a;
 }
 
 #cdnImage {
@@ -376,24 +383,6 @@ export default {
   border-color: #444;
   transition: background-color 0.2s ease-in-out;
   padding: 5px 10px; /* Compact padding */
-}
-
-.pagination .page-item .page-link:hover {
-  background-color: #ff8000; /* Highlighted background on hover */
-  border-color: #ff8000;
-}
-
-.pagination .page-item.active .page-link {
-  background-color: #ff8000; /* Active page button */
-  border-color: #ff8000;
-  color: #fff;
-}
-
-.pagination .page-item.disabled .page-link {
-  color: #666;
-  background-color: #333;
-  border-color: #444;
-  pointer-events: none;
 }
 
 /* Responsive Adjustments for Small Devices */
@@ -446,7 +435,7 @@ export default {
 
 .server-view input.form-control:focus {
   box-shadow: none;
-  border-color: #ff8000; /* Highlighted border color */
+  border-color: #ff1a1a; /* Highlighted border color */
 }
 
 .server-view select.form-select {
@@ -458,11 +447,11 @@ export default {
 
 .server-view select.form-select:focus {
   box-shadow: none;
-  border-color: #ff8000; /* Highlighted border color */
+  border-color: #ff1a1a; /* Highlighted border color */
 }
 
 .server-view button.btn-primary {
-  background-color: #007bff; /* Blue button background */
+  background-color: #ff1a1a; /* Blue button background */
   border-color: #007bff;
   font-weight: bold;
   border-radius: 8px;
@@ -485,13 +474,13 @@ export default {
 }
 
 .server-view .pagination .page-item .page-link:hover {
-  background-color: #ff8000; /* Highlighted background on hover */
-  border-color: #ff8000;
+  background-color: #ff1a1a; /* Highlighted background on hover */
+  border-color: #ff1a1a;
 }
 
 .server-view .pagination .page-item.active .page-link {
-  background-color: #ff8000; /* Active page button */
-  border-color: #ff8000;
+  background-color: #ff1a1a; /* Active page button */
+  border-color: #ff1a1a;
   color: #fff;
 }
 

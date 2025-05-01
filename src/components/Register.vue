@@ -29,7 +29,7 @@
                     <label for="inputRegisterPassword">Confirm Password</label>
                 </div>
                 <div id="emailHelp" class="form-text fw-bolder text-white mb-3">If you are already registered in server cs1.6, you can login with your name and password!</div>
-                <button type="submit" style="background-color: rgb(242, 142, 38);" class="btn text-white">Register</button>
+                <button type="submit" style="background-color: #ff1a1a;" class="btn text-white">Register</button>
             </form>
           </div>
           <div class="modal-footer" id="modalfooter">

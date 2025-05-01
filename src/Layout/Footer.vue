@@ -1,7 +1,7 @@
 <template>
     <!-- Footer -->
     <footer class="page-footer font-small" id="footeri">
-      <div style="background-color: rgb(242, 142, 38)">
+      <div style="background-color: #ff1a1a">
         <div class="container">
           <!-- Grid row-->
           <div class="row py-4 d-flex align-items-center" id="footershirit">
@@ -108,10 +108,10 @@
     color: white;
   }
   .important {
-    color: rgb(242, 142, 38);
+    color: #ff1a1a;
   }
   #footertitle {
-    color: rgb(242, 142, 38);
+    color: #ff1a1a;
     font-family: "Comfortaa", cursive;
     font-size: 20px;
     font-weight: 500;
@@ -119,19 +119,19 @@
     text-decoration: none;
   }
   #footerproducts {
-    color: rgb(242, 142, 38);
+    color: #ff1a1a;
     font-family: "Poppins", sans-serif;
     font-size: 18px;
   }
   #footercontact {
-    color: rgb(242, 142, 38);
+    color: #ff1a1a;
     font-family: "Poppins", sans-serif;
     font-size: 18px;
   }
   #footerlinks {
     font-family: "Roboto", sans-serif;
     text-decoration: none !important;
-    color: white !important;
+    color: #ff1a1a !important;
     border-bottom:0.5px solid gray;
     margin-bottom:1px !important;
   }
@@ -147,7 +147,7 @@
       border-bottom: 0.5px solid white;
   }
   .company{
-      color: rgb(242, 142, 38);
+      color: #ff1a1a;
       border-bottom: 0.5px solid white;
   }
   footer p {

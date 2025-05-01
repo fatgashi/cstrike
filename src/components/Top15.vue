@@ -165,7 +165,7 @@
     .card-header {
         font-weight: bold;
         font-size: 1.1em;
-        background-color: rgb(242, 142, 38);
+        background-color: #ff1a1a;
     }
   </style>
   

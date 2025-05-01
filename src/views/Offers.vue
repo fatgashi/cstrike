@@ -17,13 +17,13 @@
                 <h2 class="offer-title fw-bolder">{{ offer.title }}</h2>
                 <p class="offer-description">
                     {{ offer.description }}
-                    <router-link v-if="offer.link" :to="offer.link" class="text-decoration-none" style="color: #ff8000">
+                    <router-link v-if="offer.link" :to="offer.link" class="text-decoration-none" style="color: #ff1a1a">
                         {{ offer.linkText }}
                     </router-link>
                 </p>
                 <div class="offer-details mt-3">
                   <p class="fw-bolder"><strong>Price:</strong> {{ offer.price }}</p>
-                  <a :href="offer.buttonLink" target="_blank" class="text-decoration-none"><button class="btn text-white" style="background-color: #ff8000">Claim Offer</button></a>
+                  <a :href="offer.buttonLink" target="_blank" class="text-decoration-none"><button class="btn text-white" style="background-color: #ff1a1a">Claim Offer</button></a>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@
   }
   
   .offer-title {
-    color: #ff8000;
+    color: #ff1a1a;
     font-size: 1.5em;
   }
   
@@ -116,7 +116,7 @@
   
   .offer-details {
     font-size: 1.1em;
-    color: #ff8000;
+    color: #ff1a1a;
   }
   
   .offer-section {

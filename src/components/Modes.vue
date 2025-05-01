@@ -48,7 +48,7 @@ export default {
 }
 
 #title {
-  color: #ff8000;
+  color: #ff1a1a;
 }
 
 #photo img:hover {

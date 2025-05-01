@@ -164,10 +164,11 @@ export default {
 }
 
 .alert-warning {
-  background: rgb(242, 142, 38);
-  color: #1a1a1a;
+  background: #ff1a1a;
+  color: white;
   font-weight: bold;
   border-radius: 0% !important;
+  border-color: #ff1a1a !important;
 }
 
 .carousel {

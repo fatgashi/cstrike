@@ -5,7 +5,7 @@
     
     <!-- Content -->
     <div class="hero-content">
-      <h1 class="fade-in">Play <span style="color: rgb(242, 142, 38);">Zm-WestCStrike</span> – CS 1.6 Zombie Server</h1>
+      <h1 class="fade-in">Play <span style="color: #ff1a1a;">Zm-WestCStrike</span> – CS 1.6 Zombie Server</h1>
       <p class="fade-in">
         Welcome to the <strong>best CS 1.6 Zombie Plague server</strong> – Zm-WestCStrike. Join our intense zombie survival battles and experience top-tier Counter-Strike 1.6 multiplayer gameplay.
       </p>
@@ -118,7 +118,7 @@ h1 span {
 }
 
 .join-btn {
-  background: #ff8000;
+  background: #ff1a1a;
   padding: 10px 20px;
   font-size: 1.2rem;
   border: none;
