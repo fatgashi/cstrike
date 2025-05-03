@@ -8,6 +8,7 @@
   --orange-accent: #ff851b;  /* Orange */
   --yellow-accent: #ffdc00;  /* Yellow */
   --steel-blue: #4682b4;     /* Steel Blue */
+  --redness: #ff1a1a;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -28,6 +29,10 @@ button {
 /* Define classes for easier use */
 .bg-dark {
   background-color: var(--primary-bg);
+}
+
+.c-title {
+  color: var(--redness);
 }
 
 .bg-secondary {

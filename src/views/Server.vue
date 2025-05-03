@@ -34,31 +34,33 @@
       <div class="card banner-section bg-dark mb-3" id="title">
         <div class="card-header text-white">Game Server Banner</div>
         <div class="card-body">
-            <div class="d-flex justify-content-start align-items-center">
-                <div class="d-flex flex-column">
-                    <div><span class="h6">Server Name:</span> <span class="h5 fw-bolder text-white">{{ server.name }}</span></div>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div class="d-flex flex-column">
-                            <h6>IP ADDRESS:</h6>
-                            <h4 class="text-white">51.77.72.157</h4>
-                            <h6>PLAYERS:</h6>
-                            <h6 class="text-white">{{server.numplayers}}/32</h6>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <h6>PORT:</h6>
-                            <h4 class="text-white">27015</h4>
-                            <h6>RANK:</h6>
-                            <h6 class="text-white">1</h6>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <h6>STATUS:</h6>
-                            <h4 class="text-success fw-bolder">Online</h4>
-                            <h6>CURRENT MAP:</h6>
-                            <h6 class="text-white">{{ server.map }}</h6>
-                        </div>
-                    </div>
-                </div>
+          <div class="row text-white">
+            <div class="col-12 mb-2">
+              <span class="h6 c-title">Server Name: </span>
+              <span class="h5 fw-bolder text-white">{{ server.name }}</span>
             </div>
+
+            <div class="col-6 col-md-4 mb-3">
+              <h6 class="c-title">IP ADDRESS:</h6>
+              <h5>51.77.72.157</h5>
+              <h6 class="c-title">PLAYERS:</h6>
+              <h6>{{ server.numplayers }}/32</h6>
+            </div>
+
+            <div class="col-6 col-md-4 mb-3">
+              <h6 class="c-title">PORT:</h6>
+              <h5>27015</h5>
+              <h6>RANK:</h6>
+              <h6>1</h6>
+            </div>
+
+            <div class="col-12 col-md-4 d-none d-md-block mb-3">
+              <h6 class="c-title">STATUS:</h6>
+              <h5 class="text-success fw-bolder">Online</h5>
+              <h6 class="c-title">CURRENT MAP:</h6>
+              <h6>{{ server.map }}</h6>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -416,10 +418,6 @@ export default {
   .pagination .page-item .page-link {
     font-size: 10px; /* Smaller font size for extra compact layout */
   }
-}
-
-.server-view {
-  margin-top: 30px;
 }
 
 .server-view input.form-control {
