@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification';
+
 
 export default {
   data() {
@@ -23,6 +25,7 @@ export default {
   methods: {
     async verifyEmail() {
       const token = this.$route.query.token;
+      const toast = useToast();
 
       if (!token) {
         this.verificationStatus = "Invalid verification link.";
@@ -33,7 +36,7 @@ export default {
       try {
         await this.$axios.get(`/user/verify-email?token=${token}`);
         this.verificationStatus = "✅ Email verified successfully! You can now log in.";
-        this.$toast.success("✅ Email verified! Redirecting to login...");
+        toast.success("✅ Email verified! Redirecting to login...");
         
         setTimeout(() => {
           this.$router.push("/");
@@ -41,7 +44,7 @@ export default {
       } catch (error) {
         console.error(error);
         this.verificationStatus = "❌ Verification failed. Link may be expired or invalid.";
-        this.$toast.error("❌ Verification failed!");
+        toast.error("❌ Verification failed!");
       } finally {
         this.isVerifying = false;
       }

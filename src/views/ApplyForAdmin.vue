@@ -112,7 +112,8 @@
   </template>
   
   <script>
-  import configuration from "../config/config";
+  import { useToast } from "vue-toastification";
+import configuration from "../config/config";
   import { Tooltip } from "bootstrap";
   
   export default {
@@ -142,8 +143,9 @@
     },
     methods: {
       async submitApplication() {
+        const toast = useToast();
         if (this.application.rulesRead && this.secretKeyword !== "VIP") {
-          this.$toast.error("You must enter the correct keyword to proceed.");
+          toast.error("You must enter the correct keyword to proceed.");
           return;
         }
 
@@ -172,7 +174,7 @@
         try {
           await this.$axios.post("/admin/apply", formData, configuration());
           this.$router.push("/forum/admin-applications"); // Redirect to applications list
-          this.$toast.success("Application submitted successfully!");
+          toast.success("Application submitted successfully!");
         } catch (error) {
           console.error("Error submitting application:", error);
           this.errorMessage = error.response?.data?.message || "An error occurred. Try again.";

@@ -31,7 +31,7 @@
                   v-model="username"
                   required
                 />
-                <label for="inputEmail">nickname</label>
+                <label for="inputEmail" class="text-white">nickname</label>
               </div>
 
               <div class="form-floating mb-2">
@@ -43,7 +43,7 @@
                   v-model="password"
                   required
                 />
-                <label for="inputPassword">password</label>
+                <label for="inputPassword" class="text-white">password</label>
               </div>
 
               <div class="text-end mb-3">
@@ -69,6 +69,7 @@
     // import Register from './Register.vue'
     import { Modal } from 'bootstrap';
     import { eventBus } from '../router/index';
+    import { useToast } from "vue-toastification";
     
     export default {
       name: "LoginModal",
@@ -87,6 +88,7 @@
       methods: {
         
         async login() {
+          const toast = useToast();
           try {
             const data = await this.$axios.post(`/user/login`, {
               username: this.username,
@@ -97,17 +99,17 @@
             this.$store.dispatch('updateToken', data.token);
             this.$store.dispatch('updateLogged', true);
             this.$store.dispatch('updateUser', data.user)
-            eventBus.$emit("userLoggedIn");
+            eventBus.emit("userLoggedIn");
             if(data.user.role === 'superadmin'){
               this.$router.push('/dashboard/home')
             }
-            this.$toast.success("You logged in successfully! ");
+            toast.success("You logged in successfully! ");
             this.modal.hide();
             this.username = ""
             this.password = ""
           } catch(err) {
             this.error = err.message;
-            this.$toast.error(err.response.data.message);
+            toast.error(err.response.data.message || "Login failed. Please try again.");
           }
         },
 
@@ -123,15 +125,15 @@
       mounted(){
         this.modal = new Modal(this.$refs.myModal);
 
-        eventBus.$on("showLoginModal", () => {
+        eventBus.on("showLoginModal", () => {
           console.log("🔥 Received showLoginModal event in LoginModal.vue");
           this.modal.show();
         });
       },
 
-      beforeDestroy() {
+      beforeUnmount() {
         // ✅ Remove event listener to prevent memory leaks
-        eventBus.$off("showLoginModal");
+        eventBus.off("showLoginModal");
       }
     };
     </script>

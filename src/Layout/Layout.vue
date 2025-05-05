@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="Header">
-            <Header/>
+            <AppHeader/>
         </div>
         <div class="Main">
-            <Content/>
+            <AppContent/>
         </div>
         <div class="Footer">
-            <Footer/>
+            <AppFooter/>
         </div>
     </div>
 </template>
@@ -18,11 +18,11 @@ import Footer from './Footer.vue'
 import Header from './Header.vue'
 
 export default {
-    name: "LeyOut",
+    name: "LayoutView",
     components: {
-        Header,
-        Content,
-        Footer,
+        AppHeader: Header,
+        AppContent: Content,
+        AppFooter: Footer,
     }
 }
 </script>

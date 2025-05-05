@@ -30,6 +30,7 @@
 import { TweenMax } from "gsap";
 
 export default {
+  name: "BannerView",
   props: {
     players: {
       type: Number,

@@ -18,6 +18,7 @@
   
   <script>
   export default {
+    name: "PartnerView",
     data() {
       return {
         partner: [

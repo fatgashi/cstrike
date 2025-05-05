@@ -86,8 +86,10 @@
 import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router";
 import { Dropdown } from "bootstrap";
+import { useToast } from "vue-toastification";
+
 export default {
-  name: "Header",
+  name: "HeaderView",
   data() {
     return {
       navLinks: [
@@ -130,9 +132,10 @@ export default {
     },
     openLoginModal() {
       console.log("🔥 Triggering showLoginModal event from Header.vue");
-      eventBus.$emit("showLoginModal"); // ✅ Emit event to open login modal
+      eventBus.emit("showLoginModal"); // ✅ Emit event to open login modal
     },
       async signOut() {
+        const toast = useToast();
         const toggleBtn = document.querySelector('.dropdown-toggle');
 
         if (toggleBtn) {
@@ -145,9 +148,9 @@ export default {
         }
 
         this.$store.dispatch('clearToken');
-        eventBus.$emit("userLoggedOut");
+        eventBus.emit("userLoggedOut");
         this.user = [];
-        this.$toast.warning("You have been logged out.");
+        toast.warning("You have been logged out.");
       },
   },
   async mounted() {
@@ -155,14 +158,14 @@ export default {
       await this.role();
     }
 
-    eventBus.$on("userLoggedIn", async () => {
+    eventBus.on("userLoggedIn", async () => {
       console.log("🔥 userLoggedIn event received in Header.vue");
       await this.role(); // this.loggedIn updates automatically now
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // ✅ Remove event listener to prevent memory leaks
-    eventBus.$off("userLoggedIn");
+    eventBus.off("userLoggedIn");
   },
 };
 </script>

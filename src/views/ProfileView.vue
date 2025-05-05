@@ -99,6 +99,7 @@
 <script>
 import { getCurrentUser } from '../config/userLogic';
 import { getToken } from '../config/localStorage';
+import { useToast } from 'vue-toastification';
 
 export default {
   data() {
@@ -139,6 +140,7 @@ export default {
       return path ? `https://zm-westcstrike.com/${path}` : null;
     },
     async saveProfile() {
+      const toast = useToast();
       const formData = new FormData();
       formData.append('username', this.user.username);
       formData.append('dateOfBirth', this.user.dateOfBirth);
@@ -155,11 +157,11 @@ export default {
           },
         });
 
-        this.$toast.success("Profile updated successfully!");
+        toast.success("Profile updated successfully!");
         await this.fetchUserProfile();
         this.profilePreview = null;
       } catch (error) {
-        this.$toast.error(error.response?.data?.error || 'Failed to update profile.');
+        toast.error(error.response?.data?.error || 'Failed to update profile.');
         console.error('Error updating profile:', error.response?.data?.error);
       }
     },

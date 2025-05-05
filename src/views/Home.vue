@@ -7,16 +7,8 @@
       </div>
       <Banner :players="server" />
       <Infos />
-      <div class="row rowi row-cols-1 row-cols-md-3 mt-3 d-flex justify-content-center">
-        <div ref="firstDiv" class="row carousel mb-3">
-          <Carousel :dynamicHeight="heightString" />
-        </div>
-        <div class="row carousel mb-3">
-          <Carousel1 :dynamicHeight="heightString"/>
-        </div>
-        <div class="row carousel">
-          <Carousel2 :dynamicHeight="heightString"/>
-        </div>
+      <div class="container">
+        <Carousels />
       </div>
       <div>
         <Top15 />
@@ -28,9 +20,7 @@
 </template>
 
 <script>
-import Carousel from "../components/Carousel.vue";
-import Carousel1 from "../components/Carousel1.vue";
-import Carousel2 from "../components/Carousel2.vue";
+import Carousels from "../components/Carousel.vue";
 import Banner from "../components/Banner.vue";
 import Infos from "../components/Infos.vue";
 import Modes from "../components/Modes.vue";
@@ -39,6 +29,7 @@ import Top15 from '../components/Top15.vue';
 import configuration from "../config/config";
 import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router/index";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "HomePage",
@@ -66,9 +57,7 @@ export default {
   components: {
     Banner,
     Infos,
-    Carousel,
-    Carousel1,
-    Carousel2,
+    Carousels,
     Modes,
     Partner,
     Top15
@@ -97,23 +86,24 @@ export default {
       }
     },
     async claimReward() {
+      const toast = useToast();
       try {
         const config = configuration();
         const res = await this.$axios.post("/rcon/claim-daily-reward", {}, config);
-        this.$toast.success(res.data.message || "Reward claimed!");
+        toast.success(res.data.message || "Reward claimed!");
         this.showDailyBanner = false;
       } catch (err) {
-        this.$toast.error(err.response?.data?.message || "Failed to claim reward.");
+        toast.error(err.response?.data?.message || "Failed to claim reward.");
       }
     },
     listenToAuthChanges() {
-      eventBus.$on("userLoggedIn", async () => {
+      eventBus.on("userLoggedIn", async () => {
         if (this.$store.state.user) {
           await this.checkDailyReward();
         }
       });
 
-      eventBus.$on("userLoggedOut", () => {
+      eventBus.on("userLoggedOut", () => {
         this.showDailyBanner = false;
       });
     },
@@ -144,10 +134,10 @@ export default {
         console.error("Error fetching server info:", error);
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("resize", this.matchHeight);
-    eventBus.$off("userLoggedIn");
-    eventBus.$off("userLoggedOut");
+    eventBus.off("userLoggedIn");
+    eventBus.off("userLoggedOut");
   },
 };
 </script>

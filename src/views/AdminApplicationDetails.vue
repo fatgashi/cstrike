@@ -152,6 +152,7 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
 import configuration from "../config/config";
 import { getCurrentUser } from "../config/userLogic";
 
@@ -237,6 +238,7 @@ export default {
     },
 
     async submitVote(voteType) {
+      const toast = useToast();
       try {
         await this.$axios.post("/admin/vote", {
           applicationId: this.$route.params.id,
@@ -245,13 +247,14 @@ export default {
 
         this.hasVoted = true;
         this.fetchVotes();
-        this.$toast.success("Vote submitted successfully.");
+        toast.success("Vote submitted successfully.");
       } catch (error) {
-        this.$toast.error(error.response?.data?.message || "Error submitting vote.");
+        toast.error(error.response?.data?.message || "Error submitting vote.");
       }
     },
 
     async submitComment() {
+      const toast = useToast();
       const formData = new FormData();
       formData.append("applicationId", this.$route.params.id);
       formData.append("comment", this.newCommentText);
@@ -265,35 +268,38 @@ export default {
         this.commentImage = null;
         this.commentPreview = null;
         this.fetchComments();
-        this.$toast.success("Comment submitted successfully.");
+        toast.success("Comment submitted successfully.");
       } catch (error) {
-        this.$toast.error("Error submitting comment.");
+        toast.error("Error submitting comment.");
         console.error("Error submitting comment:", error);
       }
     },
 
     async finishApplication() {
+      const toast = useToast();
       try {
         await this.$axios.post(`/admin/finish/${this.$route.params.id}`, {}, configuration());
         this.fetchApplication();
-        this.$toast.success("Application status updated based on votes.");
+        toast.success("Application status updated based on votes.");
       } catch (error) {
         console.error("Error finishing application:", error);
-        this.$toast.error(error.response?.data?.message || "Error finishing application.");
+        toast.error(error.response?.data?.message || "Error finishing application.");
       }
     },
 
     async updateApplicationStatus(status) {
+      const toast = useToast();
       try {
         await this.$axios.post(`/admin/change-status/${this.$route.params.id}`, { status }, configuration());
         this.fetchApplication();
-        this.$toast.success(`Application status updated to ${status}.`);
+        toast.success(`Application status updated to ${status}.`);
       } catch (error) {
-        this.$toast.error(error.response?.data?.message || "Error updating application status.");
+        toast.error(error.response?.data?.message || "Error updating application status.");
       }
     },
 
     async removeComment(commentId) {
+      const toast = useToast();
       const isConfirmed = window.confirm("Are you sure you want to delete this comment?");
       
       if (!isConfirmed) {
@@ -303,9 +309,9 @@ export default {
       try {
         await this.$axios.delete(`/admin/comment/${this.$route.params.id}/${commentId}`, configuration());
         this.fetchComments();
-        this.$toast.success("Comment deleted successfully.");
+        toast.success("Comment deleted successfully.");
       } catch (error) {
-        this.$toast.error("Error deleting comment.");
+        toast.error("Error deleting comment.");
         console.error("Error deleting comment:", error);
       }
     },

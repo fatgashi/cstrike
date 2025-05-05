@@ -218,6 +218,7 @@
 
 <script>
 export default {
+  name: "ServerView",
     data(){
         return {
             server: [],

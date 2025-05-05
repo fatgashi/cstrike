@@ -178,7 +178,8 @@
   </template>
   
   <script>
-  import configuration from '../config/config';
+  import { useToast } from 'vue-toastification';
+import configuration from '../config/config';
   import { Modal } from 'bootstrap';
 
   export default {
@@ -247,6 +248,7 @@
         this.modal.show(); // show modal
       },
       async saveChanges() {
+        const toast = useToast()
         this.loadingSave = true;
         try {
           const config = configuration();
@@ -272,15 +274,16 @@
 
           this.modal.hide();
           this.fetchUsers();
-          this.$toast.success("User updated successfully.");
+          toast.success("User updated successfully.");
         } catch (error) {
           console.error("Error updating user:", error);
-          this.$toast.error(error.response?.data?.message || "Failed to update user.");
+          toast.error(error.response?.data?.message || "Failed to update user.");
         } finally {
           this.loadingSave = false;
         }
       },
       async deleteUser(id) {
+        const toast = useToast()
         const confirmed = confirm("Are you sure you want to delete this user?");
         if (!confirmed) return;
 
@@ -288,10 +291,10 @@
           const config = configuration();
           await this.$axios.delete(`/user/users/${id}`, config);
           this.fetchUsers();
-          this.$toast.success("User deleted successfully.");
+          toast.success("User deleted successfully.");
         } catch (error) {
           console.error("Error deleting user:", error);
-          this.$toast.error("Failed to delete user.");
+          toast.error("Failed to delete user.");
         }
       }
     },

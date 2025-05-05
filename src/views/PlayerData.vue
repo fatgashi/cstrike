@@ -7,13 +7,13 @@
           Player Details: <span class="text-white fw-bolder">{{ player.name }}</span>
         </div>
         <div class="card-body">
-          <p><strong>Total Time Played:</strong> {{ formatTime(player.totalTime) }}</p>
-          <p><strong>Last Seen:</strong> {{ formatDate(player.lastSeen) }}</p>
+          <p><strong class="c-title">Total Time Played:</strong> {{ formatTime(player.totalTime) }}</p>
+          <p><strong class="c-title">Last Seen:</strong> {{ formatDate(player.lastSeen) }}</p>
   
           <!-- Date Range Inputs -->
-          <div class="date-range-picker d-flex justify-content-between align-items-center mb-4">
+          <div class="date-range-picker d-flex flex-sm-row flex-column justify-content-between align-items-center mb-4">
             <div class="form-group me-3">
-              <label for="fromDate" class="form-label text-white">From:</label>
+              <label for="fromDate" class="form-label c-title">From:</label>
               <input
                 type="date"
                 id="fromDate"
@@ -42,7 +42,7 @@
           />
   
           <!-- Daily Playtime Table -->
-          <h5 class="mt-4">Daily Playtime</h5>
+          <h5 class="mt-4 c-title">Daily Playtime</h5>
           <table class="table table-dark table-striped">
             <thead>
               <tr>

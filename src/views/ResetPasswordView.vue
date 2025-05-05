@@ -26,6 +26,8 @@
   </template>
   
   <script>
+import { useToast } from 'vue-toastification';
+
   
   export default {
     data() {
@@ -42,9 +44,10 @@
     },
     methods: {
       async resetPassword() {
+        const toast = useToast();
         if (this.password !== this.confirmPassword) {
           this.message = "Passwords do not match!";
-            this.$toast.error(this.message);
+            toast.error(this.message);
           this.success = false;
           return;
         }
@@ -57,14 +60,14 @@
   
           this.message = response.data.message;
           this.success = true;
-          this.$toast.success("Password updated successfully!");
+          toast.success("Password updated successfully!");
           
           setTimeout(() => {
             this.$router.push("/home");
           }, 3000);
         } catch (error) {
           this.message = error.response?.data?.message || "An error occurred.";
-          this.$toast.error(this.message);
+          toast.error(this.message);
           this.success = false;
         }
       }

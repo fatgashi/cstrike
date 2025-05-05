@@ -15,7 +15,7 @@ export default {
   },
   mounted() {
     // ✅ Listen for the event
-    eventBus.$on("showLoginModal", () => {
+    eventBus.on("showLoginModal", () => {
       console.log("🔥 showLoginModal event received in App.vue");
       if (this.$refs.loginModal) {
         this.$refs.loginModal.modal.show();

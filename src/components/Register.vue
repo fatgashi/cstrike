@@ -42,6 +42,7 @@
     
     <script>
       import { Modal } from 'bootstrap';
+import { useToast } from 'vue-toastification';
     
     export default {
         name: "RegisterModal",
@@ -58,8 +59,9 @@
     
         methods: {
           async register(){
+            const toast = useToast();
             if (this.password !== this.confirmPassword) {
-              this.$toast.error('Passwords do not match.');
+              toast.error('Passwords do not match.');
               return;
             }
             try {
@@ -71,7 +73,7 @@
               }).then(res => {
                 
                 this.$router.push('/email-verification');
-                this.$toast.success(res.data.message);
+                toast.success(res.data.message);
                 return res.data;
               })
     
@@ -85,7 +87,7 @@
               const keys = Object.keys(err.response.data);
               
               var firstError = keys[0];
-              this.$toast.error(err.response.data[firstError]);
+              toast.error(err.response.data[firstError]);
               
             }
     

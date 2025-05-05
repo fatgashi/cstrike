@@ -129,6 +129,7 @@
   
   <script>
   export default {
+    name: "EventsView",
     data() {
       return {
         showUpdates: true,

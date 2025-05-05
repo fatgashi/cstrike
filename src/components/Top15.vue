@@ -52,6 +52,7 @@
   
   <script>
   export default {
+    name: "Top15Players",
     data() {
       return {
         players: [],

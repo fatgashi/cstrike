@@ -153,7 +153,7 @@ const routers = [
     ]
     },
     {
-        path: "*",
+        path: '/:pathMatch(.*)*',
         redirect: "/home"
     }
 ]

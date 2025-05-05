@@ -1,10 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
   state: {
     logged: false,
     token: null,
@@ -18,11 +15,11 @@ export default new Vuex.Store({
       state.token = value;
     },
     setUser(state, user) {
-      state.user = user; // Set the user object
+      state.user = user;
     },
     clearToken(state) {
-      state.token = null; // Sets token to null
-      state.logged = false; // Optional: Reset logged status if needed
+      state.token = null;
+      state.logged = false;
       state.user = null;
     },
   },
@@ -34,23 +31,19 @@ export default new Vuex.Store({
       commit('setToken', value);
     },
     updateUser({ commit }, user) {
-      commit('setUser', user); // Action to update the user data
+      commit('setUser', user);
     },
     clearToken({ commit }) {
-      commit('clearToken'); // Calls the mutation to clear token
+      commit('clearToken');
     },
   },
   getters: {
-    isAuthenticated: (state) => {
-      return !!state.token;
-    },
-    getUser: (state) => {
-      return state.user; // Getter to access the user object
-    },
+    isAuthenticated: (state) => !!state.token,
+    getUser: (state) => state.user,
   },
   plugins: [
     createPersistedState({
-      paths: ["token", "logged", "user"], // Specify which state properties to persist
+      paths: ['token', 'logged', 'user'],
     }),
   ],
-})
+});

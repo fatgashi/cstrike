@@ -92,7 +92,7 @@
   
   <script>
   export default {
-    name: "Rules",
+    name: "RulesView",
     metaInfo() {
       return {
         title: 'ZM Server Rules | zm-westcstrike.com',

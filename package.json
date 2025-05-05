@@ -1,6 +1,6 @@
 {
   "name": "csfront",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,31 +9,31 @@
     "sitemap": "node generate-sitemap.js"
   },
   "dependencies": {
-    "apexcharts": "^3.49.1",
+    "apexcharts": "^4.7.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.6.5",
     "gsap": "^3.12.7",
     "jwt-decode": "^4.0.0",
-    "vue": "^2.6.11",
-    "vue-apexcharts": "^1.6.2",
-    "vue-meta": "^2.4.0",
-    "vue-router": "^3.6.5",
-    "vue-toastification": "^1.7.14",
-    "vuex": "^3.6.2",
+    "mitt": "^3.0.1",
+    "vue": "^3.4.15",
+    "vue-meta": "^3.0.0-alpha.2",
+    "vue-router": "^4.2.5",
+    "vue-toastification": "^2.0.0-rc.5",
+    "vue3-apexcharts": "^1.8.0",
+    "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.19",
-    "@vue/cli-plugin-eslint": "~4.5.19",
-    "@vue/cli-service": "~4.5.19",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "sitemap": "^8.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "@babel/eslint-parser": "^7.27.1",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "@vue/compiler-sfc": "^3.5.13",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.19.2",
+    "sitemap": "^8.0.0"
   },
   "eslintConfig": {
     "root": true,
@@ -41,11 +41,11 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {}
   },

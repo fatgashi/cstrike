@@ -52,6 +52,7 @@
   </template>
   
   <script>
+import { useToast } from 'vue-toastification';
 import { getCurrentUser } from '../config/userLogic';
 import { eventBus } from '../router/index';
 
@@ -81,7 +82,7 @@ import { eventBus } from '../router/index';
       window.addEventListener("resize", this.checkScreenSize);
       this.user = await getCurrentUser();
     },
-    beforeDestroy() {
+    beforeUnmount() {
       window.removeEventListener("resize", this.checkScreenSize);
     },
     methods: {
@@ -98,11 +99,12 @@ import { eventBus } from '../router/index';
         return `https://zm-westcstrike.com/${path}`;
       },
       async signOut() {
+        const toast = useToast();
         this.$router.replace({ path: '/home' });
 
         this.$store.dispatch('clearToken');
-        eventBus.$emit("userLoggedOut");
-        this.$toast.warning("You have been logged out.");
+        eventBus.emit("userLoggedOut");
+        toast.warning("You have been logged out.");
       },
       checkScreenSize() {
         this.isMobile = window.innerWidth < 768;

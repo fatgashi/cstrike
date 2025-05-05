@@ -30,6 +30,8 @@
   </template>
   
   <script>
+import { useToast } from 'vue-toastification';
+
   
   export default {
     data() {
@@ -41,18 +43,19 @@
     },
     methods: {
       async requestPasswordReset() {
+        const toast = useToast();
         try {
           const response = await this.$axios.post("/user/forgot-password", { email: this.email });
           this.message = response.data.message;
           this.success = true;
-          this.$toast.success(this.message);
+          toast.success(this.message);
           setTimeout(() => {
             this.$router.push("/home");
           }, 3000);
         } catch (error) {
           this.message = error.response?.data?.message || "An error occurred.";
           this.success = false;
-          this.$toast.error(this.message);
+          toast.error(this.message);
         }
       }
     }

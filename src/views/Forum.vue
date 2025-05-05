@@ -40,6 +40,11 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  name: "ForumView"
+};
+</script>
 
 <style scoped>
 .forum-card {

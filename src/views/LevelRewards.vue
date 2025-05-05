@@ -7,7 +7,7 @@
       <div v-if="!isLoggedIn" class="alert alert-danger text-dark fw-bold text-center">
         🔒 You must be logged in to view and claim rewards.
         <br>
-        <button class="btn btn-primary mt-2" @click="buss.$emit('showLoginModal')">
+        <button class="btn btn-primary mt-2" @click="buss.emit('showLoginModal')">
           🔐 Login Now
         </button>
       </div>
@@ -95,6 +95,7 @@
   import { getCurrentUser } from "../config/userLogic";
   import configuration from "../config/config";
   import { eventBus } from "../router";
+import { useToast } from "vue-toastification";
   
   export default {
     data() {
@@ -118,6 +119,7 @@
     },
     methods: {
         async fetchRewards() {
+          const toast = useToast();
             try {
                 this.loading = true;
                 const res = await this.$axios.get("/rcon/levelRewardStatus", configuration());
@@ -135,28 +137,29 @@
                 }
             } catch (error) {
                 console.error("Error fetching level rewards:", error);
-                this.$toast.error(error.response?.data?.message || "Failed to load rewards.");
+                toast.error(error.response?.data?.message || "Failed to load rewards.");
             } finally {
                 this.loading = false;
             }
         },
         async listenToAuthChanges() {
-            eventBus.$on("userLoggedIn", async () => {
+            eventBus.on("userLoggedIn", async () => {
                 if (this.$store.state.user) {
                     await this.fetchRewards();
                 }
             });
         },
       async claimReward(level) {
+        const toast = useToast();
         try {
           const res = await this.$axios.post("/rcon/claim-level-reward", { level }, configuration());
           if (res.data.success) {
-            this.$toast.success(`Successfully claimed level ${level} reward!`);
+            toast.success(`Successfully claimed level ${level} reward!`);
             this.fetchRewards(); // Refresh the list after claiming
           }
         } catch (error) {
           console.error("Error claiming reward:", error);
-          this.$toast.error(error.response?.data?.message || "Failed to claim reward.");
+          toast.error(error.response?.data?.message || "Failed to claim reward.");
         }
       }
     },
@@ -169,8 +172,8 @@
             await this.listenToAuthChanges();
         }
     },
-    beforeDestroy() {
-        eventBus.$off("userLoggedIn");
+    beforeUnmount() {
+        eventBus.off("userLoggedIn");
     },
   };
   </script>

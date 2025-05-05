@@ -30,6 +30,7 @@
   
   <script>
   export default {
+    name: "MapsView",
     data() {
       return {
         selectedSize: 'small', // Default filter to show small maps
