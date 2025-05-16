@@ -1,6 +1,8 @@
-const PurgeCSSPlugin = require('purgecss-webpack-plugin');
 const glob = require('glob-all');
 const path = require('path');
+
+// ⛳ Use `.default` when importing the plugin later
+const PurgeCSSPlugin = require('purgecss-webpack-plugin').default;
 
 module.exports = () =>
   new PurgeCSSPlugin({
