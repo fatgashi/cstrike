@@ -1,11 +1,21 @@
 <template>
-  <div class="hero-section">
+  <div
+    class="hero-section"
+    style="
+      background: url('/assets/spring/spring-update1.webp') no-repeat center center;
+      background-size: cover;
+      background-color: rgba(0, 0, 0, 0.7);
+      background-blend-mode: overlay;
+      background-attachment: fixed;"
+  >
     <!-- Particle Background -->
     <div id="particles-js"></div>
-    
+
     <!-- Content -->
     <div class="hero-content">
-      <h1 class="fade-in">Play <span style="color: #ff1a1a; font-family: 'Nosifer', cursive;">Zm-WestCStrike</span> – CS 1.6 Zombie Server</h1>
+      <h1 class="fade-in">
+        Play <span style="color: #ff1a1a; font-family: 'Nosifer', cursive;">Zm-WestCStrike</span> – CS 1.6 Zombie Server
+      </h1>
       <p class="fade-in">
         Welcome to the <strong>best CS 1.6 Zombie Plague server</strong> – Zm-WestCStrike. Join our intense zombie survival battles and experience top-tier Counter-Strike 1.6 multiplayer gameplay.
       </p>
@@ -14,14 +24,16 @@
         <p>Status: <span class="online fw-bolder">Online</span></p>
         <p>Players: <span>{{players}}/32</span></p>
       </div>
-      <button class="join-btn text-white"><a
-                href="steam://connect/51.77.72.157:27015"
-                class="btn text-white"
-                target="_self"
-                rel="noopener"
-            >
-                Join the Server
-            </a></button>
+      <button class="join-btn text-white">
+        <a
+          href="steam://connect/51.77.72.157:27015"
+          class="btn text-white"
+          target="_self"
+          rel="noopener"
+        >
+          Join the Server
+        </a>
+      </button>
     </div>
   </div>
 </template>
@@ -43,15 +55,19 @@ export default {
   },
   methods: {
     initParticles() {
-      window.particlesJS.load("particles-js", "/particles.json");
+      setTimeout(() => {
+        window.particlesJS.load("particles-js", "/particles.json");
+      }, 1500);
     },
     animateContent() {
-      TweenMax.staggerFrom(
-        ".fade-in",
-        1,
-        { opacity: 0, y: 20, ease: "power2.out" },
-        0.3
-      );
+      setTimeout(() => {
+        TweenMax.staggerFrom(
+          ".fade-in",
+          1,
+          { opacity: 0, y: 20, ease: "power2.out" },
+          0.3
+        );
+      }, 1000);
     }
   }
 };
@@ -68,15 +84,6 @@ export default {
   text-align: center;
   color: white;
   overflow: hidden;
-  
-  /* Background Image */
-  background: url("../assets/spring/spring-update1.webp") no-repeat center center;
-  background-size: cover;
-
-  /* Dark Overlay */
-  background-color: rgba(0, 0, 0, 0.7);
-  background-blend-mode: overlay;
-  background-attachment: fixed;
 }
 
 @supports (-webkit-touch-callout: none) {

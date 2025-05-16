@@ -20,12 +20,10 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue';
 import Carousels from "../components/Carousel.vue";
 import Banner from "../components/Banner.vue";
 import Infos from "../components/Infos.vue";
-import Modes from "../components/Modes.vue";
-import Partner from '../components/Partner.vue';
-import Top15 from '../components/Top15.vue';
 import configuration from "../config/config";
 import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router/index";
@@ -58,9 +56,9 @@ export default {
     Banner,
     Infos,
     Carousels,
-    Modes,
-    Partner,
-    Top15
+    Modes: defineAsyncComponent(() => import('../components/Modes.vue')),
+    Partner: defineAsyncComponent(() => import('../components/Partner.vue')),
+    Top15: defineAsyncComponent(() => import('../components/Top15.vue')),
   },
   data() {
     return {
