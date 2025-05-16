@@ -1,18 +1,13 @@
 <template>
   <div
     class="hero-section"
-    style="
-      background: url('/assets/spring/spring-update1.webp') no-repeat center center;
-      background-size: cover;
-      background-color: rgba(0, 0, 0, 0.7);
-      background-blend-mode: overlay;
-      background-attachment: fixed;"
+    :style="heroStyle"
   >
     <!-- Particle Background -->
     <div id="particles-js"></div>
 
     <!-- Content -->
-    <div class="hero-content">
+    <div class="hero-content container">
       <h1 class="fade-in">
         Play <span style="color: #ff1a1a; font-family: 'Nosifer', cursive;">Zm-WestCStrike</span> – CS 1.6 Zombie Server
       </h1>
@@ -47,6 +42,22 @@ export default {
     players: {
       type: Number,
       default: 0
+    }
+  },
+  computed: {
+    heroStyle() {
+      const isMobile = window.innerWidth <= 600;
+      const bg = isMobile
+        ? "/assets/spring/spring-update1-mobile.webp"
+        : "/assets/spring/spring-update1.webp";
+
+      return {
+        background: `url('${bg}') no-repeat center center`,
+        backgroundSize: 'cover',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundBlendMode: 'overlay',
+        backgroundAttachment: 'fixed',
+      };
     }
   },
   mounted() {
@@ -92,7 +103,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
   .hero-section {
     height: 90vh !important;
   }
