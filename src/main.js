@@ -11,7 +11,7 @@ import './assets/main.css';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
-import VueApexCharts from 'vue3-apexcharts';
+
 import { createMetaManager, defaultConfig } from 'vue-meta';
 
 const app = createApp(App);
@@ -26,11 +26,7 @@ app.use(Toast, {
   pauseOnHover: true,
   draggable: true,
 });
-app.use(VueApexCharts);
 app.use(createMetaManager(false, defaultConfig)); // Replaces VueMeta
-
-// 🔧 Global components
-app.component('ApexChart', VueApexCharts);
 
 // 🔧 Global properties
 app.config.globalProperties.$axios = AxiosInstace;
