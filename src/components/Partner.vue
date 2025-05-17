@@ -3,7 +3,7 @@
       <h1 class="text-center mb-5" style="color: #ff1a1a; font-weight: bolder;">Our Partners</h1>
       <div v-for="(part,index) in partner" :key="index" class="row align-items-center mb-5">
         <div class="col-md-4 text-center mb-3">
-          <img :src="part.logo" :alt="part.name" width="400" height="400" class="partner-logo">
+          <img :src="part.logo" :alt="part.name" width="400" height="400" loading="lazy" class="partner-logo">
         </div>
         <div class="col-md-8 text-center">
             <h2 class="fw-bold" style="color: #ff1a1a;">{{ part.name }}</h2>
