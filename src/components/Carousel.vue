@@ -10,8 +10,8 @@
             data-bs-interval="3000"
             :class="{ active: i === 0 }"
           >
-            <img :src="require(`@/assets/${slide.image}`)" width="100%"
-              height="400" class="d-block w-100" :alt="slide.title" />
+            <img :src="require(`@/assets/${slide.image}`)" width="400"
+              height="400" class="d-block w-100" :alt="slide.title" loading="lazy" />
             <div class="carousel-caption">
               <h5>{{ slide.title }}</h5>
               <p>{{ slide.text }}</p>
