@@ -30,7 +30,7 @@
                   <td class="player-name">
                     <span class="tooltip-container">
                       {{ player.Name }}
-                      <span class="tooltip-text"><img :src="getCountryFlag(player.Country)" class="flag-icon" alt="flag" /> {{ player.Country }}</span>
+                      <span class="tooltip-text"><img :src="getCountryFlag(player.Country)" loading="lazy" width="30" height="40" class="flag-icon" alt="flag" /> {{ player.Country }}</span>
                     </span>
                   </td>
                   <td>{{ player.Kills }}</td>
