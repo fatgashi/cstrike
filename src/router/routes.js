@@ -1,4 +1,4 @@
-const LayOut = () => import("../Layout/Layout.vue");
+const LayOut = () => import(/* webpackChunkName: "layout", webpackPrefetch: true */ "../Layout/Layout.vue");
 const Home = () => import(/* webpackChunkName: "home", webpackPrefetch: true */ "../views/Home.vue");
 const Server = () =>  import("../views/Server.vue");
 const Vip = () => import("../views/Vip.vue");

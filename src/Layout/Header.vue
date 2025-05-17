@@ -23,6 +23,7 @@
                 <button
                 class="btn"
                 type="button"
+                name="logout"
                 id="login"
                 v-if="loggedIn"
                 @click="signOut"
@@ -32,6 +33,7 @@
                 <button
                   class="btn"
                   type="button"
+                  name="login"
                   id="login"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModalToggle"
@@ -43,6 +45,7 @@
                   type="button"
                   class="btn dropdown-toggle dropdown-toggle-split"
                   id="bsep"
+                  name="dropdownMenuButton1"
                   v-if="loggedIn"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -60,8 +63,7 @@
                   <li><a class="dropdown-item text-danger" @click="signOut" style="cursor: pointer;">Logout</a></li>
                 </ul>
               </div>
-              
-            </div>
+          </div>
         </div>
       </div>
     </nav>
