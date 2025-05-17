@@ -60,7 +60,7 @@
                   <li><hr class="dropdown-divider"></li>
                   <li><router-link v-if="user.role === 'superadmin'" class="dropdown-item" to="/dashboard">Dashboard</router-link></li>
                   <li><router-link class="dropdown-item" to="/profile">Profile</router-link></li>
-                  <li><a class="dropdown-item text-danger" @click="signOut" style="cursor: pointer;">Logout</a></li>
+                  <li><router-link class="dropdown-item text-danger" to="/home" @click="signOut" style="cursor: pointer;">Logout</router-link></li>
                 </ul>
               </div>
           </div>

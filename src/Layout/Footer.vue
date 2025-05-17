@@ -80,7 +80,7 @@
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3" id="footerdesc">
         © 2025 Copyright:
-        <a style="font-family: 'Nosifer', cursive;"> ZM-WESTCSTRIKE </a>
+        <span style="font-family: 'Nosifer', cursive;"> ZM-WESTCSTRIKE </span>
       </div>
       <!-- Copyright -->
     </footer>
