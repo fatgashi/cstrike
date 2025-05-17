@@ -66,10 +66,13 @@
 
 
 <script>
-import VueApexCharts from 'vue3-apexcharts';
+import { defineAsyncComponent } from 'vue';
+
 export default {
   components: {
-    apexchart: VueApexCharts,
+    apexchart: defineAsyncComponent(() =>
+      import(/* webpackChunkName: "apexcharts" */ 'vue3-apexcharts')
+  )
   },
   props: {
     playerName: {

@@ -9,7 +9,7 @@ const About = () => import("../views/About.vue");
 const ProfileView = () => import("../views/ProfileView.vue");
 const MediumMaps = () => import("../views/MediumMaps.vue");
 const LargeMaps = () => import("../views/LargeMaps.vue");
-const PlayerData = () => import("../views/PlayerData.vue");
+const PlayerData = () => import(/* webpackChunkName: "player-data" */ "../views/PlayerData.vue");
 const DashboardLayout = () => import("../DashboardLayout/DashboardLayout.vue");
 const DashboardView = () => import("../Dashboard/DashboardView.vue");
 const DashboardBanlist = () => import("../Dashboard/DashboardBanListView.vue");

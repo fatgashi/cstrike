@@ -89,7 +89,7 @@ export default {
 .hero-section {
   position: relative;
   width: 100%;
-  height: 75vh;
+  height: auto;
   min-height: 75vh;
   display: flex;
   align-items: center;
@@ -107,7 +107,8 @@ export default {
 
 @media only screen and (max-width: 600px) {
   .hero-section {
-    height: 90vh !important;
+    min-height: 90vh;
+    height: auto;
   }
 }
 
