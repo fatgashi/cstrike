@@ -1,11 +1,11 @@
-import LayOut from "../Layout/Layout.vue";
-import Home from "../views/Home.vue";
+const LayOut = () => import("../Layout/Layout.vue");
+const Home = () => import(/* webpackChunkName: "home", webpackPrefetch: true */ "../views/Home.vue");
 const Server = () =>  import("../views/Server.vue");
 const Vip = () => import("../views/Vip.vue");
 const Events = () => import("../views/Events.vue");
 const Offers = () => import("../views/Offers.vue");
 const Maps = () => import("../views/Maps.vue");
-import About from "../views/About.vue";
+const About = () => import("../views/About.vue");
 const ProfileView = () => import("../views/ProfileView.vue");
 const MediumMaps = () => import("../views/MediumMaps.vue");
 const LargeMaps = () => import("../views/LargeMaps.vue");

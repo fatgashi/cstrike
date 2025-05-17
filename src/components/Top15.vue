@@ -5,7 +5,7 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <div v-else>
+      <div v-else style="min-height: 600px;">
         <div class="card text-white" style="background-color: transparent !important;">
           <div class="card-header text-center">Top 15 Players</div>
           <div class="card-body table-responsive">

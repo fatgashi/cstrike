@@ -31,7 +31,7 @@
                     <i class="fas fa-gem fa-3x mb-3 text-success"></i>
                     <h4 class="fw-bolder">VIP Membership</h4>
                     <p>Unlock exclusive VIP features and level up your experience.</p>
-                    <router-link to="/vip-info" ><button class="btn btn-success">Learn More</button></router-link>
+                    <router-link to="/vip-info" ><button class="btn btn-success">View VIP</button></router-link>
                 </div>
             </div>
         </div>

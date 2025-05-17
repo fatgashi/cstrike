@@ -10,7 +10,8 @@
             data-bs-interval="3000"
             :class="{ active: i === 0 }"
           >
-            <img :src="require(`@/assets/${slide.image}`)" class="d-block w-100" :alt="slide.title" />
+            <img :src="require(`@/assets/${slide.image}`)" width="100%"
+              height="400" class="d-block w-100" :alt="slide.title" />
             <div class="carousel-caption">
               <h5>{{ slide.title }}</h5>
               <p>{{ slide.text }}</p>
@@ -83,6 +84,10 @@ export default {
   padding: 15px;
   top: 8rem !important;
   bottom: auto !important;
+}
+
+.carousel-inner {
+  min-height: 400px;
 }
 .carousel-inner img {
   height: 400px;
