@@ -19,7 +19,7 @@
         >
         <div class="navbar-nav">
               <!-- Example split danger button -->
-              <div class="btn-group" id="butonatlogin">
+              <div class="btn-group" id="butonatlogin" style="min-width: 30px;">
                 <button
                 class="btn"
                 type="button"
@@ -172,6 +172,13 @@ export default {
 };
 </script>
 <style>
+#logo::before,
+#logo::after,
+#logo .drop1,
+#logo .drop2,
+#logo .drop3 {
+  will-change: transform;
+}
 @media only screen and (max-width: 991px) {
     .nav-text,
     .nav-ico {

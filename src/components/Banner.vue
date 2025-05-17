@@ -89,6 +89,7 @@ export default {
   position: relative;
   width: 100%;
   height: 75vh;
+  min-height: 75vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,6 +123,7 @@ export default {
   position: relative;
   z-index: 2;
   max-width: 600px;
+  min-height: 350px;
 }
 
 h1 {

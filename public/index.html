@@ -1,25 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
-    <link rel="icon" href="<%= BASE_URL %>zombie.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Nosifer&family=Orbitron&family=Poppins&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="preload" as="image" href="/assets/spring/spring-update1.webp" media="(min-width: 601px)">
-    <link rel="preload" as="image" href="/assets/spring/spring-update1-mobile.webp" media="(max-width: 600px)">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <title>Zm-WestCStrike</title>
+    <!-- Basic Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Zm-WestCStrike – The Best CS 1.6 Zombie Plague Server. Join intense survival battles with top-tier Counter-Strike 1.6 experience." />
+
+    <!-- Favicon -->
+    <link rel="icon" href="<%= BASE_URL %>zombie.ico" />
+
+    <!-- Font Preconnects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fonts (optimized lazy-load) -->
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Butcherman&family=Nosifer&family=Orbitron&family=Poppins&display=swap" 
+      rel="stylesheet" 
+      media="print" 
+      onload="this.media='all'" 
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Butcherman&family=Nosifer&family=Orbitron&family=Poppins&display=swap" rel="stylesheet" />
+    </noscript>
+
+    <!-- Preload Hero Images (prevent layout shift) -->
+    <link rel="preload" as="image" href="/assets/spring/spring-update1.webp" media="(min-width: 601px)" />
+    <link rel="preload" as="image" href="/assets/spring/spring-update1-mobile.webp" media="(max-width: 600px)" />
+
+    <!-- Font Awesome (defer for speed) -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    </noscript>
+
+    <!-- Title -->
+    <title>Zm-WestCStrike – CS 1.6 Zombie Server</title>
   </head>
+
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+
+    <!-- Vue Mount Point -->
     <div id="app"></div>
-    <!-- built files will be auto injected -->
+
+    <!-- Particles JS (defer to avoid blocking main thread) -->
     <script defer src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   </body>
 </html>
