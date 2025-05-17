@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import { TweenMax } from "gsap";
 
 export default {
   name: "BannerView",
@@ -70,14 +69,16 @@ export default {
         window.particlesJS.load("particles-js", "/particles.json");
       }, 1500);
     },
-    animateContent() {
+    async animateContent() {
+      const { gsap } = await import("gsap");
       setTimeout(() => {
-        TweenMax.staggerFrom(
-          ".fade-in",
-          1,
-          { opacity: 0, y: 20, ease: "power2.out" },
-          0.3
-        );
+        gsap.from(".fade-in", {
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          ease: "power2.out",
+          stagger: 0.3
+        });
       }, 1000);
     }
   }

@@ -7,6 +7,9 @@ module.exports = {
       content: ['./public/index.html', './src/**/*.vue', './src/**/*.js'],
       safelist: {
         standard: [
+           // ✅ Toastification core
+          /^Vue-Toastification/,
+          /^vue-toastification/,
           // Bootstrap dropdown
           'dropdown-menu',
           'dropdown-menu-end',
