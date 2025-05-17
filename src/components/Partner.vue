@@ -25,7 +25,7 @@
           {
             name: "WESTCSTRIKE Romania",
             text: "WESTCSTRIKE Romania is one of the most active and vibrant Counter-Strike communities. Join their forum to connect with players, share experiences, and stay updated on the latest events and server news.",
-            logo: require("../assets/partner/west.png"), // Replace with the uploaded logo
+            logo: require("../assets/partner/west.webp"), // Replace with the uploaded logo
             website: "https://westcstrike.ro/forum/index.php?/forum/1551-zombie-%C2%BB-zm/", // Replace with your partner's website URL
           },
       ],

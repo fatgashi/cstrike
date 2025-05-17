@@ -34,6 +34,7 @@
                   class="btn"
                   type="button"
                   name="login"
+                  aria-label="Login"
                   id="login"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModalToggle"
