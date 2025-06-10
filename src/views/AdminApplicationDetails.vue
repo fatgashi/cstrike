@@ -3,27 +3,30 @@
     <br>
     <h2 v-if="user" class="text-start text-white mb-3 fw-bolder">Admin Request: {{ user.username }}</h2>
     <div v-if="application" class="p-3 mb-3" style="background-color: #1a1a1a;">
-      <div class="d-flex justify-content-between align-items-center">
-    <div class="d-flex align-items-center">
-        <img v-if="user.profilePhoto" class="profile-photo" :src="getImageUrl(user.profilePhoto)" alt="Avatar">
-        <img v-else :src="avatarUrl" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover;">
-        <div class="d-flex flex-column ms-3">
-            <h6 class="text-white m-0">By: {{ user.username }}</h6>
-            <p class="text-white m-0 small">{{ formatDate(application.createdAt) }}</p>
-        </div>
-    </div>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+          <img v-if="user.profilePhoto" class="profile-photo" :src="getImageUrl(user.profilePhoto)" alt="Avatar">
+          <img v-else :src="avatarUrl" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover;">
+          <div class="d-flex flex-column ms-3">
+              <h6 class="text-white m-0">By: {{ user.username }}</h6>
+              <p class="text-white m-0 small">{{ formatDate(application.createdAt) }}</p>
+          </div>
+      </div>
 
-    <div v-if="currentUser && currentUser.role === 'superadmin'" class="dropdown">
-      <button class="btn dropdown-toggle" style="background-color: #1a1a1a;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-ellipsis-h text-white" aria-hidden="true"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-dark">
-        <li><button class="btn dropdown-item" @click="finishApplication">🔄 Finish Application</button></li>
-        <li><button class="btn dropdown-item text-success" @click="updateApplicationStatus('approved')">✅ Approve</button></li>
-        <li><button class="btn dropdown-item text-danger" @click="updateApplicationStatus('rejected')">❌ Reject</button></li>
-      </ul>
+      <div v-if="currentUser && currentUser.role === 'superadmin' && application.status === 'pending'" class="dropdown">
+        <button class="btn dropdown-toggle" style="background-color: #1a1a1a;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa fa-ellipsis-h text-white" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark">
+          <li><button class="btn dropdown-item" @click="finishApplication">🔄 Finish Application</button></li>
+          <li><button class="btn dropdown-item text-success" @click="updateApplicationStatus('approved')">✅ Approve</button></li>
+          <li><button class="btn dropdown-item text-danger" @click="updateApplicationStatus('rejected')">❌ Reject</button></li>
+        </ul>
+      </div>
+      <div v-else class="text-white">
+        Closed By: <span class="fw-bolder text-danger"> {{ application.closedBy ? application.closedBy : "N/A" }} </span>
+      </div>
     </div>
-</div>
     </div>
 
     <div v-if="loading" class="text-center text-white">Loading...</div>
