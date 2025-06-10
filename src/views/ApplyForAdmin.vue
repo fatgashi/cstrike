@@ -54,20 +54,16 @@
               <label class="form-check-label" for="teamSpeakCheck">Do you use TeamSpeak?</label>
             </div>
   
-            <div class="mb-3 form-check">
-              <i class="fa fa-info-circle me-2 text-warning" 
-                data-bs-toggle="tooltip" 
-                data-bs-placement="top" 
-                title="Did you read the rules found in zm-westcstrike.com/forum/rules">
-              </i>
-              <input type="checkbox" v-model="application.rulesRead" class="form-check-input" id="rulesCheck" required>
-              <label class="form-check-label" for="rulesCheck">I have read and agree to the rules</label>
-            </div>
-
-            <div v-if="application.rulesRead" class="mb-3">
-              <label class="form-label">Enter the Secret Keyword</label>
-              <input type="text" v-model="secretKeyword" class="form-control bg-dark text-white" placeholder="Enter VIP" required>
-              <small v-if="secretKeyword && secretKeyword !== 'VIP'" class="text-danger">You must read the rules to find the keyword to apply!</small>
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="fa fa-info-circle me-2 text-warning"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Write the secret keyword you found at zm-westcstrike.com/forum/rules">
+                </i>
+                Did you read the rules?
+              </label>
+              <input type="text" v-model="application.rulesRead" class="form-control" required placeholder="Did you read the rules?">
             </div>
   
             <div class="mb-3 form-check">
@@ -129,10 +125,9 @@ import configuration from "../config/config";
           hoursPlayed: "",
           joinedDiscord: false,
           useTeamSpeak: false,
-          rulesRead: false,
+          rulesRead: "",
           voteTeamSpeak: false,
         },
-        secretKeyword: "",
         loading: false,
         errorMessage: "",
         photoAttachment: null,
@@ -144,10 +139,6 @@ import configuration from "../config/config";
     methods: {
       async submitApplication() {
         const toast = useToast();
-        if (this.application.rulesRead && this.secretKeyword !== "VIP") {
-          toast.error("You must enter the correct keyword to proceed.");
-          return;
-        }
 
         this.loading = true;
         this.errorMessage = "";
@@ -160,7 +151,7 @@ import configuration from "../config/config";
         // ✅ Convert boolean values to "true"/"false" strings (because FormData doesn't support booleans)
         formData.set("joinedDiscord", this.application.joinedDiscord ? "true" : "false");
         formData.set("useTeamSpeak", this.application.useTeamSpeak ? "true" : "false");
-        formData.set("rulesRead", this.application.rulesRead ? "true" : "false");
+        formData.set("rulesRead", this.application.rulesRead.trim());
         formData.set("voteTeamSpeak", this.application.voteTeamSpeak ? "true" : "false");
   
         // ✅ Attach Photos
@@ -195,7 +186,7 @@ import configuration from "../config/config";
     computed: {
       isSubmitDisabled() {
         // ✅ Disable Submit Button if Rules Read is checked but the keyword is incorrect
-        return this.application.rulesRead && this.secretKeyword !== "VIP";
+        return !this.application.rulesRead || this.application.rulesRead.trim() === "";
       }
     },
     watch: {

@@ -19,16 +19,16 @@
         <p>Status: <span class="online fw-bolder">Online</span></p>
         <p>Players: <span>{{players}}/32</span></p>
       </div>
-      <button class="join-btn text-white">
         <a
           href="steam://connect/51.77.72.157:27015"
           class="btn text-white"
           target="_self"
           rel="noopener"
         >
-          Join the Server
+          <button class="join-btn text-white">
+              Join the Server
+          </button>
         </a>
-      </button>
     </div>
   </div>
 </template>

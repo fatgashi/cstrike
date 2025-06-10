@@ -61,6 +61,7 @@
         <ul>
           <li>🚀 Jetpack usage is forbidden.</li>
           <li>⚔️ Lasermine deployment is allowed.</li>
+          <li>📘 When asked <strong>"Did you read the rules?"</strong>, you must write: <span class="text-success fw-bold">{{ keyword }}</span></li>
           <li>🤫 Survivors must hide.</li>
         </ul>
   
@@ -76,14 +77,6 @@
           <li>⏳ No hiding to extend the round.</li>
         </ul>
       </div>
-  
-      <!-- Secret Word -->
-      <div class="card bg-dark text-white p-4 mt-4">
-        <h3 class="text-success">🔑 Secret Word</h3>
-        <p class="text-white">
-          When asked "Did you read the rules?" the correct answer is: <span class="fw-bold text-warning">VIP</span>.
-        </p>
-      </div>
       <br>
       <br>
   
@@ -91,8 +84,14 @@
   </template>
   
   <script>
+
   export default {
     name: "RulesView",
+    data() {
+      return {
+        keyword: ""
+      };
+    },
     metaInfo() {
       return {
         title: 'ZM Server Rules | zm-westcstrike.com',
@@ -110,6 +109,14 @@
         ]
       };
     },
+    async created() {
+      try {
+        const response = await this.$axios.get('/admin/get-keyword');
+        this.keyword = response.data.keyword;
+      } catch (error) {
+        console.error('Error fetching keyword:', error);
+      }
+    }
   };
   </script>
   

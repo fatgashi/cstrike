@@ -38,7 +38,13 @@
         <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Activity Schedule:</strong> {{ application.activitySchedule }}</p>
         <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Joined Discord Server?:</strong> {{ application.joinedDiscord ? "Yes" : "No" }}</p>
         <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Use TeamSpeak?:</strong> {{ application.useTeamSpeak ? "Yes" : "No" }}</p>
-        <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Did you read the rules?:</strong> {{ application.rulesRead ? "Yes" : "No" }}</p>
+        <p>
+          <i class="fa fa-arrow-right" aria-hidden="true"></i> 
+          <strong>Did you read the rules?:</strong> {{ application.rulesRead || "No" }}
+          <span v-if="currentUser && (currentUser.role === 'admin' || currentUser.role === 'superadmin')" class="text-success ms-2">
+            (Expected Keyword: <strong>{{ application.expectedKeyword }}</strong>)
+          </span>
+        </p>
         <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Vote on TeamSpeak Community Server?:</strong> {{ application.voteTeamSpeak ? "Yes" : "No" }}</p>
         <p><strong>Status:</strong> <span class="fw-bolder" :class="statusClass(application.status)">{{ application.status }}</span></p>
 
