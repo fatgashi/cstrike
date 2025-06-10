@@ -62,12 +62,12 @@ const routers = [
                 component: Maps
             },
             {
-                path: "medium-maps",
+                path: "maps/medium-maps",
                 name: "MediumMaps",
                 component: MediumMaps
             },
             {
-                path: "large-maps",
+                path: "maps/large-maps",
                 name: "LargeMaps",
                 component: LargeMaps
             },
@@ -77,7 +77,7 @@ const routers = [
                 component: About
             },
             {
-                path: '/player/:playerName',
+                path: '/server/player/:playerName',
                 name: 'PlayerDetails',
                 component: PlayerData,
                 props: true,

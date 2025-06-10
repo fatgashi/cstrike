@@ -8,7 +8,7 @@
           <!-- Filter Buttons -->
           <div class="button-group text-center mb-4">
             <router-link to="/maps"><button class="btn btn-outline-danger text-white mb-3">Small Maps</button></router-link>
-            <router-link to="/medium-maps"><button class="btn btn-outline-danger text-white mb-3">Medium Maps</button></router-link>
+            <router-link to="/maps/medium-maps"><button class="btn btn-outline-danger text-white mb-3">Medium Maps</button></router-link>
             <button :class="{ active: selectedSize === 'large' }" class="btn btn-outline-danger text-white mb-3">Large Maps</button>
           </div>
       

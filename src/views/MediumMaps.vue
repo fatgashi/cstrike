@@ -9,7 +9,7 @@
           <div class="button-group text-center mb-4">
             <router-link to="/maps"><button class="btn btn-outline-danger text-white mb-3">Small Maps</button></router-link>
             <button :class="{ active: selectedSize === 'medium' }" class="btn btn-outline-danger text-white mb-3">Medium Maps</button>
-            <router-link to="/large-maps"><button class="btn btn-outline-danger text-white mb-3">Large Maps</button></router-link>
+            <router-link to="/maps/large-maps"><button class="btn btn-outline-danger text-white mb-3">Large Maps</button></router-link>
           </div>
       
           <!-- Map Cards Grid -->

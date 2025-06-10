@@ -65,7 +65,7 @@
           </div>
         </div>
 
-        <div v-if="!hasVoted && currentUser && (currentUser.role === 'superadmin' || currentUser.role === 'admin') && application.status === 'pending'">
+        <div v-if="!hasVoted && currentUser && (currentUser.role === 'superadmin' || currentUser.role === 'admin')">
           <hr class="bg-white">
           <h5>Vote on Application</h5>
           <div class="vote-buttons">
@@ -97,10 +97,10 @@
               </div>
 
               <!-- ✅ Compare by username instead of _id -->
-              <button v-if="currentUser && comment.adminUsername === currentUser.username && application.status === 'pending'" 
+              <button v-if="currentUser && comment.adminUsername === currentUser.username" 
                 class="btn bg-danger" 
                 @click="removeComment(comment._id)">
-                <i class="fa fa-trash-o text-white" aria-hidden="true"></i>
+                <i class="fas fa-trash text-white" aria-hidden="true"></i>
               </button>
             </div>
           </div>
@@ -116,7 +116,7 @@
 
         <!-- ✅ Add Comment Form -->
         <hr class="bg-white">
-        <div class="mt-3" v-if="application.status === 'pending' && currentUser && (currentUser.role === 'superadmin' || currentUser.role === 'admin')">
+        <div class="mt-3" v-if="currentUser && (currentUser.role === 'superadmin' || currentUser.role === 'admin')">
           <form @submit.prevent="submitComment" class="mb-3">
             <textarea 
               v-model="newCommentText" 
@@ -145,9 +145,6 @@
             </button>
           </form>
         </div>
-        <div v-else-if="application.status !== 'pending'">
-          This application is already {{ application.status }} and you can't comment!.
-        </div>
         <div v-else>
           You should be logged in and as Admin to comment on this application.
         </div>
@@ -161,6 +158,7 @@
 import { useToast } from "vue-toastification";
 import configuration from "../config/config";
 import { getCurrentUser } from "../config/userLogic";
+import { eventBus } from "../router";
 
 export default {
   data() {
@@ -201,6 +199,13 @@ export default {
         console.error("Error fetching application:", error);
       } finally {
         this.loading = false;
+      }
+    },
+
+    async role(){
+      const user = await getCurrentUser();
+      if(user){
+        this.currentUser = user;
       }
     },
 
@@ -381,7 +386,16 @@ export default {
   },
   mounted() {
     this.fetchApplication();
-  }
+
+    eventBus.on("userLoggedIn", async () => {
+      console.log("🔥 userLoggedIn event received in Header.vue");
+      await this.role(); // this.loggedIn updates automatically now
+    });
+  },
+  beforeUnmount() {
+    // ✅ Remove event listener to prevent memory leaks
+    eventBus.off("userLoggedIn");
+  },
 };
 </script>
 

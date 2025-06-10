@@ -15,17 +15,17 @@
                 <p>
                   If you are a steam user you can join our server by this button!
                 </p>
-                <p class="card-text fw-bolder"><span id="title">Join By Button: </span> <span>
+                <p class="card-text fw-bolder"><span id="title">Join By Button: </span>
                   <a
                     href="steam://connect/51.77.72.157:27015"
                     class="btn text-white"
-                    style="background-color: #ff1a1a;"
                     target="_self"
                     rel="noopener"
                   >
-                    Join the Server
+                    <button class="join-btn text-white">
+                      Join the Server
+                    </button>
                   </a>
-                  </span>
                 </p>
                 </div>
             </div>
@@ -317,7 +317,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .players-link {
   color: #ff1a1a;
 }
@@ -488,6 +488,23 @@ export default {
   background-color: #333;
   border-color: #444;
   pointer-events: none;
+}
+
+.join-btn {
+  background: #ff1a1a;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn {
+  --bs-btn-padding-x: 0px !important;
+}
+
+.join-btn:hover {
+  background: #990000;
 }
 
 </style>
