@@ -23,7 +23,7 @@
           <li><button class="btn dropdown-item text-danger" @click="updateApplicationStatus('rejected')">❌ Reject</button></li>
         </ul>
       </div>
-      <div v-else class="text-white">
+      <div v-else-if="application.status !== 'pending'" class="text-white">
         Closed By: <span class="fw-bolder text-danger"> {{ application.closedBy ? application.closedBy : "N/A" }} </span>
       </div>
     </div>
