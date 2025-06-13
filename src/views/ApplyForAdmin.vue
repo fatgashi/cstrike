@@ -4,7 +4,6 @@
       <h2 class="text-center text-white mb-3 fw-bolder">Apply for Admin</h2>
   
       <div v-if="loading" class="text-center text-white">Loading...</div>
-      <div v-else-if="errorMessage" class="alert alert-danger text-center">{{ errorMessage }}</div>
       <div v-else class="card application-form-card">
         <div class="card-body text-white">
           <form @submit.prevent="submitApplication">
@@ -129,7 +128,6 @@ import configuration from "../config/config";
           voteTeamSpeak: false,
         },
         loading: false,
-        errorMessage: "",
         photoAttachment: null,
         votePhotoAttachment: null,
         photoPreview: null,
@@ -168,7 +166,7 @@ import configuration from "../config/config";
           toast.success("Application submitted successfully!");
         } catch (error) {
           console.error("Error submitting application:", error);
-          this.errorMessage = error.response?.data?.message || "An error occurred. Try again.";
+          toast.error(error.response?.data?.message || "An error occurred. Try again.");
         } finally {
           this.loading = false;
         }

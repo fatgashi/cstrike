@@ -45,15 +45,19 @@
             <p>
               Discord:
               <a href="https://discordapp.com/users/947193667188306011" target="_blank" class="important">
-                emosbg
+                EMOS BG
               </a>
               ,
               <a href="https://discordapp.com/users/1150374397606113370" target="_blank" class="important">
-                assos13-14
+                Assos14
               </a>
               ,
               <a href="https://discordapp.com/users/594462265630261250" target="_blank" class="important">
                 smack
+              </a>
+              ,
+              <a href="https://discordapp.com/users/1330247840563331298" target="_blank" class="important">
+                Matrix
               </a>
             </p>
             <p>

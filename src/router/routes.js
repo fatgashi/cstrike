@@ -24,6 +24,9 @@ const ResetPassword = () => import("../views/ResetPasswordView.vue");
 const RulesView = () => import("../views/RulesView.vue");
 const DashboardCommands = () => import("../Dashboard/DashboardCommand.vue");
 const LevelRewards = () => import("../views/LevelRewards.vue");
+const AdminPromotions = () => import("../views/AdminPromotion.vue");
+const ApplyForPromotions = () => import("../views/ApplyForPromotion.vue");
+const AdminPromotionsDetails = () => import("../views/AdminPromotionDetails.vue");
 
 const routers = [
     {
@@ -89,6 +92,19 @@ const routers = [
             {
                 path: "/forum/admin-applications",
                 component: AdminApplications
+            },
+            {
+                path: "/forum/admin-promotions",
+                component: AdminPromotions
+            },
+            {
+                path: "/forum/apply-for-promotions",
+                component: ApplyForPromotions
+            },
+            {
+                path: "/forum/admin-promotions/:id",
+                component: AdminPromotionsDetails,
+                props: true
             },
             {
                 path: "/forum/rules",

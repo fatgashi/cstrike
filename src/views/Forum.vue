@@ -14,6 +14,17 @@
         </router-link>
       </div>
 
+      <div class="col-md-4 mb-3">
+        <router-link to="/forum/admin-promotions" class="text-decoration-none">
+          <div class="card forum-card" :style="{ backgroundImage: 'url(' + require('@/assets/forum/admin-promotions.png') + ')' }">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+              <h4 class="fw-bolder" style="color: #ff1a1a;">Admin Promotions</h4>
+              <p>View all admin promotions and vote.</p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+
       <!-- Rules -->
       <div class="col-md-4 mb-3">
         <router-link to="/forum/rules" class="text-decoration-none">
