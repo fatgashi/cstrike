@@ -19,11 +19,33 @@
             <div class="card-body image-background">
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div class="d-flex align-items-center">
-                  <img v-if="application.user.profilePhoto" class="profile-photo" :src="getImageUrl(application.user.profilePhoto)" alt="Avatar">
-                  <img v-else :src="avatarUrl(application.user)" alt="Avatar">
-                  <h5 class="ms-3">{{ application.user ? application.user.username : "Loading..." }}</h5>
+                  <!-- Avatar -->
+                  <img
+                    v-if="application.user && application.user.profilePhoto"
+                    class="profile-photo"
+                    :src="getImageUrl(application.user.profilePhoto)"
+                    alt="Avatar"
+                  />
+                  <img
+                    v-else-if="application.user"
+                    :src="avatarUrl(application.user)"
+                    class="profile-photo"
+                    alt="Avatar"
+                  />
+                  <img
+                    v-else
+                    src="https://ui-avatars.com/api/?rounded=true&name=Deleted&size=64&background=777&color=fff"
+                    class="profile-photo"
+                    alt="Deleted User"
+                  />
+
+                  <!-- Username -->
+                  <h5 class="ms-3">
+                    {{ application.user ? application.user.username : "User deleted" }}
+                  </h5>
                 </div>
               </div>
+
               <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Country:</strong> {{ application.country }}</p>
               <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Experience:</strong> {{ application.experience }}</p>
               <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Hours Played:</strong> {{ application.hoursPlayed }}</p>
@@ -34,6 +56,7 @@
         </router-link>
       </div>
     </div>
+
     <nav v-if="pagination.totalPages > 1" class="pagination-container mt-4">
       <div class="d-flex justify-content-between align-items-center flex-wrap">
         <!-- Previous -->
@@ -114,24 +137,31 @@ export default {
   methods: {
     async fetchApplications() {
       try {
-        const response = await this.$axios.get(`/admin/get-applications?page=${this.pagination.currentPage}&limit=10`);
-        this.pagination = response.data.pagination;
-        let applications = response.data.data;
+        const { data } = await this.$axios.get(
+          `/admin/get-applications?page=${this.pagination.currentPage}&limit=10`
+        );
+        this.pagination = data.pagination;
+        const applications = data.data;
 
         // Fetch user details for each application
         const userRequests = applications.map(async (app) => {
           try {
-            const userResponse = await this.$axios.get(`/user/${app.userId}`);
-            app.user = userResponse.data.data; // Attach user data to the application
-          } catch (error) {
-            console.error(`Error fetching user for application ${app._id}:`, error);
-            app.user = null; // Handle cases where user fetch fails
+            const res = await this.$axios.get(`/user/${app.userId}`);
+            app.user = res.data.data;          // ✅ attach user data
+            app.userDeleted = false;
+          } catch (err) {
+            // If the user is gone or some other error occurs
+            if (err.response && err.response.status === 404) {
+              app.userDeleted = true;          // ✅ flag as deleted
+            } else {
+              console.error(`Error fetching user ${app.userId}:`, err);
+            }
+            app.user = null;
           }
         });
 
-        await Promise.all(userRequests); // Wait for all user fetches to complete
-
-        this.applications = applications; // Update state with user-enriched applications
+        await Promise.all(userRequests);
+        this.applications = applications;
       } catch (error) {
         console.error("Error fetching applications:", error);
       } finally {
