@@ -96,6 +96,7 @@
   import configuration from "../config/config";
   import { eventBus } from "../router";
 import { useToast } from "vue-toastification";
+import axiosInstance from '../config/axios'
   
   export default {
     data() {
@@ -121,8 +122,14 @@ import { useToast } from "vue-toastification";
         async fetchRewards() {
           const toast = useToast();
             try {
+                // Safety check - don't fetch if not logged in
+                if (!this.isLoggedIn) {
+                    console.log("User not logged in, skipping rewards fetch");
+                    return;
+                }
+                
                 this.loading = true;
-                const res = await this.$axios.get("/rcon/levelRewardStatus", configuration());
+                const res = await axiosInstance.get("/rcon/levelRewardStatus", configuration());
                 if (res.data.success) {
                     // 🧠 Sort rewards for better UX
                     res.data.rewards.sort((a, b) => {
@@ -145,14 +152,29 @@ import { useToast } from "vue-toastification";
         async listenToAuthChanges() {
             eventBus.on("userLoggedIn", async () => {
                 if (this.$store.state.user) {
+                    this.currentUser = this.$store.state.user;
                     await this.fetchRewards();
                 }
+            });
+            
+            // Also listen for logout events
+            eventBus.on("userLoggedOut", () => {
+                this.currentUser = null;
+                this.rewards = [];
+                this.loading = false;
             });
         },
       async claimReward(level) {
         const toast = useToast();
+        
+        // Safety check - don't allow claiming if not logged in
+        if (!this.isLoggedIn) {
+            toast.error("You must be logged in to claim rewards.");
+            return;
+        }
+        
         try {
-          const res = await this.$axios.post("/rcon/claim-level-reward", { level }, configuration());
+          const res = await axiosInstance.post("/rcon/claim-level-reward", { level }, configuration());
           if (res.data.success) {
             toast.success(`Successfully claimed level ${level} reward!`);
             this.fetchRewards(); // Refresh the list after claiming
@@ -164,16 +186,20 @@ import { useToast } from "vue-toastification";
       }
     },
     async mounted() {
+        // Set up event listeners first
+        this.listenToAuthChanges();
+        
         const user = await getCurrentUser();
-        if (user){
+        if (user) {
             this.currentUser = user;
-            this.fetchRewards();
-        } else {
-            await this.listenToAuthChanges();
+            // Only fetch rewards if user is logged in
+            await this.fetchRewards();
         }
+        // If no user, don't fetch rewards - just wait for login event
     },
     beforeUnmount() {
         eventBus.off("userLoggedIn");
+        eventBus.off("userLoggedOut");
     },
   };
   </script>

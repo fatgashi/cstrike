@@ -43,6 +43,7 @@
   
   <script>
 import configuration from '../config/config';
+import axiosInstance from '../config/axios'
 
   
   export default {
@@ -56,7 +57,7 @@ import configuration from '../config/config';
       async fetchBanList(retry = 3) {
         try {
           const config = configuration();
-          const response = await this.$axios.get(`/rcon/banlist?list=${this.page}`, config);
+          const response = await axiosInstance.get(`/rcon/banlist?list=${this.page}`, config);
           if (response.data.success) {
             this.banList = response.data.banList;
           }

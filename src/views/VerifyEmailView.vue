@@ -10,6 +10,7 @@
 
 <script>
 import { useToast } from 'vue-toastification';
+import axiosInstance from '../config/axios'
 
 
 export default {
@@ -34,7 +35,7 @@ export default {
       }
 
       try {
-        await this.$axios.get(`/user/verify-email?token=${token}`);
+        await axiosInstance.get(`/user/verify-email?token=${token}`);
         this.verificationStatus = "✅ Email verified successfully! You can now log in.";
         toast.success("✅ Email verified! Redirecting to login...");
         

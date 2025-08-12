@@ -19,11 +19,30 @@ import {
   faTrophy,
   faGem,
   faHome,
-  faUsers
+  faUsers,
+  // Dashboard icons
+  faTachometerAlt,
+  faBan,
+  faSearch,
+  faCrown,
+  faShieldAlt,
+  faCheck,
+  faUserEdit,
+  faTimes,
+  faSave,
+  faChevronLeft,
+  faChevronRight,
+  faChevronDown,
+  faUser,
+  faSignOutAlt,
+  faCog,
+  faBars,
+  faTimes as faTimesSolid
 } from '@fortawesome/free-solid-svg-icons'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/main.css';
 
 import Toast from "vue-toastification";
@@ -49,7 +68,25 @@ library.add(
   faTrophy,
   faGem,
   faHome,
-  faUsers
+  faUsers,
+  // Dashboard icons
+  faTachometerAlt,
+  faBan,
+  faSearch,
+  faCrown,
+  faShieldAlt,
+  faCheck,
+  faUserEdit,
+  faTimes,
+  faSave,
+  faChevronLeft,
+  faChevronRight,
+  faChevronDown,
+  faUser,
+  faSignOutAlt,
+  faCog,
+  faBars,
+  faTimesSolid
 );
 
 dom.watch();

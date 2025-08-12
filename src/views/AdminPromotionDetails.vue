@@ -123,6 +123,7 @@
 import { useToast } from "vue-toastification";
 import configuration from "../config/config";
 import { getCurrentUser } from "../config/userLogic";
+import axiosInstance from '../config/axios'
 
 export default {
   data() {
@@ -145,7 +146,7 @@ export default {
   methods: {
     async fetchApplication() {
       try {
-        const response = await this.$axios.get(`/admin-promotion/get-applications/${this.$route.params.id}`);
+        const response = await axiosInstance.get(`/admin-promotion/get-applications/${this.$route.params.id}`);
         this.application = response.data.data;
         this.fetchUser(this.application.userId);
         this.fetchVotes();
@@ -158,7 +159,7 @@ export default {
     },
     async fetchUser(userId) {
       try {
-        const res = await this.$axios.get(`/user/${userId}`);
+        const res = await axiosInstance.get(`/user/${userId}`);
         this.user = res.data.data;
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -166,7 +167,7 @@ export default {
     },
     async fetchVotes() {
       try {
-        const res = await this.$axios.get(`/admin-promotion/votes/${this.$route.params.id}`);
+        const res = await axiosInstance.get(`/admin-promotion/votes/${this.$route.params.id}`);
         this.votes = res.data.votes;
         this.approvedVotes = this.votes.filter(v => v.vote === "approve").length;
         this.rejectedVotes = this.votes.filter(v => v.vote === "reject").length;
@@ -177,7 +178,7 @@ export default {
     },
     async fetchComments() {
       try {
-        const res = await this.$axios.get(`/admin-promotion/comments/${this.$route.params.id}`);
+        const res = await axiosInstance.get(`/admin-promotion/comments/${this.$route.params.id}`);
         this.comments = res.data.comments;
       } catch (err) {
         console.error("Error loading comments:", err);
@@ -186,7 +187,7 @@ export default {
     async submitVote(type) {
       const toast = useToast();
       try {
-        await this.$axios.post(`/admin-promotion/vote`, {
+        await axiosInstance.post(`/admin-promotion/vote`, {
           applicationId: this.$route.params.id,
           vote: type
         }, configuration());
@@ -205,7 +206,7 @@ export default {
       if (this.commentImage) formData.append("photoAttachment", this.commentImage);
 
       try {
-        await this.$axios.post(`/admin-promotion/comment`, formData, configuration());
+        await axiosInstance.post(`/admin-promotion/comment`, formData, configuration());
         this.newCommentText = "";
         this.commentImage = null;
         this.commentPreview = null;
@@ -220,7 +221,7 @@ export default {
       const confirm = window.confirm("Delete this comment?");
       if (!confirm) return;
       try {
-        await this.$axios.delete(`/admin-promotion/comment/${this.$route.params.id}/${commentId}`, configuration());
+        await axiosInstance.delete(`/admin-promotion/comment/${this.$route.params.id}/${commentId}`, configuration());
         this.fetchComments();
         toast.success("Comment deleted.");
       } catch (err) {
@@ -230,7 +231,7 @@ export default {
     async finishApplication() {
       const toast = useToast();
       try {
-        await this.$axios.post(`/admin-promotion/finish/${this.$route.params.id}`, {}, configuration());
+        await axiosInstance.post(`/admin-promotion/finish/${this.$route.params.id}`, {}, configuration());
         this.fetchApplication();
         toast.success("Application status finalized.");
       } catch (err) {
@@ -240,7 +241,7 @@ export default {
     async updateApplicationStatus(status) {
       const toast = useToast();
       try {
-        await this.$axios.post(`/admin-promotion/change-status/${this.$route.params.id}`, { status }, configuration());
+        await axiosInstance.post(`/admin-promotion/change-status/${this.$route.params.id}`, { status }, configuration());
         this.fetchApplication();
         toast.success(`Status set to ${status}`);
       } catch (err) {

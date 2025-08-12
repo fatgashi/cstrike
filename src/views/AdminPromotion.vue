@@ -88,6 +88,7 @@
 
 <script>
 import { getCurrentUser } from "../config/userLogic";
+import axiosInstance from '../config/axios'
 export default {
   data() {
     return {
@@ -121,13 +122,13 @@ export default {
   methods: {
     async fetchApplications() {
       try {
-        const response = await this.$axios.get(`/admin-promotion/get-applications?page=${this.pagination.currentPage}&limit=10`);
+        const response = await axiosInstance.get(`/admin-promotion/get-applications?page=${this.pagination.currentPage}&limit=10`);
         this.pagination = response.data.pagination;
         const applications = response.data.data;
 
         const userRequests = applications.map(async (app) => {
           try {
-            const userResponse = await this.$axios.get(`/user/${app.userId}`);
+            const userResponse = await axiosInstance.get(`/user/${app.userId}`);
             app.user = userResponse.data.data;
           } catch (err) {
             console.error(`Failed to fetch user for app ${app._id}`, err);

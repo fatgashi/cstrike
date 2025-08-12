@@ -28,6 +28,7 @@ import configuration from "../config/config";
 import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router/index";
 import { useToast } from "vue-toastification";
+import axiosInstance from '../config/axios'
 
 export default {
   name: "HomePage",
@@ -77,7 +78,7 @@ export default {
     async checkDailyReward() {
       try {
         const config = configuration();
-        const res = await this.$axios.get("/rcon/canClaimDailyReward", config);
+        const res = await axiosInstance.get("/rcon/canClaimDailyReward", config);
         this.showDailyBanner = res.data.canClaim;
       } catch (err) {
         console.error("Error checking daily reward:", err);
@@ -87,7 +88,7 @@ export default {
       const toast = useToast();
       try {
         const config = configuration();
-        const res = await this.$axios.post("/rcon/claim-daily-reward", {}, config);
+        const res = await axiosInstance.post("/rcon/claim-daily-reward", {}, config);
         toast.success(res.data.message || "Reward claimed!");
         this.showDailyBanner = false;
       } catch (err) {
@@ -123,7 +124,7 @@ export default {
   },
   async created(){
     try {
-        const response = await this.$axios.get('/game/serverInfo');
+        const response = await axiosInstance.get('/game/serverInfo');
         this.server = response.data.state.numplayers;
         const user = await getCurrentUser();
       if (user) await this.checkDailyReward();

@@ -48,7 +48,7 @@
 
               <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Country:</strong> {{ application.country }}</p>
               <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Experience:</strong> {{ application.experience }}</p>
-              <p><i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Hours Played:</strong> {{ application.hoursPlayed }}</p>
+              <p><i class="fa-arrow-right" aria-hidden="true"></i> <strong>Hours Played:</strong> {{ application.hoursPlayed }}</p>
               <p><strong>Status:</strong> <span :class="statusClass(application.status)">{{ application.status }}</span></p>
               <small>Submitted on: {{ formatDateLong(application.createdAt) }}</small>
             </div>
@@ -104,6 +104,7 @@
 
 <script>
 import { getCurrentUser } from "../config/userLogic";
+import axiosInstance from '../config/axios'
 
 export default {
   data() {
@@ -137,7 +138,7 @@ export default {
   methods: {
     async fetchApplications() {
       try {
-        const { data } = await this.$axios.get(
+        const { data } = await axiosInstance.get(
           `/admin/get-applications?page=${this.pagination.currentPage}&limit=10`
         );
         this.pagination = data.pagination;
@@ -146,7 +147,7 @@ export default {
         // Fetch user details for each application
         const userRequests = applications.map(async (app) => {
           try {
-            const res = await this.$axios.get(`/user/${app.userId}`);
+            const res = await axiosInstance.get(`/user/${app.userId}`);
             app.user = res.data.data;          // ✅ attach user data
             app.userDeleted = false;
           } catch (err) {

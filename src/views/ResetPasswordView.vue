@@ -27,6 +27,7 @@
   
   <script>
 import { useToast } from 'vue-toastification';
+import axiosInstance from '../config/axios'
 
   
   export default {
@@ -53,7 +54,7 @@ import { useToast } from 'vue-toastification';
         }
   
         try {
-          const response = await this.$axios.post("/user/reset-password", {
+          const response = await axiosInstance.post("/user/reset-password", {
             token: this.token,
             newPassword: this.password
           });

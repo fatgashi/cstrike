@@ -128,6 +128,7 @@
   </template>
   
   <script>
+  import axiosInstance from '../config/axios'
   export default {
     name: "EventsView",
     data() {
@@ -197,7 +198,7 @@
     methods: {
       async fetchTopPlayers() {
         try {
-          const response = await this.$axios.get("/stats/top15/by-month");
+          const response = await axiosInstance.get("/stats/top15/by-month");
           this.players = response.data.players;
         } catch (error) {
           console.error("Error fetching top 15 players:", error);

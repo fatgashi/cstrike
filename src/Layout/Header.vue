@@ -172,7 +172,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 #logo::before,
 #logo::after,
 #logo .drop1,

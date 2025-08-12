@@ -43,6 +43,7 @@
     <script>
       import { Modal } from 'bootstrap';
 import { useToast } from 'vue-toastification';
+import axiosInstance from '../config/axios'
     
     export default {
         name: "RegisterModal",
@@ -65,7 +66,7 @@ import { useToast } from 'vue-toastification';
               return;
             }
             try {
-              await this.$axios.post(`/user/register`, {
+              await axiosInstance.post(`/user/register`, {
                 username: this.username,
                 email: this.email,
                 password: this.password,

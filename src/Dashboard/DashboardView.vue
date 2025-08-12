@@ -1,367 +1,1264 @@
 <template>
-    <div class="mt-5">
-      <h2 class="text-black mb-4 fw-bolder">User Management</h2>
-  
-      <!-- Search -->
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" v-model="search" placeholder="Search by username or email...">
-        <button class="btn btn-primary" @click="fetchUsers">Search</button>
-      </div>
-  
-      <!-- Table -->
-       <div class="table-responsive">
-           <table class="table table-dark table-hover">
-             <thead>
-               <tr>
-                 <th>Username</th>
-                 <th>Email</th>
-                 <th>Role</th>
-                 <th>VIP</th>
-                 <th>Suspended</th>
-                 <th>AP</th>
-                <th>Points</th>
-                <th>Level</th>
-                <th>EXP</th>
-                 <th class="text-center">Actions</th>
-               </tr>
-             </thead>
-             <tbody>
-               <tr v-for="user in users" :key="user._id">
-                 <td>{{ user.username }}</td>
-                 <td>{{ user.email }}</td>
-                 <td>{{ user.role }}</td>
-                 <td>{{ user.isVIP ? '✅' : '❌' }}</td>
-                 <td>{{ user.suspended ? '✅' : '❌' }}</td>
-                 <td>{{ user.AP || 0 }}</td>
-                <td>{{ user.POINTS || 0 }}</td>
-                <td>{{ user.LEVEL || 0 }}</td>
-                <td>{{ user.EXP || 0 }}</td>
-                 <td>
-                   <button class="btn btn-sm btn-warning me-2 mb-2" @click="openEditModal(user)"><i class="fa fa-edit"></i> Edit</button>
-                   <button class="btn btn-sm btn-danger mb-2" @click="deleteUser(user.ID)">
-                    <i class="fa fa-trash"></i> Delete
-                  </button>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
-       </div>
-  
-      <nav v-if="totalPages > 1" class="pagination-container">
-      <div class="d-flex justify-content-between align-items-center numbers-row">
-        <!-- Previous Button -->
-        <ul class="pagination mb-0 ms-3">
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <button class="page-link" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
-              <span class="d-none d-sm-inline">previous</span>
-              <span class="d-sm-none">«</span> <!-- Compact icon for small screens -->
-            </button>
-          </li>
-        </ul>
-
-        <!-- Numbered Pagination -->
-        <ul class="pagination mb-0">
-          <li
-            v-for="page in visiblePages"
-            :key="page"
-            class="page-item"
-            :class="{ active: page === currentPage }"
-          >
-            <button
-              class="page-link"
-              v-if="page !== '...'"
-              @click="changePage(page)"
-            >
-              {{ page }}
-            </button>
-            <span v-else class="page-link">...</span>
-          </li>
-        </ul>
-
-        <!-- Next Button -->
-        <ul class="pagination mb-0 me-3">
-          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
-              <span class="d-none d-sm-inline">next</span>
-              <span class="d-sm-none">»</span> <!-- Compact icon for small screens -->
-            </button>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  
-      <!-- Edit Modal -->
-      <div class="modal fade" id="editUserModal" ref="myModal1" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content bg-dark text-white">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Registered User</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="dashboard-view">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="header-content">
+          <div class="header-left">
+            <h2 class="page-title">User Management</h2>
+            <p class="page-subtitle">Manage registered users, roles, and permissions</p>
+          </div>
+          <div class="header-actions">
+            <div class="search-container">
+              <div class="search-input-group">
+                <i class="fas fa-search search-icon"></i>
+                <input 
+                  type="text" 
+                  class="search-input" 
+                  v-model="search" 
+                  placeholder="Search by username or email..."
+                  @keyup.enter="fetchUsers"
+                >
+                <button class="search-btn" @click="fetchUsers">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
             </div>
-            <div class="modal-body">
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ users.length }}</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon vip">
+            <i class="fas fa-crown"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ vipUsersCount }}</div>
+            <div class="stat-label">VIP Users</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon admin">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ adminUsersCount }}</div>
+            <div class="stat-label">Admin Users</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon suspended">
+            <i class="fas fa-ban"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ suspendedUsersCount }}</div>
+            <div class="stat-label">Suspended</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="table-container">
+        <div class="table-header">
+          <h3 class="table-title">User List</h3>
+          <div class="table-actions">
+            <span class="results-count">Showing {{ users.length }} users</span>
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Stats</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in users" :key="user._id" class="user-row">
+                <td class="user-info">
+                  <div class="user-avatar">
+                    <img 
+                      :src="`https://ui-avatars.com/api/?rounded=true&name=${encodeURIComponent(user.username)}&background=0D8ABC&color=fff`" 
+                      :alt="user.username"
+                      class="avatar-img"
+                    >
+                  </div>
+                  <div class="user-details">
+                    <div class="username">{{ user.username }}</div>
+                    <div class="user-email">{{ user.email }}</div>
+                  </div>
+                </td>
+                <td class="user-role">
+                  <span class="role-badge" :class="getRoleClass(user.role)">
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td class="user-status">
+                  <div class="status-indicators">
+                    <span class="status-badge vip" v-if="user.isVIP">
+                      <i class="fas fa-crown"></i> VIP
+                    </span>
+                    <span class="status-badge suspended" v-if="user.suspended">
+                      <i class="fas fa-ban"></i> Suspended
+                    </span>
+                    <span class="status-badge active" v-if="!user.suspended && !user.isVIP">
+                      <i class="fas fa-check"></i> Active
+                    </span>
+                  </div>
+                </td>
+                <td class="user-stats">
+                  <div class="stats-grid-small">
+                    <div class="stat-item">
+                      <span class="stat-label">AP</span>
+                      <span class="stat-value">{{ user.AP || 0 }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-label">Points</span>
+                      <span class="stat-value">{{ user.POINTS || 0 }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-label">Level</span>
+                      <span class="stat-value">{{ user.LEVEL || 0 }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="user-actions">
+                  <button class="action-btn edit" @click="openEditModal(user)" title="Edit User">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" @click="deleteUser(user.ID)" title="Delete User">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrapper" v-if="totalPages > 1">
+          <div class="pagination-info">
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          </div>
+          <nav class="pagination-nav">
+            <button 
+              class="pagination-btn prev" 
+              @click="changePage(currentPage - 1)" 
+              :disabled="currentPage === 1"
+            >
+              <i class="fas fa-chevron-left"></i>
+              <span>Previous</span>
+            </button>
+            
+            <div class="pagination-numbers">
+              <template v-for="(page, index) in visiblePages" :key="`page-${index}`">
+                <button
+                  v-if="page !== '...'"
+                  class="pagination-number"
+                  :class="{ active: page === currentPage }"
+                  @click="changePage(page)"
+                >
+                  {{ page }}
+                </button>
+                <span v-else class="pagination-ellipsis">...</span>
+              </template>
+            </div>
+            
+            <button 
+              class="pagination-btn next" 
+              @click="changePage(currentPage + 1)" 
+              :disabled="currentPage === totalPages"
+            >
+              <span>Next</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Edit Modal -->
+      <div v-if="showEditModal" class="custom-modal-overlay" @click="closeEditModal">
+        <div class="custom-modal" @click.stop>
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-user-edit"></i>
+              Edit User: {{ editUser.username }}
+            </h5>
+            <button type="button" class="btn-close" @click="closeEditModal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-grid">
               <div class="form-group">
-                <label>Username</label>
+                <label class="form-label">Username</label>
                 <input type="text" class="form-control" v-model="editUser.username" :disabled="loadingSave">
               </div>
               <div class="form-group">
-                <label>Email</label>
+                <label class="form-label">Email</label>
                 <input type="text" class="form-control" v-model="editUser.email" :disabled="loadingSave">
               </div>
               <div class="form-group">
-                <label>Role</label>
+                <label class="form-label">Role</label>
                 <select class="form-control" v-model="editUser.role" :disabled="loadingSave">
                   <option value="client">Client</option>
                   <option value="admin">Admin</option>
                   <option value="superadmin">SuperAdmin</option>
                 </select>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" v-model="editUser.isVIP" :disabled="loadingSave">
-                <label class="form-check-label">VIP</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" v-model="editUser.suspended" :disabled="loadingSave">
-                <label class="form-check-label">Suspended</label>
-              </div>
               <div class="form-group">
-                <label>Hours Played</label>
+                <label class="form-label">Hours Played</label>
                 <input type="number" class="form-control" v-model="editUser.hoursPlayed" :disabled="loadingSave">
               </div>
-              <div class="form-group mt-2">
-                <label>
-                  + Ammo Packs 
-                  <small class="text-white" v-if="editUser.AP !== undefined">(Current: {{ editUser.AP }})</small>
+            </div>
+            
+            <div class="form-section">
+              <h6 class="section-title">User Status</h6>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" v-model="editUser.isVIP" :disabled="loadingSave">
+                  <span class="checkmark"></span>
+                  <span class="checkbox-label">VIP Member</span>
                 </label>
-                <input type="number" class="form-control" v-model.number="editUser.apAdd" :disabled="loadingSave">
-              </div>
-
-              <div class="form-group mt-2">
-                <label>
-                  + Points 
-                  <small class="text-white" v-if="editUser.POINTS !== undefined">(Current: {{ editUser.POINTS }})</small>
+                <label class="checkbox-item">
+                  <input type="checkbox" v-model="editUser.suspended" :disabled="loadingSave">
+                  <span class="checkmark"></span>
+                  <span class="checkbox-label">Suspended</span>
                 </label>
-                <input type="number" class="form-control" v-model.number="editUser.pointsAdd" :disabled="loadingSave">
-              </div>
-
-              <div class="form-group mt-2">
-                <label>
-                  + Level 
-                  <small class="text-white" v-if="editUser.LEVEL !== undefined">(Current: {{ editUser.LEVEL }})</small>
-                </label>
-                <input type="number" class="form-control" v-model.number="editUser.levelAdd" :disabled="loadingSave">
-              </div>
-
-              <div class="form-group mt-2">
-                <label>
-                  + EXP 
-                  <small class="text-white" v-if="editUser.EXP !== undefined">(Current: {{ editUser.EXP }})</small>
-                </label>
-                <input type="number" class="form-control" v-model.number="editUser.expAdd" :disabled="loadingSave">
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button 
-                type="button" 
-                class="btn btn-success"
-                :disabled="loadingSave"
-                @click="saveChanges"
-              >
-                <span v-if="loadingSave" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Save Changes
-              </button>
+
+            <div class="form-section">
+              <h6 class="section-title">Add Resources</h6>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">
+                    Ammo Packs
+                    <small class="current-value">(Current: {{ editUser.AP || 0 }})</small>
+                  </label>
+                  <input type="number" class="form-control" v-model.number="editUser.apAdd" :disabled="loadingSave">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    Points
+                    <small class="current-value">(Current: {{ editUser.POINTS || 0 }})</small>
+                  </label>
+                  <input type="number" class="form-control" v-model.number="editUser.pointsAdd" :disabled="loadingSave">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    Level
+                    <small class="current-value">(Current: {{ editUser.LEVEL || 0 }})</small>
+                  </label>
+                  <input type="number" class="form-control" v-model.number="editUser.levelAdd" :disabled="loadingSave">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    EXP
+                    <small class="current-value">(Current: {{ editUser.EXP || 0 }})</small>
+                  </label>
+                  <input type="number" class="form-control" v-model.number="editUser.expAdd" :disabled="loadingSave">
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeEditModal">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-primary"
+              :disabled="loadingSave"
+              @click="saveChanges"
+            >
+              <span v-if="loadingSave" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <i class="fas fa-save"></i> Save Changes
+            </button>
           </div>
         </div>
       </div>
     </div>
   </template>
   
-  <script>
-  import { useToast } from 'vue-toastification';
-import configuration from '../config/config';
-  import { Modal } from 'bootstrap';
+  <script setup>
+  import { ref, computed, onMounted } from 'vue'
+  import { useToast } from 'vue-toastification'
+  import configuration from '../config/config'
+  import axiosInstance from '../config/axios' // Use configured axios instance
 
-  export default {
-    data() {
-      return {
-        users: [],
-        search: '',
-        currentPage: 1,
-        totalPages: 1,
-        limit: 10,
-        editUser: {},
-        loadingSave: false
-      };
-    },
-    computed: {
-      visiblePages() {
-        const totalPages = this.totalPages;
-        const currentPage = this.currentPage;
+  // Toast
+  const toast = useToast()
 
-        if (totalPages <= 7) {
-          // Show all pages if total pages are 7 or less
-          return Array.from({ length: totalPages }, (_, i) => i + 1);
-        }
+  // Reactive Data
+  const users = ref([])
+  const search = ref('')
+  const currentPage = ref(1)
+  const totalPages = ref(1)
+  const limit = ref(10)
+  const editUser = ref({})
+  const loadingSave = ref(false)
+  const showEditModal = ref(false)
 
-        const pages = [];
-        if (currentPage <= 4) {
-          // Show first 5 pages and '...'
-          pages.push(1, 2, 3, 4, 5, '...', totalPages);
-        } else if (currentPage >= totalPages - 3) {
-          // Show '...' and last 5 pages
-          pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-        } else {
-          // Show '...', current page range, and '...'
-          pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
-        }
+  // Computed Properties
+  const vipUsersCount = computed(() => {
+    return users.value.filter(user => user.isVIP).length
+  })
 
-        return pages;
-      },
-    },
-    methods: {
-      async fetchUsers() {
-        try {
-          const config = configuration();
-          const res = await this.$axios.get(`/user/users?page=${this.currentPage}&limit=${this.limit}&search=${this.search}`, config);
-          this.users = res.data.data;
-          this.totalPages = res.data.pagination.totalPages;
-          this.currentPage = res.data.pagination.currentPage;
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        }
-      },
-      changePage(page) {
-        if (page >= 1 && page <= this.totalPages) {
-          this.currentPage = page;
-          this.fetchUsers();
-        }
-      },
-      openEditModal(user) {
-        this.editUser = { 
-          ...user, 
-          apAdd: 0,
-          pointsAdd: 0,
-          levelAdd: 0,
-          expAdd: 0 
-      }; 
-        this.modal.show(); // show modal
-      },
-      async saveChanges() {
-        const toast = useToast()
-        this.loadingSave = true;
-        try {
-          const config = configuration();
+  const adminUsersCount = computed(() => {
+    return users.value.filter(user => user.role === 'admin' || user.role === 'superadmin').length
+  })
 
-          // 1. Update basic user info
-          await this.$axios.put(`/user/users/${this.editUser.ID}`, this.editUser, config);
+  const suspendedUsersCount = computed(() => {
+    return users.value.filter(user => user.suspended).length
+  })
 
-          // 2. If any stats are modified, call RCON update endpoint
-          const { apAdd, pointsAdd, levelAdd, expAdd } = this.editUser;
-          if (apAdd || pointsAdd || levelAdd || expAdd) {
-            await this.$axios.post(
-              `/rcon/updatePlayerData`,
-              {
-                playerName: this.editUser.username,
-                ammoPacksToAdd: apAdd,
-                pointsToAdd: pointsAdd,
-                levelToAdd: levelAdd,
-                expToAdd: expAdd
-              },
-              config
-            );
-          }
+  const visiblePages = computed(() => {
+    const total = totalPages.value
+    const current = currentPage.value
 
-          this.modal.hide();
-          this.fetchUsers();
-          toast.success("User updated successfully.");
-        } catch (error) {
-          console.error("Error updating user:", error);
-          toast.error(error.response?.data?.message || "Failed to update user.");
-        } finally {
-          this.loadingSave = false;
-        }
-      },
-      async deleteUser(id) {
-        const toast = useToast()
-        const confirmed = confirm("Are you sure you want to delete this user?");
-        if (!confirmed) return;
-
-        try {
-          const config = configuration();
-          await this.$axios.delete(`/user/users/${id}`, config);
-          this.fetchUsers();
-          toast.success("User deleted successfully.");
-        } catch (error) {
-          console.error("Error deleting user:", error);
-          toast.error("Failed to delete user.");
-        }
-      }
-    },
-    mounted() {
-      this.modal = new Modal(this.$refs.myModal1);
-      this.fetchUsers();
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1)
     }
-  };
+
+    const pages = []
+    if (current <= 4) {
+      pages.push(1, 2, 3, 4, 5, '...', total)
+    } else if (current >= total - 3) {
+      pages.push(1, '...', total - 4, total - 3, total - 2, total - 1, total)
+    } else {
+      pages.push(1, '...', current - 1, current, current + 1, '...', total)
+    }
+
+    return pages
+  })
+
+  // Methods
+  const getRoleClass = (role) => {
+    switch (role) {
+      case 'superadmin':
+        return 'superadmin'
+      case 'admin':
+        return 'admin'
+      case 'client':
+        return 'client'
+      default:
+        return 'client'
+    }
+  }
+
+  const fetchUsers = async () => {
+    try {
+      const config = configuration()
+      const res = await axiosInstance.get(`/user/users?page=${currentPage.value}&limit=${limit.value}&search=${search.value}`, config)
+      users.value = res.data.data
+      totalPages.value = res.data.pagination.totalPages
+      currentPage.value = res.data.pagination.currentPage
+    } catch (error) {
+      console.error("Error fetching users:", error)
+      toast.error("Failed to fetch users")
+    }
+  }
+
+  const changePage = (page) => {
+    if (page >= 1 && page <= totalPages.value) {
+      currentPage.value = page
+      fetchUsers()
+    }
+  }
+
+  const openEditModal = (user) => {
+    editUser.value = { 
+      ...user, 
+      apAdd: 0,
+      pointsAdd: 0,
+      levelAdd: 0,
+      expAdd: 0 
+    }
+    showEditModal.value = true
+  }
+
+  const closeEditModal = () => {
+    showEditModal.value = false
+    editUser.value = {}
+  }
+
+  const saveChanges = async () => {
+    loadingSave.value = true
+    try {
+      const config = configuration()
+
+      // 1. Update basic user info
+      await axiosInstance.put(`/user/users/${editUser.value.ID}`, editUser.value, config)
+
+      // 2. If any stats are modified, call RCON update endpoint
+      const { apAdd, pointsAdd, levelAdd, expAdd } = editUser.value
+      if (apAdd || pointsAdd || levelAdd || expAdd) {
+        await axiosInstance.post(
+          `/rcon/updatePlayerData`,
+          {
+            playerName: editUser.value.username,
+            ammoPacksToAdd: apAdd,
+            pointsToAdd: pointsAdd,
+            levelToAdd: levelAdd,
+            expToAdd: expAdd
+          },
+          config
+        )
+      }
+
+      closeEditModal()
+      await fetchUsers()
+      toast.success("User updated successfully.")
+    } catch (error) {
+      console.error("Error updating user:", error)
+      toast.error(error.response?.data?.message || "Failed to update user.")
+    } finally {
+      loadingSave.value = false
+    }
+  }
+
+  const deleteUser = async (id) => {
+    const confirmed = confirm("Are you sure you want to delete this user?")
+    if (!confirmed) return
+
+    try {
+      const config = configuration()
+      await axiosInstance.delete(`/user/users/${id}`, config)
+      await fetchUsers()
+      toast.success("User deleted successfully.")
+    } catch (error) {
+      console.error("Error deleting user:", error)
+      toast.error("Failed to delete user.")
+    }
+  }
+
+  // Lifecycle
+  onMounted(() => {
+    fetchUsers()
+  })
   </script>
   
   <style scoped>
-  .table th,
-  .table td {
+  .dashboard-view {
+    padding: 0;
+  }
+
+  /* Page Header */
+  .page-header {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .header-left {
+    flex: 1;
+  }
+
+  .page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 8px 0;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .header-actions {
+    flex-shrink: 0;
+  }
+
+  /* Search */
+  .search-container {
+    min-width: 320px;
+  }
+
+  .search-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .search-input-group:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    color: #64748b;
+    font-size: 16px;
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 16px 16px 16px 48px;
+    font-size: 16px;
+    color: #1e293b;
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: #94a3b8;
+  }
+
+  .search-btn {
+    background: #3b82f6;
+    border: none;
+    color: white;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+  }
+
+  .search-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+  }
+
+  .stat-icon.vip {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  }
+
+  .stat-icon.admin {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+
+  .stat-icon.suspended {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+  }
+
+  .stat-content {
+    flex: 1;
+  }
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  /* Table Container */
+  .table-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+  }
+
+  .table-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .results-count {
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  /* Users Table */
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .users-table th {
+    background: #f8fafc;
+    padding: 16px 24px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .users-table td {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f5f9;
     vertical-align: middle;
   }
 
+  .user-row:hover {
+    background: #f8fafc;
+  }
+
+  /* User Info Column */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-details {
+    flex: 1;
+  }
+
+  .username {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .user-email {
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  /* Role Badges */
+  .role-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .role-badge.superadmin {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .role-badge.admin {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .role-badge.client {
+    background: #e0e7ff;
+    color: #3730a3;
+  }
+
+  /* Status Badges */
+  .status-indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-badge.vip {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .status-badge.suspended {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .status-badge.active {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  /* Stats Grid Small */
+  .stats-grid-small {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-item .stat-label {
+    display: block;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .stat-item .stat-value {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  /* Action Buttons */
+  .user-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+
+  .action-btn.edit {
+    background: #fbbf24;
+    color: white;
+  }
+
+  .action-btn.edit:hover {
+    background: #f59e0b;
+    transform: scale(1.1);
+  }
+
+  .action-btn.delete {
+    background: #ef4444;
+    color: white;
+  }
+
+  .action-btn.delete:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+  }
+
+  /* Pagination */
+  .pagination-wrapper {
+    padding: 24px 32px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pagination-info {
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  .pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #d1d5db;
+    background: white;
+    color: #374151;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+  }
+
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .pagination-numbers {
+    display: flex;
+    gap: 4px;
+  }
+
+  .pagination-number {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    background: white;
+    color: #374151;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .pagination-number:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+  }
+
+  .pagination-number.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+  }
+
+  .pagination-ellipsis {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  /* Modal Styling */
+  .custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .custom-modal {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { 
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .modal-header {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-close:hover {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  .modal-body {
+    padding: 32px;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .form-section {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .current-value {
+    color: #6b7280;
+    font-weight: normal;
+    margin-left: 8px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .form-control:disabled {
+    background: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+  }
+
+  /* Checkbox Group */
+  .checkbox-group {
+    display: flex;
+    gap: 24px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    display: none;
+  }
+
+  .checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .checkbox-item input[type="checkbox"]:checked + .checkmark {
+    background: #3b82f6;
+    border-color: #3b82f6;
+  }
+
+  .checkbox-item input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .checkbox-label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #e2e8f0;
+    padding: 24px 32px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: #4b5563;
+  }
+
+  .btn-primary {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   @media (max-width: 768px) {
-    .pagination-container {
-      justify-content: center; /* Center pagination on smaller devices */
+    .page-header {
+      padding: 24px;
+    }
+
+    .header-content {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-container {
+      min-width: 100%;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .table-header {
+      padding: 20px 24px;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .pagination-wrapper {
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-header,
+    .modal-footer {
+      padding: 20px 24px;
     }
   }
 
   @media (max-width: 480px) {
-    .pagination-container {
-      align-items: start !important;
+    .page-header {
+      padding: 20px;
     }
-    
-    .numbers-row {
-      justify-content: start !important;
+
+    .page-title {
+      font-size: 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+      padding: 20px;
+    }
+
+    .table-header {
+      padding: 16px 20px;
+    }
+
+    .users-table th,
+    .users-table td {
+      padding: 16px 20px;
+    }
+
+    .user-info {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .stats-grid-small {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-header,
+    .modal-footer {
+      padding: 16px 20px;
     }
   }
-
-  .modal-body small.text-white {
-    font-weight: normal;
-    font-size: 0.85rem;
-    margin-left: 4px;
-  }
-
-.pagination .page-item .page-link {
-  color: #fff;
-  background-color: #222; /* Dark background for pagination buttons */
-  border-color: #444;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.pagination .page-item .page-link:hover {
-  background-color: #ff8000; /* Highlighted background on hover */
-  border-color: #ff8000;
-}
-
-.pagination .page-item.active .page-link {
-  background-color: #ff8000; /* Active page button */
-  border-color: #ff8000;
-  color: #fff;
-}
-
-.pagination .page-item.disabled .page-link {
-  color: #666;
-  background-color: #333;
-  border-color: #444;
-  pointer-events: none;
-}
-
-.pagination-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-</style>
+  </style>
   

@@ -100,6 +100,7 @@
 import { getCurrentUser } from '../config/userLogic';
 import { getToken } from '../config/localStorage';
 import { useToast } from 'vue-toastification';
+import axiosInstance from '../config/axios'
 
 export default {
   data() {
@@ -150,7 +151,7 @@ export default {
 
       try {
         const token = getToken();
-        await this.$axios.put('/user/profile', formData, {
+        await axiosInstance.put('/user/profile', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`,

@@ -217,6 +217,8 @@
 </template>
 
 <script>
+import axiosInstance from '../config/axios'
+
 export default {
   name: "ServerView",
     data(){
@@ -233,7 +235,7 @@ export default {
 
     async created() {
         try {
-            const response = await this.$axios.get('/game/serverInfo');
+            const response = await axiosInstance.get('/game/serverInfo');
             this.server = response.data.state || { players: [], bots: [] };
         } catch (error) {
             console.error("Error fetching server info:", error);
@@ -289,7 +291,7 @@ export default {
               this.lastSearchQuery = this.searchQuery;
             }
 
-            const response = await this.$axios.get("/players", {
+            const response = await axiosInstance.get("/players", {
               params: {
                 name: this.searchQuery || undefined,
                 limit: this.limit,

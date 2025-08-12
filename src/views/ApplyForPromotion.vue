@@ -53,6 +53,7 @@
 <script>
 import { useToast } from "vue-toastification";
 import configuration from "../config/config";
+import axiosInstance from '../config/axios'
 
 export default {
   data() {
@@ -94,7 +95,7 @@ export default {
       }
 
       try {
-        await this.$axios.post("/admin-promotion/apply", formData, configuration());
+        await axiosInstance.post("/admin-promotion/apply", formData, configuration());
         this.$router.push("/forum/admin-promotions");
         toast.success("Promotion application submitted successfully!");
       } catch (error) {

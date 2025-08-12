@@ -67,6 +67,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import axiosInstance from '../config/axios'
 
 export default {
   components: {
@@ -115,7 +116,7 @@ export default {
     },
     async fetchAndPrepareChartData() {
       try {
-        const response = await this.$axios.get('/players', {
+        const response = await axiosInstance.get('/players', {
           params: {
             name: this.playerName,
             from: this.fromDate,

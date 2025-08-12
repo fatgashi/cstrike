@@ -70,6 +70,7 @@
     import { Modal } from 'bootstrap';
     import { eventBus } from '../router/index';
     import { useToast } from "vue-toastification";
+    import axiosInstance from '../config/axios'
     
     export default {
       name: "LoginModal",
@@ -90,7 +91,7 @@
         async login() {
           const toast = useToast();
           try {
-            const data = await this.$axios.post(`/user/login`, {
+            const data = await axiosInstance.post(`/user/login`, {
               username: this.username,
               password: this.password
             }).then(res => {

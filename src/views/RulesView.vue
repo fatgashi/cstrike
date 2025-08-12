@@ -84,6 +84,7 @@
   </template>
   
   <script>
+  import axiosInstance from '../config/axios'
 
   export default {
     name: "RulesView",
@@ -111,7 +112,7 @@
     },
     async created() {
       try {
-        const response = await this.$axios.get('/admin/get-keyword');
+        const response = await axiosInstance.get('/admin/get-keyword');
         this.keyword = response.data.keyword;
       } catch (error) {
         console.error('Error fetching keyword:', error);

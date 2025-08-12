@@ -109,6 +109,7 @@
   <script>
   import { useToast } from "vue-toastification";
 import configuration from "../config/config";
+import axiosInstance from '../config/axios'
   import { Tooltip } from "bootstrap";
   
   export default {
@@ -161,7 +162,7 @@ import configuration from "../config/config";
         }
   
         try {
-          await this.$axios.post("/admin/apply", formData, configuration());
+          await axiosInstance.post("/admin/apply", formData, configuration());
           this.$router.push("/forum/admin-applications"); // Redirect to applications list
           toast.success("Application submitted successfully!");
         } catch (error) {

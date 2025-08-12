@@ -51,6 +51,7 @@
   </template>
   
   <script>
+  import axiosInstance from '../config/axios'
   export default {
     name: "Top15Players",
     data() {
@@ -62,7 +63,7 @@
     methods: {
       async fetchTopPlayers() {
         try {
-          const response = await this.$axios.get("/stats/top15");
+          const response = await axiosInstance.get("/stats/top15");
           this.players = response.data;
         } catch (error) {
           console.error("Error fetching top 15 players:", error);

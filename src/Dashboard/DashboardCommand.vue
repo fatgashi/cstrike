@@ -33,6 +33,7 @@
   
   <script>
 import configuration from '../config/config';
+import axiosInstance from '../config/axios'
 
   export default {
     name: "RconView",
@@ -50,7 +51,7 @@ import configuration from '../config/config';
   
         try {
             const config = configuration();
-          const res = await this.$axios.post("/rcon/command", {
+          const res = await axiosInstance.post("/rcon/command", {
             command: this.command
           }, config);
   
