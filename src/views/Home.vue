@@ -1,22 +1,73 @@
 <template>
-  <div style="position: relative;">
-    <div style="z-index: 2;">
-      <div v-if="isLoggedIn && showDailyBanner" class="alert mb-0 alert-warning text-center">
-      🎁 You haven't claimed your <strong>Daily Reward</strong> yet!
-        <button class="btn ms-3" style="background-color: #39ff14;" @click="claimReward">Claim Now</button>
+  <div class="home-container">
+    <!-- Daily Reward Banner -->
+    <div v-if="isLoggedIn && showDailyBanner" class="daily-reward-banner">
+      <div class="banner-content">
+        <div class="banner-icon">🎁</div>
+        <div class="banner-text">
+          <h3>Daily Reward Available!</h3>
+          <p>Don't miss your daily bonus - claim it now!</p>
+        </div>
+        <button class="claim-btn" @click="claimReward">
+          <span class="btn-icon">⚡</span>
+          Claim Now
+        </button>
       </div>
-      <Banner :players="server" />
-      <Infos />
+    </div>
+
+    <!-- Hero Banner Section -->
+    <Banner :players="server" />
+
+    <!-- Features Grid Section -->
+    <Infos />
+
+    <!-- Carousel Section -->
+    <div class="carousel-section">
       <div class="container">
+        <div class="section-header">
+          <h2>🎮 Latest Updates & Events</h2>
+          <p>Stay updated with the newest content and features</p>
+        </div>
         <Carousels />
       </div>
-      <div>
-        <Top15 />
-        <Partner />
-        <Modes />
-      </div>
-  </div>
     </div>
+
+    <!-- Main Content Sections -->
+    <div class="main-content">
+      <!-- Top Players Section -->
+      <div class="content-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>🏆 Top Players Leaderboard</h2>
+            <p>See who's dominating the server</p>
+          </div>
+          <Top15 />
+        </div>
+      </div>
+
+      <!-- Partner Section -->
+      <div class="content-section partner-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>🤝 Our Partners</h2>
+            <p>Working together for the best gaming experience</p>
+          </div>
+          <Partner />
+        </div>
+      </div>
+
+      <!-- Game Modes Section -->
+      <div class="content-section modes-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>🎯 Game Modes</h2>
+            <p>Experience different ways to play</p>
+          </div>
+          <Modes />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -142,28 +193,185 @@ export default {
 </script>
 
 <style scoped>
-@media only screen and (max-width: 700px) {
-  .carousel-style {
-    display: none;
+.home-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
+
+/* Daily Reward Banner */
+.daily-reward-banner {
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  padding: 1rem 2rem;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(255, 26, 26, 0.3);
+}
+
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.banner-icon {
+  font-size: 2.5rem;
+  animation: bounce 2s infinite;
+}
+
+.banner-text {
+  flex: 1;
+  text-align: center;
+}
+
+.banner-text h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.banner-text p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+.claim-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.claim-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Carousel Section */
+.carousel-section {
+  padding: 4rem 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ff1a1a;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 4px 8px rgba(255, 26, 26, 0.3);
+}
+
+.section-header p {
+  font-size: 1.2rem;
+  color: #cccccc;
+  font-weight: 300;
+}
+
+/* Main Content Sections */
+.main-content {
+  padding: 2rem 0;
+}
+
+.content-section {
+  padding: 4rem 0;
+  margin-bottom: 2rem;
+}
+
+.content-section:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.partner-section {
+  background: linear-gradient(135deg, rgba(255, 26, 26, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+.modes-section {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(255, 26, 26, 0.05) 100%);
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
   }
 }
 
-.rowi {
-  --bs-gutter-x: 0;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 0 0.5rem;
+  }
+  
+  .daily-reward-banner {
+    padding: 1rem;
+  }
+  
+  .banner-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .banner-text {
+    order: 2;
+  }
+  
+  .claim-btn {
+    order: 3;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .carousel-section,
+  .content-section {
+    padding: 2rem 0;
+  }
 }
 
-.alert-warning {
-  background: #ff1a1a;
-  color: white;
-  font-weight: bold;
-  border-radius: 0% !important;
-  border-color: #ff1a1a !important;
-}
-
-.carousel {
-  margin-right: 0px !important;
-  margin-left: 0px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
+@media (max-width: 480px) {
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .section-header p {
+    font-size: 1rem;
+  }
+  
+  .banner-icon {
+    font-size: 2rem;
+  }
+  
+  .banner-text h3 {
+    font-size: 1.1rem;
+  }
 }
 </style>
