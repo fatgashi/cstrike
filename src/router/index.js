@@ -44,4 +44,27 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
+// Auto-scroll to top on route change
+router.afterEach(() => {
+  // Use setTimeout to ensure DOM is fully updated
+  setTimeout(() => {
+    try {
+      // Check if smooth scrolling is supported
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        // Fallback for browsers that don't support smooth scrolling
+        window.scrollTo(0, 0);
+      }
+    } catch (error) {
+      // Ultimate fallback - instant scroll
+      window.scrollTo(0, 0);
+    }
+  }, 100); // Small delay to ensure route transition is complete
+});
+
 export default router;

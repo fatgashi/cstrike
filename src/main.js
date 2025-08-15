@@ -37,8 +37,53 @@ import {
   faSignOutAlt,
   faCog,
   faBars,
-  faTimes as faTimesSolid
+  faTimes as faTimesSolid,
+  // Admin Application Details icons
+  faUserShield,
+  faSyncAlt,
+  faLock,
+  faFlag,
+  faStar,
+  faClock,
+  faCalendarWeek,
+  // faDiscord,
+  faHeadset,
+  faBook,
+  faVoteYea,
+  faPaperclip,
+  faComments,
+  faImage,
+  faPaperPlane,
+  faExclamationTriangle,
+  // Forum icons
+  faHandshake,
+  faBookOpen,
+  faGavel,
+  faBullhorn,
+  faNewspaper,
+  faBell,
+  faPlus,
+  // Admin Applications icons
+  faCheckCircle,
+  faTimesCircle,
+  faInbox,
+  faThLarge,
+  faList,
+  // Apply For Admin icons
+  faClipboardList,
+  faTag,
+  faBirthdayCake,
+  faLanguage,
+  faGamepad,
+  faMicrophone,
+  faCloudUploadAlt
 } from '@fortawesome/free-solid-svg-icons'
+
+import {
+  faCalendarAlt,
+  faCommentDots
+} from '@fortawesome/free-regular-svg-icons'
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -86,7 +131,51 @@ library.add(
   faSignOutAlt,
   faCog,
   faBars,
-  faTimesSolid
+  faTimesSolid,
+  // Admin Application Details icons
+  faUserShield,
+  faSyncAlt,
+  faLock,
+  faFlag,
+  faStar,
+  faClock,
+  faCalendarWeek,
+  // faDiscord,
+  faHeadset,
+  faBook,
+  faVoteYea,
+  faPaperclip,
+  faComments,
+  faImage,
+  faPaperPlane,
+  faExclamationTriangle,
+  // Forum icons
+  faHandshake,
+  faBookOpen,
+  faGavel,
+  faBullhorn,
+  faNewspaper,
+  faBell,
+  faPlus,
+  // Admin Applications icons
+  faCheckCircle,
+  faTimesCircle,
+  faInbox,
+  faThLarge,
+  faList,
+  // Apply For Admin icons
+  faClipboardList,
+  faTag,
+  faBirthdayCake,
+  faLanguage,
+  faGamepad,
+  faMicrophone,
+  faCloudUploadAlt,
+  // Regular icons
+  faCalendarAlt,
+  faCommentDots,
+  // Brand icons
+  // faDiscord
 );
 
 dom.watch();

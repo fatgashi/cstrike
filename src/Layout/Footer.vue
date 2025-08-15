@@ -76,7 +76,7 @@
                 <span class="link-icon">👑</span>
                 <span class="link-text">VIP</span>
               </router-link>
-              <router-link to="/rules" class="footer-link">
+              <router-link to="/forum/rules" class="footer-link">
                 <span class="link-icon">📋</span>
                 <span class="link-text">Rules</span>
               </router-link>

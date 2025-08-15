@@ -64,7 +64,18 @@
             <div class="user-dropdown-wrapper" v-if="loggedIn">
               <button class="user-menu-btn" @click="toggleUserMenu" ref="userMenuBtn">
                 <div class="user-avatar">
-                  <span class="avatar-icon">👤</span>
+                  <img 
+                    v-if="userData.profilePhoto" 
+                    :src="getImageUrl(userData.profilePhoto)" 
+                    class="avatar-image" 
+                    alt="Profile Photo"
+                  />
+                  <img 
+                    v-else 
+                    :src="avatarUrl(userData)" 
+                    class="avatar-image" 
+                    alt="Default Avatar"
+                  />
                 </div>
                 <span class="user-name">{{ userData.username }}</span>
                 <span class="dropdown-arrow">▼</span>
@@ -74,7 +85,18 @@
                  <div class="dropdown-header">
                    <div class="user-info">
                      <div class="user-avatar-large">
-                       <span class="avatar-icon-large">👤</span>
+                       <img 
+                         v-if="userData.profilePhoto" 
+                         :src="getImageUrl(userData.profilePhoto)" 
+                         class="avatar-image-large" 
+                         alt="Profile Photo"
+                       />
+                       <img 
+                         v-else 
+                         :src="avatarUrl(userData)" 
+                         class="avatar-image-large" 
+                         alt="Default Avatar"
+                       />
                      </div>
                      <div class="user-details">
                        <span class="user-fullname">{{ userData.username }}</span>
@@ -115,6 +137,7 @@
 import { getCurrentUser } from "../config/userLogic";
 import { eventBus } from "../router";
 import { useToast } from "vue-toastification";
+import axiosInstance from '../config/axios';
 
 export default {
   name: "HeaderView",
@@ -135,6 +158,7 @@ export default {
       user: {},
       collapse: false,
       showUserMenu: false,
+      userProfileData: null, // Store complete user profile data
     };
   },
 
@@ -143,7 +167,8 @@ export default {
       return this.$store.getters.isAuthenticated;
     },
     userData(){
-      return this.$store.state.user || {};
+      // Use profile data if available, otherwise fall back to store data
+      return this.userProfileData || this.$store.state.user || {};
     },
     filteredNavLinks() {
       return this.navLinks;
@@ -203,19 +228,57 @@ export default {
       this.$store.dispatch('clearToken');
       eventBus.emit("userLoggedOut");
       this.user = [];
+      this.userProfileData = null; // Clear profile data on logout
       toast.warning("You have been logged out.");
+    },
+
+    // Image utility methods
+    getImageUrl(path) {
+      if (!path) return '';
+      return `https://zm-westcstrike.com/${path}`;
+    },
+
+    avatarUrl(user) {
+      if (!user || !user.username) {
+        return "https://ui-avatars.com/api/?rounded=true&name=Unknown&size=64&background=0D8ABC&color=fff";
+      }
+      return `https://ui-avatars.com/api/?rounded=true&name=${encodeURIComponent(user.username)}&size=64&background=0D8ABC&color=fff`;
+    },
+
+    // Fetch complete user profile data including profile photo
+    async fetchUserProfile() {
+      try {
+        if (this.loggedIn && this.$store.state.user?.id) {
+          const response = await axiosInstance.get(`/user/${this.$store.state.user.id}`);
+          if (response.data && response.data.data) {
+            this.userProfileData = response.data.data;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+        // Fall back to store data if profile fetch fails
+        this.userProfileData = null;
+      }
     },
   },
 
   async mounted() {
     if (this.loggedIn) {
       await this.role();
+      await this.fetchUserProfile(); // Fetch complete profile data
     }
 
-    eventBus.on("userLoggedIn", async () => {
-      console.log("🔥 userLoggedIn event received in Header.vue");
-      await this.role();
-    });
+          eventBus.on("userLoggedIn", async () => {
+        console.log("🔥 userLoggedIn event received in Header.vue");
+        await this.role();
+        await this.fetchUserProfile(); // Fetch complete profile data after login
+      });
+
+      // Listen for profile updates
+      eventBus.on("profileUpdated", async () => {
+        console.log("🔥 profileUpdated event received in Header.vue");
+        await this.fetchUserProfile(); // Refresh profile data when profile is updated
+      });
 
     // Add click outside listener for dropdown
     document.addEventListener('click', (event) => {
@@ -228,6 +291,7 @@ export default {
 
   beforeUnmount() {
     eventBus.off("userLoggedIn");
+    eventBus.off("profileUpdated");
   },
 
 
@@ -527,10 +591,18 @@ export default {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .avatar-icon {
   font-size: 1.2rem;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .user-name {
@@ -595,10 +667,18 @@ export default {
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
 }
 
 .avatar-icon-large {
   font-size: 1.5rem;
+}
+
+.avatar-image-large {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .user-details {
