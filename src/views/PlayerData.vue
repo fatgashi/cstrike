@@ -1,69 +1,147 @@
 <template>
-  <div>
-    <br><br>
-    <div v-if="player" class="player-details container">
-      <div class="card text-white bg-dark">
-        <div class="card-header">
-          Player Details: <span class="text-white fw-bolder">{{ player.name }}</span>
-        </div>
-        <div class="card-body">
-          <p><strong class="c-title">Total Time Played:</strong> {{ formatTime(player.totalTime) }}</p>
-          <p><strong class="c-title">Last Seen:</strong> {{ formatDate(player.lastSeen) }}</p>
-  
-          <!-- Date Range Inputs -->
-          <div class="date-range-picker d-flex flex-sm-row flex-column justify-content-between align-items-center mb-4">
-            <div class="form-group me-3">
-              <label for="fromDate" class="form-label c-title">From:</label>
-              <input
-                type="date"
-                id="fromDate"
-                class="form-control styled-date-input"
-                v-model="fromDate"
-                @change="fetchAndPrepareChartData"
-              />
-            </div>
-            <div class="form-group">
-              <label for="toDate" class="form-label text-white">To:</label>
-              <input
-                type="date"
-                id="toDate"
-                class="form-control styled-date-input"
-                v-model="toDate"
-                @change="fetchAndPrepareChartData"
-              />
+  <div class="player-data-page">
+    <!-- Hero Section -->
+    <div v-if="player" class="hero-section">
+      <div class="hero-background"></div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="player-avatar">
+            <div class="avatar-circle">
+              <span class="avatar-text">{{ player.name.charAt(0).toUpperCase() }}</span>
             </div>
           </div>
-  
-          <apexchart
-            type="line"
-            height="400"
-            :options="chartOptions"
-            :series="chartSeries"
-          />
-  
-          <!-- Daily Playtime Table -->
-          <h5 class="mt-4 c-title">Daily Playtime</h5>
-          <table class="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Playtime</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(record, index) in filteredPlaytime" :key="index">
-                <td>{{ formatDate(record.date) }}</td>
-                <td>{{ formatTime(record.totalDuration) }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="player-info">
+            <h1 class="player-name">{{ player.name }}</h1>
+            <div class="player-stats">
+              <div class="stat-item">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-content">
+                  <div class="stat-value">{{ formatTime(player.totalTime) }}</div>
+                  <div class="stat-label">Total Time</div>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-content">
+                  <div class="stat-value">{{ formatDate(player.lastSeen) }}</div>
+                  <div class="stat-label">Last Seen</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <br><br>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container">
+        <!-- Date Range Selector -->
+        <div class="date-selector-card">
+          <div class="card-header-modern">
+            <h3>📅 Select Date Range</h3>
+            <p>Choose a period to analyze your gaming activity</p>
+          </div>
+          <div class="date-inputs">
+            <div class="date-input-group">
+              <label for="fromDate" class="date-label">From Date</label>
+              <div class="input-wrapper">
+                <input
+                  type="date"
+                  id="fromDate"
+                  class="date-input"
+                  v-model="fromDate"
+                  @change="fetchAndPrepareChartData"
+                />
+                <div class="input-icon">📅</div>
+              </div>
+            </div>
+            <div class="date-separator">
+              <div class="separator-line"></div>
+              <div class="separator-arrow">→</div>
+            </div>
+            <div class="date-input-group">
+              <label for="toDate" class="date-label">To Date</label>
+              <div class="input-wrapper">
+                <input
+                  type="date"
+                  id="toDate"
+                  class="date-input"
+                  v-model="toDate"
+                  @change="fetchAndPrepareChartData"
+                />
+                <div class="input-icon">📅</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>📊 Gaming Activity Chart</h3>
+            <p>Visual representation of your daily playtime</p>
+          </div>
+          <div class="chart-container">
+            <div v-if="loading || !chartOptions || !chartSeries" class="chart-loading">
+              <div class="loading-spinner"></div>
+              <p>Loading chart data...</p>
+            </div>
+            <apexchart
+              v-else
+              type="line"
+              height="400"
+              :options="chartOptions"
+              :series="chartSeries"
+            />
+          </div>
+        </div>
+
+        <!-- Playtime Table -->
+        <div class="table-card">
+          <div class="table-header">
+            <h3>📋 Daily Playtime Breakdown</h3>
+            <p>Detailed view of your gaming sessions</p>
+          </div>
+          <div class="table-container">
+            <div v-if="loading || !filteredPlaytime.length" class="table-loading">
+              <div class="loading-spinner"></div>
+              <p>{{ loading ? 'Loading data...' : 'No data available for selected date range' }}</p>
+            </div>
+            <table v-else class="modern-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Playtime</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(record, index) in filteredPlaytime" :key="index" class="table-row">
+                  <td class="date-cell">
+                    <div class="date-content">
+                      <div class="date-day">{{ formatDate(record.date) }}</div>
+                    </div>
+                  </td>
+                  <td class="time-cell">
+                    <div class="time-badge">
+                      {{ formatTime(record.totalDuration) }}
+                    </div>
+                  </td>
+                  <td class="status-cell">
+                    <div class="status-indicator" :class="getStatusClass(record.totalDuration)">
+                      {{ getStatusText(record.totalDuration) }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-
 
 <script>
 import { defineAsyncComponent } from 'vue';
@@ -114,7 +192,20 @@ export default {
         day: 'numeric',
       });
     },
+    getStatusClass(duration) {
+      if (duration >= 7200) return 'status-heavy'; // 2+ hours
+      if (duration >= 3600) return 'status-medium'; // 1-2 hours
+      if (duration >= 1800) return 'status-light'; // 30min-1hour
+      return 'status-minimal'; // <30min
+    },
+    getStatusText(duration) {
+      if (duration >= 7200) return 'Heavy';
+      if (duration >= 3600) return 'Medium';
+      if (duration >= 1800) return 'Light';
+      return 'Minimal';
+    },
     async fetchAndPrepareChartData() {
+      this.loading = true;
       try {
         const response = await axiosInstance.get('/players', {
           params: {
@@ -128,9 +219,22 @@ export default {
         if (response.data.data && response.data.data.length > 0) {
           this.player = response.data.data[0];
           this.prepareChartData();
+        } else {
+          // Reset data if no results
+          this.player = null;
+          this.chartOptions = null;
+          this.chartSeries = null;
+          this.filteredPlaytime = [];
         }
       } catch (error) {
         console.error('Error fetching chart data:', error);
+        // Reset data on error
+        this.player = null;
+        this.chartOptions = null;
+        this.chartSeries = null;
+        this.filteredPlaytime = [];
+      } finally {
+        this.loading = false;
       }
     },
     prepareChartData() {
@@ -165,18 +269,24 @@ export default {
       toolbar: {
         show: false,
       },
+      background: 'transparent',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
     },
     xaxis: {
       categories: days,
       labels: {
         style: {
           colors: '#ff1a1a',
+          fontSize: '12px',
+          fontFamily: 'Inter, sans-serif',
         },
       },
       title: {
         text: 'Days',
         style: {
           color: '#ff1a1a',
+          fontSize: '14px',
+          fontFamily: 'Inter, sans-serif',
         },
       },
     },
@@ -189,12 +299,16 @@ export default {
         },
         style: {
           colors: '#ff1a1a',
+          fontSize: '12px',
+          fontFamily: 'Inter, sans-serif',
         },
       },
       title: {
         text: 'Playtime (Hours & Minutes)',
         style: {
           color: '#ff1a1a',
+          fontSize: '14px',
+          fontFamily: 'Inter, sans-serif',
         },
       },
     },
@@ -202,19 +316,22 @@ export default {
       text: 'Playtime Over Selected Date Range',
       align: 'center',
       style: {
-        fontSize: '16px',
+        fontSize: '18px',
         color: '#ff1a1a',
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: '600',
       },
     },
     stroke: {
       curve: 'smooth',
-      width: 2,
-      
+      width: 3,
     },
     colors: ['#ff1a1a'],
     markers: {
-      size: 5,
+      size: 6,
       colors: ['#ff1a1a'],
+      strokeColors: '#ffffff',
+      strokeWidth: 2,
     },
     tooltip: {
       y: {
@@ -225,11 +342,40 @@ export default {
           return `${hours}h ${minutes}m ${seconds}s`;
         },
       },
-      theme: 'dark',
+      theme: 'light',
+      style: {
+        fontSize: '14px',
+        fontFamily: 'Inter, sans-serif',
+      },
     },
     grid: {
-      borderColor: '#ff1a1a',
-      strokeDashArray: 3,
+      borderColor: '#e2e8f0',
+      strokeDashArray: 5,
+      xaxis: {
+        lines: {
+          show: true,
+          color: '#f1f5f9',
+        },
+      },
+      yaxis: {
+        lines: {
+          show: true,
+          color: '#f1f5f9',
+        },
+      },
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'light',
+        type: 'vertical',
+        shadeIntensity: 0.1,
+        gradientToColors: ['#ff1a1a'],
+        inverseColors: false,
+        opacityFrom: 0.3,
+        opacityTo: 0.1,
+        stops: [0, 100],
+      },
     },
   };
 
@@ -245,57 +391,461 @@ export default {
 };
 </script>
 
-<style>
-.player-details .card {
-  border-radius: 8px;
+<style scoped>
+.player-data-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
 }
 
-.player-details .card-header {
-  font-weight: bold;
-  font-size: 1.3em;
-  background-color: #ff1a1a;
+/* Hero Section */
+.hero-section {
+  position: relative;
+  padding: 80px 0 60px;
+  background: linear-gradient(135deg, #1c1c1c 0%, #2b2b2b 100%);
+  color: white;
+  overflow: hidden;
 }
 
-.apexcharts-legend-text {
-  color: #fff !important; /* Ensure legend text matches the dark theme */
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,26,26,0.03)"/><circle cx="75" cy="75" r="1" fill="rgba(255,26,26,0.03)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,26,26,0.02)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,26,26,0.02)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.6;
 }
 
-.table th,
-.table td {
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.player-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(255, 26, 26, 0.3);
+  border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.avatar-text {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-name {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.player-stats {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-icon {
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 26, 26, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+  padding: 60px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Date Selector Card */
+.date-selector-card {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.95) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+.card-header-modern h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff1a1a;
+}
+
+.card-header-modern p {
+  margin: 0;
+  color: #cccccc;
+  font-size: 1rem;
+}
+
+.date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.date-input-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.date-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #cccccc;
+  font-size: 0.875rem;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.date-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid rgba(255, 26, 26, 0.3);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #ff1a1a;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 26, 26, 0.2);
+}
+
+.input-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #ff1a1a;
+  pointer-events: none;
+}
+
+.date-separator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.separator-line {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 26, 26, 0.3) 0%, rgba(255, 26, 26, 0.1) 100%);
+  border-radius: 1px;
+}
+
+.separator-arrow {
+  font-size: 18px;
+  color: #ff1a1a;
+  font-weight: 600;
+}
+
+/* Chart Card */
+.chart-card {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.95) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+/* Loading States */
+.chart-loading,
+.table-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 26, 26, 0.3);
+  border-top: 3px solid #ff1a1a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.chart-loading p,
+.table-loading p {
+  color: #cccccc;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.chart-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff1a1a;
+}
+
+.chart-header p {
+  margin: 0 0 25px 0;
+  color: #cccccc;
+  font-size: 1rem;
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Table Card */
+.table-card {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.95) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+.table-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff1a1a;
+}
+
+.table-header p {
+  margin: 0 0 25px 0;
+  color: #cccccc;
+  font-size: 1rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modern-table th {
+  background: rgba(255, 26, 26, 0.1);
+  padding: 18px 20px;
+  text-align: left;
+  font-weight: 600;
+  color: #ff1a1a;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid rgba(255, 26, 26, 0.3);
+}
+
+.modern-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   vertical-align: middle;
 }
 
-.date-range-picker {
-  gap: 1rem; /* Adds spacing between the date inputs */
+.table-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s ease;
 }
 
-/* Styling for the input labels */
-.date-range-picker .form-label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #ff1a1a; /* Matches your orange theme */
-}
-
-/* Styling for the date inputs */
-.styled-date-input {
-  background-color: #333; /* Dark background */
-  color: #fff; /* White text */
-  border: 1px solid #ff1a1a; /* Orange border */
-  border-radius: 8px; /* Rounded corners */
-  padding: 0.5rem; /* Padding for a better look */
-  font-size: 1rem; /* Slightly larger text */
-  transition: border-color 0.3s ease;
-}
-
-/* Focus effect for the date inputs */
-.styled-date-input:focus {
-  border-color: #f2f2f2; /* Lighter border when focused */
-  outline: none; /* Remove default outline */
-}
-
-/* Styling for the entire date input container */
-.form-group {
+.date-content {
   display: flex;
-  flex-direction: column; /* Label above input */
+  align-items: center;
+  gap: 12px;
+}
+
+.date-day {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.time-badge {
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+.status-indicator {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  min-width: 80px;
+}
+
+.status-heavy {
+  background: #dc2626;
+  color: white;
+}
+
+.status-medium {
+  background: #ea580c;
+  color: white;
+}
+
+.status-light {
+  background: #ca8a04;
+  color: white;
+}
+
+.status-minimal {
+  background: #16a34a;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .player-name {
+    font-size: 2rem;
+  }
+  
+  .player-stats {
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .date-inputs {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .date-separator {
+    display: none;
+  }
+  
+  .stat-item {
+    padding: 15px;
+  }
+  
+  .avatar-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .avatar-text {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 60px 0 40px;
+  }
+  
+  .main-content {
+    padding: 40px 0;
+  }
+  
+  .container {
+    padding: 0 15px;
+  }
+  
+  .date-selector-card,
+  .chart-card,
+  .table-card {
+    padding: 20px;
+  }
+  
+  .player-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 </style>
