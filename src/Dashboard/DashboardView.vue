@@ -67,6 +67,74 @@
         </div>
       </div>
 
+      <!-- Website Visits Tracking Section -->
+      <div class="visits-section">
+        <div class="visits-header">
+          <h3 class="visits-title">
+            <i class="fas fa-chart-line"></i>
+            Website Visits Analytics
+          </h3>
+          <div class="date-selector">
+            <label for="visit-date" class="date-label">Select Date:</label>
+            <input 
+              type="date" 
+              id="visit-date" 
+              class="date-input" 
+              v-model="selectedDate"
+              @change="fetchVisitStats"
+            >
+          </div>
+        </div>
+        
+        <div class="visits-content">
+          <div v-if="visitsLoading" class="visits-loading">
+            <div class="loading-spinner">
+              <div class="spinner"></div>
+              <p>Loading visit statistics...</p>
+            </div>
+          </div>
+          
+          <div v-else-if="visitStats" class="visits-stats">
+            <div class="visit-stat-card">
+              <div class="visit-stat-icon">
+                <i class="fas fa-calendar-day"></i>
+              </div>
+              <div class="visit-stat-content">
+                <div class="visit-stat-number">{{ visitStats.date }}</div>
+                <div class="visit-stat-label">Selected Date</div>
+              </div>
+            </div>
+            
+            <div class="visit-stat-card">
+              <div class="visit-stat-icon total">
+                <i class="fas fa-eye"></i>
+              </div>
+              <div class="visit-stat-content">
+                <div class="visit-stat-number">{{ visitStats.totalVisits }}</div>
+                <div class="visit-stat-label">Total Visits</div>
+              </div>
+            </div>
+            
+            <div class="visit-stat-card">
+              <div class="visit-stat-icon unique">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <div class="visit-stat-content">
+                <div class="visit-stat-number">{{ visitStats.uniqueVisits }}</div>
+                <div class="visit-stat-label">Unique Visits</div>
+              </div>
+            </div>
+          </div>
+          
+          <div v-else class="visits-empty">
+            <div class="empty-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <p>Select a date to view visit statistics</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Users Table -->
       <div class="table-container">
         <div class="table-header">
@@ -314,6 +382,11 @@
   const loadingSave = ref(false)
   const showEditModal = ref(false)
 
+  // Website Visits Tracking
+  const selectedDate = ref('')
+  const visitStats = ref(null)
+  const visitsLoading = ref(false)
+
   // Computed Properties
   const vipUsersCount = computed(() => {
     return users.value.filter(user => user.isVIP).length
@@ -447,9 +520,42 @@
     }
   }
 
+  // Website Visits Tracking Methods
+  const fetchVisitStats = async () => {
+    if (!selectedDate.value) {
+      visitStats.value = null
+      return
+    }
+
+    visitsLoading.value = true
+    try {
+      const config = configuration()
+      const response = await axiosInstance.get(`/tracker/stats?date=${selectedDate.value}`, config)
+      
+      if (response.data.ok) {
+        visitStats.value = response.data
+        toast.success("Visit statistics loaded successfully.")
+      } else {
+        visitStats.value = null
+        toast.error("Failed to load visit statistics.")
+      }
+    } catch (error) {
+      console.error("Error fetching visit statistics:", error)
+      visitStats.value = null
+      toast.error("Failed to fetch visit statistics.")
+    } finally {
+      visitsLoading.value = false
+    }
+  }
+
   // Lifecycle
   onMounted(() => {
     fetchUsers()
+    
+    // Initialize date to today and fetch visit stats
+    const today = new Date().toISOString().split('T')[0]
+    selectedDate.value = today
+    fetchVisitStats()
   })
   </script>
   
@@ -466,6 +572,7 @@
     margin-bottom: 24px;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid #e2e8f0;
+    overflow: hidden;
   }
 
   .header-content {
@@ -473,10 +580,12 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 24px;
+    flex-wrap: wrap;
   }
 
   .header-left {
     flex: 1;
+    min-width: 0;
   }
 
   .page-title {
@@ -484,6 +593,8 @@
     font-weight: 700;
     color: #1e293b;
     margin: 0 0 8px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .page-subtitle {
@@ -494,11 +605,13 @@
 
   .header-actions {
     flex-shrink: 0;
+    min-width: 0;
   }
 
   /* Search */
   .search-container {
-    min-width: 320px;
+    min-width: 280px;
+    max-width: 100%;
   }
 
   .search-input-group {
@@ -510,6 +623,7 @@
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
+    width: 100%;
   }
 
   .search-input-group:focus-within {
@@ -532,6 +646,7 @@
     font-size: 16px;
     color: #1e293b;
     outline: none;
+    min-width: 0;
   }
 
   .search-input::placeholder {
@@ -546,6 +661,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 16px;
+    flex-shrink: 0;
   }
 
   .search-btn:hover {
@@ -1161,6 +1277,172 @@
     transform: none;
   }
 
+  /* Website Visits Tracking Section */
+  .visits-section {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+  }
+
+  .visits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .visits-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .date-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .date-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .date-input {
+    padding: 12px 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #374151;
+    width: 180px;
+    transition: all 0.3s ease;
+  }
+
+  .date-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .visits-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .visits-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  }
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .visits-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+
+  .visit-stat-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .visit-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .visit-stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+  }
+
+  .visit-stat-icon.total {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  }
+
+  .visit-stat-icon.unique {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+
+  .visit-stat-content {
+    flex: 1;
+  }
+
+  .visit-stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .visit-stat-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .visits-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    color: #64748b;
+    font-size: 16px;
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
   /* Responsive Design */
   @media (max-width: 1024px) {
     .stats-grid {
@@ -1169,6 +1451,10 @@
     
     .form-grid {
       grid-template-columns: 1fr;
+    }
+    
+    .visits-stats {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
   }
 
@@ -1180,14 +1466,51 @@
     .header-content {
       flex-direction: column;
       gap: 16px;
+      align-items: stretch;
+    }
+
+    .header-left {
+      text-align: center;
+    }
+
+    .header-actions {
+      width: 100%;
     }
 
     .search-container {
       min-width: 100%;
+      width: 100%;
+    }
+
+    .search-input-group {
+      width: 100%;
     }
 
     .stats-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .visits-section {
+      padding: 24px;
+    }
+
+    .visits-header {
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .date-selector {
+      width: 100%;
+    }
+
+    .date-input {
+      width: 100%;
+    }
+
+    .visits-stats {
+      grid-template-columns: 1fr;
       gap: 16px;
     }
 
@@ -1228,6 +1551,18 @@
     }
 
     .stat-card {
+      padding: 20px;
+    }
+
+    .visits-section {
+      padding: 20px;
+    }
+
+    .visits-title {
+      font-size: 18px;
+    }
+
+    .visit-stat-card {
       padding: 20px;
     }
 

@@ -7,7 +7,7 @@
         <h1 class="hero-title">Medium Maps</h1>
         <p class="hero-subtitle">Balanced gameplay with strategic depth and moderate pacing</p>
         <div class="map-count-badge">
-          <span class="badge-text">{{ maps.length }} Medium Maps</span>
+          <span class="badge-text">{{ mediumMapCount }} Medium Maps</span>
         </div>
       </div>
     </div>
@@ -19,17 +19,17 @@
           <router-link to="/maps" class="nav-tab">
             <span class="tab-icon">🔴</span>
             <span class="tab-text">Small Maps</span>
-            <span class="tab-count">32</span>
+            <span class="tab-count">{{ smallMapCount }}</span>
           </router-link>
           <button class="nav-tab active">
             <span class="tab-icon">🟡</span>
             <span class="tab-text">Medium Maps</span>
-            <span class="tab-count">{{ maps.length }}</span>
+            <span class="tab-count">{{ mediumMapCount }}</span>
           </button>
           <router-link to="/maps/large-maps" class="nav-tab">
             <span class="tab-icon">🟢</span>
             <span class="tab-text">Large Maps</span>
-            <span class="tab-count">45</span>
+            <span class="tab-count">{{ largeMapCount }}</span>
           </router-link>
         </div>
       </div>
@@ -49,7 +49,7 @@
 
         <!-- Maps Grid -->
         <div class="maps-grid">
-          <div v-for="(map, index) in maps" :key="index" class="map-card">
+          <div v-for="(map, index) in mediumMaps" :key="index" class="map-card">
             <div class="card-image-container">
               <img :src="map.image" :alt="map.name" class="card-image">
               <div class="card-overlay">
@@ -80,28 +80,28 @@
               <div class="stat-icon">🗺️</div>
               <div class="stat-content">
                 <h4>Total Maps</h4>
-                <p>{{ maps.length }}</p>
+                <p>{{ totalMapCount }}</p>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon">🔴</div>
               <div class="stat-content">
                 <h4>Small Maps</h4>
-                <p>32</p>
+                <p>{{ smallMapCount }}</p>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon">🟡</div>
               <div class="stat-content">
                 <h4>Medium Maps</h4>
-                <p>{{ maps.length }}</p>
+                <p>{{ mediumMapCount }}</p>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon">🟢</div>
               <div class="stat-content">
                 <h4>Large Maps</h4>
-                <p>45</p>
+                <p>{{ largeMapCount }}</p>
               </div>
             </div>
           </div>
@@ -112,62 +112,26 @@
 </template>
 
 <script>
+import { getMapsBySize, getMapCountBySize, getTotalMapCount } from '../config/mapData';
+
 export default {
   name: "MediumMapsView",
-  data() {
-    return {
-      selectedSize: 'medium',
-      maps: [
-        { name: "zm_big_vk", image: require("../assets/maps/zm_big_vk.jpg"), size: "medium" },
-        { name: "zm_trakinax_tubo", image: require("../assets/maps/zm_trakinax_tubo.jpg"), size: "medium" },
-        { name: "zm_emosbg_fx", image: require("../assets/maps/zm_emosbg_fx.jpg"), size: "medium" },
-        { name: "zm_zhell", image: require("../assets/maps/zm_zhell.jpg"), size: "medium" },
-        { name: "zm_ice_vk", image: require("../assets/maps/zm_ice_vk.jpg"), size: "medium" },
-        { name: "zm_ice_attack2009", image: require("../assets/maps/zm_ice_attack2009.jpg"), size: "medium" },
-        { name: "zm_ice_attack3", image: require("../assets/maps/zm_ice_attack3.jpg"), size: "medium" },
-        { name: "zm_snow_mix", image: require("../assets/maps/zm_snow_mix.jpg"), size: "medium" },
-        { name: "zm_snowbase4_zp", image: require("../assets/maps/zm_snowbase4_zp.jpg"), size: "medium" },
-        { name: "zm_long_glass", image: require("../assets/maps/zm_long_glass.jpg"), size: "medium" },
-        { name: "zm_pxs_draging", image: require("../assets/maps/zm_pxs_draging.jpg"), size: "medium" },
-        { name: "zm_killdust2", image: require("../assets/maps/zm_killdust2.jpg"), size: "medium" },
-        { name: "zm_antidote", image: require("../assets/maps/zm_antidote.jpg"), size: "medium" },
-        { name: "zm_evil_dustnight", image: require("../assets/maps/zm_evil_dustnight.jpg"), size: "medium" },
-        { name: "zm_fullpvz", image: require("../assets/maps/zm_fullpvz.jpg"), size: "medium" },
-        { name: "zm_vip_gray", image: require("../assets/maps/zm_vip_gray.jpg"), size: "medium" },
-        { name: "zm_winter_place", image: require("../assets/maps/zm_winter_place.jpg"), size: "medium" },
-        { name: "zm_clinic_emergency", image: require("../assets/maps/zm_clinic_emergency.jpg"), size: "medium" },
-        { name: "zm_ziger_new", image: require("../assets/maps/zm_ziger_new.jpg"), size: "medium" },
-        { name: "zm_vd_winter", image: require("../assets/maps/zm_vd_winter.jpg"), size: "medium" },
-        { name: "zm_frosty_f2", image: require("../assets/maps/zm_frosty_f2.jpg"), size: "medium" },
-        { name: "zm_ice_attackv4_v3", image: require("../assets/maps/zm_ice_attackv4_v3.jpg"), size: "medium" },
-        { name: "zm_ice_attack5", image: require("../assets/maps/zm_ice_attack5.jpg"), size: "medium" },
-        { name: "zm_dust_undead", image: require("../assets/maps/zm_dust_undead.jpg"), size: "medium" },
-        { name: "zm_xopom_town", image: require("../assets/maps/zm_xopom_town.jpg"), size: "medium" },
-        { name: "zm_base_human_lg_new_v2", image: require("../assets/maps/zm_base_human_lg_new_v2.jpg"), size: "medium" },
-        { name: "zm_epic_zone", image: require("../assets/maps/zm_epic_zone.jpg"), size: "medium" },
-        { name: "zm_ice_house", image: require("../assets/maps/zm_ice_house.jpg"), size: "medium" },
-        { name: "zm_qzet", image: require("../assets/maps/zm_qzet.jpg"), size: "medium" },
-        { name: "zm_ugc_ground", image: require("../assets/maps/zm_ugc_ground.jpg"), size: "medium" },
-        { name: "zm_virus_t", image: require("../assets/maps/zm_virus_t.jpg"), size: "medium" },
-        { name: "zm_world_rmx_fixed", image: require("../assets/maps/zm_world_rmx_fixed.jpg"), size: "medium" },
-        { name: "zm_epic_bageta_final", image: require("../assets/maps/zm_epic_bageta_final.jpg"), size: "medium" },
-        { name: "zm_gbox8", image: require("../assets/maps/zm_gbox8.jpg"), size: "medium" },
-        { name: "zm_hs_zhell_v2", image: require("../assets/maps/zm_hs_zhell_v2.jpg"), size: "medium" },
-        { name: "zm_cheteau", image: require("../assets/maps/zm_cheteau.jpg"), size: "medium" },
-        { name: "zm_paranormal", image: require("../assets/maps/zm_paranormal.jpg"), size: "medium" },
-        { name: "zm_madafakus", image: require("../assets/maps/zm_madafakus.jpg"), size: "medium" },
-        { name: "zm_snow_attack_dd", image: require("../assets/maps/zm_snow_attack_dd.jpg"), size: "medium" },
-        { name: "zm_cold_attack", image: require("../assets/maps/zm_cold_attack.jpg"), size: "medium" },
-        { name: "zm_epr", image: require("../assets/maps/zm_epr.jpg"), size: "medium" },
-        { name: "zm_laura", image: require("../assets/maps/zm_laura.jpg"), size: "medium" },
-        { name: "zm_puma", image: require("../assets/maps/zm_puma.jpg"), size: "medium" },
-        { name: "zm_stpr", image: require("../assets/maps/zm_stpr.jpg"), size: "medium" },
-        { name: "zm_fun_world_4_final", image: require("../assets/maps/zm_fun_world_4_final.jpg"), size: "medium" },
-        { name: "zm_ice_world_2", image: require("../assets/maps/zm_ice_world_2.jpg"), size: "medium" },
-        { name: "zm_forza", image: require("../assets/maps/zm_forza.jpg"), size: "medium" },
-        { name: "zm_defense", image: require("../assets/maps/zm_defense.jpg"), size: "medium" },
-      ]
-    };
+  computed: {
+    mediumMaps() {
+      return getMapsBySize('medium');
+    },
+    smallMapCount() {
+      return getMapCountBySize('small');
+    },
+    mediumMapCount() {
+      return getMapCountBySize('medium');
+    },
+    largeMapCount() {
+      return getMapCountBySize('large');
+    },
+    totalMapCount() {
+      return getTotalMapCount();
+    }
   }
 };
 </script>

@@ -7,7 +7,7 @@
         <h1 class="hero-title">Large Maps</h1>
         <p class="hero-subtitle">Epic battles across vast landscapes with strategic depth</p>
         <div class="map-count-badge">
-          <span class="badge-text">{{ maps.length }} Large Maps</span>
+          <span class="badge-text">{{ largeMapCount }} Large Maps</span>
         </div>
       </div>
     </div>
@@ -19,17 +19,17 @@
           <router-link to="/maps" class="nav-tab">
             <span class="tab-icon">🔴</span>
             <span class="tab-text">Small Maps</span>
-            <span class="tab-count">32</span>
+            <span class="tab-count">{{ smallMapCount }}</span>
           </router-link>
           <router-link to="/maps/medium-maps" class="nav-tab">
             <span class="tab-icon">🟡</span>
             <span class="tab-text">Medium Maps</span>
-            <span class="tab-count">40</span>
+            <span class="tab-count">{{ mediumMapCount }}</span>
           </router-link>
           <button class="nav-tab active">
             <span class="tab-icon">🟢</span>
             <span class="tab-text">Large Maps</span>
-            <span class="tab-count">{{ maps.length }}</span>
+            <span class="tab-count">{{ largeMapCount }}</span>
           </button>
         </div>
       </div>
@@ -49,7 +49,7 @@
 
         <!-- Maps Grid -->
         <div class="maps-grid">
-          <div v-for="(map, index) in maps" :key="index" class="map-card">
+          <div v-for="(map, index) in largeMaps" :key="index" class="map-card">
             <div class="card-image-container">
               <img :src="map.image" :alt="map.name" class="card-image">
               <div class="card-overlay">
@@ -80,28 +80,28 @@
               <div class="stat-icon">🗺️</div>
               <div class="stat-content">
                 <h4>Total Maps</h4>
-                <p>{{ maps.length }}</p>
+                <p>{{ totalMapCount }}</p>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon">🔴</div>
               <div class="stat-content">
                 <h4>Small Maps</h4>
-                <p>32</p>
+                <p>{{ smallMapCount }}</p>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon">🟡</div>
               <div class="stat-content">
                 <h4>Medium Maps</h4>
-                <p>40</p>
+                <p>{{ mediumMapCount }}</p>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon">🟢</div>
               <div class="stat-content">
                 <h4>Large Maps</h4>
-                <p>{{ maps.length }}</p>
+                <p>{{ largeMapCount }}</p>
               </div>
             </div>
           </div>
@@ -112,65 +112,26 @@
 </template>
 
 <script>
+import { getMapsBySize, getMapCountBySize, getTotalMapCount } from '../config/mapData';
+
 export default {
   name: "LargeMapsView",
-  data() {
-    return {
-      selectedSize: 'large',
-      maps: [
-        { name: "zm_foda_v2", image: require("../assets/maps/zm_foda_v2.jpg"), size: "large" },
-        { name: "zm_foda", image: require("../assets/maps/zm_foda.jpg"), size: "large" },
-        { name: "zm_deko2", image: require("../assets/maps/zm_deko2.jpg"), size: "large" },
-        { name: "zm_deko2_zg_v2", image: require("../assets/maps/zm_deko2_zg_v2.jpg"), size: "large" },
-        { name: "zm_csdevils", image: require("../assets/maps/zm_csdevils.jpg"), size: "large" },
-        { name: "zm_2day", image: require("../assets/maps/zm_2day.jpg"), size: "large" },
-        { name: "zm_adytzasfantu", image: require("../assets/maps/zm_adytzasfantu.jpg"), size: "large" },
-        { name: "zm_cross", image: require("../assets/maps/zm_cross.jpg"), size: "large" },
-        { name: "zm_dusty_camp", image: require("../assets/maps/zm_dusty_camp.jpg"), size: "large" },
-        { name: "zm_snowbase4", image: require("../assets/maps/zm_snowbase4.jpg"), size: "large" },
-        { name: "zm_long_night_v2", image: require("../assets/maps/zm_long_night_v2.jpg"), size: "large" },
-        { name: "zm_battleground_foda", image: require("../assets/maps/zm_battleground_foda.jpg"), size: "large" },
-        { name: "zm_canabys_glass2", image: require("../assets/maps/zm_canabys_glass2.jpg"), size: "large" },
-        { name: "zm_canabys_snow", image: require("../assets/maps/zm_canabys_snow.jpg"), size: "large" },
-        { name: "zm_restart_v3", image: require("../assets/maps/zm_restart_v3.jpg"), size: "large" },
-        { name: "zm_zombust", image: require("../assets/maps/zm_zombust.jpg"), size: "large" },
-        { name: "zm_fortuna", image: require("../assets/maps/zm_fortuna.jpg"), size: "large" },
-        { name: "zm_fortuna_rmx", image: require("../assets/maps/zm_fortuna_rmx.jpg"), size: "large" },
-        { name: "zm_aztec_sdl_v1", image: require("../assets/maps/zm_aztec_sdl_v1.jpg"), size: "large" },
-        { name: "zm_3rooms", image: require("../assets/maps/zm_3rooms.jpg"), size: "large" },
-        { name: "zm_sand", image: require("../assets/maps/zm_sand.jpg"), size: "large" },
-        { name: "zm_kill_duster", image: require("../assets/maps/zm_kill_duster.jpg"), size: "large" },
-        { name: "zm_vendetta_v2", image: require("../assets/maps/zm_vendetta_v2.jpg"), size: "large" },
-        { name: "zm_vendetta", image: require("../assets/maps/zm_vendetta.jpg"), size: "large" },
-        { name: "zm_dust2_2k15", image: require("../assets/maps/zm_dust2_2k15.jpg"), size: "large" },
-        { name: "zm_pis2", image: require("../assets/maps/zm_pis2.jpg"), size: "large" },
-        { name: "zm_one_sap", image: require("../assets/maps/zm_one_sap.jpg"), size: "large" },
-        { name: "zm_303", image: require("../assets/maps/zm_303.jpg"), size: "large" },
-        { name: "zm_infantry", image: require("../assets/maps/zm_infantry.jpg"), size: "large" },
-        { name: "zm_winter_big", image: require("../assets/maps/zm_winter_big.jpg"), size: "large" },
-        { name: "zm_nose", image: require("../assets/maps/zm_nose.jpg"), size: "large" },
-        { name: "zm_csdark_cinder", image: require("../assets/maps/zm_csdark_cinder.jpg"), size: "large" },
-        { name: "zm_chatoyant", image: require("../assets/maps/zm_chatoyant.jpg"), size: "large" },
-        { name: "zm_arabstreets_happy", image: require("../assets/maps/zm_arabstreets_happy.jpg"), size: "large" },
-        { name: "zm_cantera", image: require("../assets/maps/zm_cantera.jpg"), size: "large" },
-        { name: "zm_lakepark", image: require("../assets/maps/zm_lakepark.jpg"), size: "large" },
-        { name: "zm_party_house", image: require("../assets/maps/zm_party_house.jpg"), size: "large" },
-        { name: "zm_siege_happy_fixed2", image: require("../assets/maps/zm_siege_happy_fixed2.jpg"), size: "large" },
-        { name: "zm_tuscan_happy", image: require("../assets/maps/zm_tuscan_happy.jpg"), size: "large" },
-        { name: "zm_assault_night2", image: require("../assets/maps/zm_assault_night2.jpg"), size: "large" },
-        { name: "zm_cornered", image: require("../assets/maps/zm_cornered.jpg"), size: "large" },
-        { name: "zm_downtown", image: require("../assets/maps/zm_downtown.jpg"), size: "large" },
-        { name: "zm_gorod_final", image: require("../assets/maps/zm_gorod_final.jpg"), size: "large" },
-        { name: "zm_oynucaz_dust2_new", image: require("../assets/maps/zm_oynucaz_dust2_new.jpg"), size: "large" },
-        { name: "zm_queens_d2", image: require("../assets/maps/zm_queens_d2.jpg"), size: "large" },
-        { name: "zm_zod_area51", image: require("../assets/maps/zm_zod_area51.jpg"), size: "large" },
-        { name: "zm_hs_subzero_2", image: require("../assets/maps/zm_hs_subzero_2.jpg"), size: "large" },
-        { name: "zm_x2", image: require("../assets/maps/zm_x2.jpg"), size: "large" },
-        { name: "zm_soccer_gs", image: require("../assets/maps/zm_soccer_gs.jpg"), size: "large" },
-        { name: "zm_dev_colours", image: require("../assets/maps/zm_dev_colours.jpg"), size: "large" },
-        { name: "zm_talvisota", image: require("../assets/maps/zm_talvisota.jpg"), size: "large" },
-      ]
-    };
+  computed: {
+    largeMaps() {
+      return getMapsBySize('large');
+    },
+    smallMapCount() {
+      return getMapCountBySize('small');
+    },
+    mediumMapCount() {
+      return getMapCountBySize('medium');
+    },
+    largeMapCount() {
+      return getMapCountBySize('large');
+    },
+    totalMapCount() {
+      return getTotalMapCount();
+    }
   }
 };
 </script>

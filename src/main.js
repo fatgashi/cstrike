@@ -76,7 +76,13 @@ import {
   faLanguage,
   faGamepad,
   faMicrophone,
-  faCloudUploadAlt
+  faCloudUploadAlt,
+  // Website Visits Tracking icons
+  faChartLine,
+  faCalendarDay,
+  faEye,
+  faUserFriends,
+  faChartBar
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -95,6 +101,7 @@ import "vue-toastification/dist/index.css";
 
 
 import { createMetaManager, defaultConfig } from 'vue-meta';
+import { sendDailyVisitIfNeeded } from './config/sendDailyVisit';
 
 const app = createApp(App);
 
@@ -171,6 +178,12 @@ library.add(
   faGamepad,
   faMicrophone,
   faCloudUploadAlt,
+  // Website Visits Tracking icons
+  faChartLine,
+  faCalendarDay,
+  faEye,
+  faUserFriends,
+  faChartBar,
   // Regular icons
   faCalendarAlt,
   faCommentDots,
@@ -194,5 +207,7 @@ app.use(createMetaManager(false, defaultConfig)); // Replaces VueMeta
 // 🔧 Global properties
 app.config.globalProperties.$axios = AxiosInstace;
 
-// 🚀 Mount
-app.mount('#app');
+router.isReady().then(() => {
+  sendDailyVisitIfNeeded('http://localhost:3000/api/tracker/visitors', 'UTC');
+  app.mount('#app');
+});
