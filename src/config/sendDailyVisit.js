@@ -26,7 +26,7 @@ function postNoPreflight(url) {
 }
 
 export function sendDailyVisitIfNeeded(
-  endpoint = 'http://localhost:3000/api/tracker/visitors',
+  endpoint = 'https://zm-westcstrike.com/api/tracker/visitors',
   tz = 'UTC'
 ) {
   try {

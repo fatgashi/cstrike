@@ -208,6 +208,6 @@ app.use(createMetaManager(false, defaultConfig)); // Replaces VueMeta
 app.config.globalProperties.$axios = AxiosInstace;
 
 router.isReady().then(() => {
-  sendDailyVisitIfNeeded('http://localhost:3000/api/tracker/visitors', 'UTC');
+  sendDailyVisitIfNeeded('https://zm-westcstrike.com/api/tracker/visitors', 'UTC');
   app.mount('#app');
 });
