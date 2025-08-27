@@ -208,6 +208,9 @@
                   <button class="action-btn edit" @click="openEditModal(user)" title="Edit User">
                     <i class="fas fa-edit"></i>
                   </button>
+                  <button class="action-btn vip" @click="openVipModal(user)" title="Add VIP">
+                    <i class="fas fa-crown"></i>
+                  </button>
                   <button class="action-btn delete" @click="deleteUser(user.ID)" title="Delete User">
                     <i class="fas fa-trash"></i>
                   </button>
@@ -360,6 +363,78 @@
           </div>
         </div>
       </div>
+
+      <!-- VIP Modal -->
+      <div v-if="showVipModal" class="custom-modal-overlay" @click="closeVipModal">
+        <div class="custom-modal" @click.stop>
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-crown"></i>
+              Add VIP: {{ vipUser.username }}
+            </h5>
+            <button type="button" class="btn-close" @click="closeVipModal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" v-model="vipUser.username" :disabled="loadingVip" readonly>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="password-input-group">
+                  <input 
+                    :type="showPassword ? 'text' : 'password'" 
+                    class="form-control password-input" 
+                    v-model="vipUser.password" 
+                    :disabled="loadingVip" 
+                    placeholder="Enter VIP password"
+                  >
+                  <button 
+                    type="button" 
+                    class="password-toggle-btn" 
+                    @click="togglePassword" 
+                    :disabled="loadingVip"
+                    :title="showPassword ? 'Hide password' : 'Show password'"
+                  >
+                    <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                  </button>
+                </div>
+                <small class="form-text" v-if="!vipUser.password">Password is required</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label">VIP Type</label>
+                <select class="form-control" v-model="vipUser.vipType" :disabled="loadingVip">
+                  <option value="">Select VIP Type</option>
+                  <option value="gold">Gold</option>
+                  <option value="silver">Silver</option>
+                </select>
+                <small class="form-text" v-if="!vipUser.vipType">VIP Type is required</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label">VIP Expiry Date & Time</label>
+                <input type="datetime-local" class="form-control" v-model="vipUser.expiryDate" :disabled="loadingVip">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeVipModal">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-primary"
+              :disabled="loadingVip || !vipUser.password || !vipUser.vipType || !vipUser.expiryDate"
+              @click="addVip"
+            >
+              <span v-if="loadingVip" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <i class="fas fa-crown"></i> Add VIP
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </template>
   
@@ -381,6 +456,10 @@
   const editUser = ref({})
   const loadingSave = ref(false)
   const showEditModal = ref(false)
+  const showVipModal = ref(false)
+  const vipUser = ref({})
+  const loadingVip = ref(false)
+  const showPassword = ref(false)
 
   // Website Visits Tracking
   const selectedDate = ref('')
@@ -517,6 +596,66 @@
     } catch (error) {
       console.error("Error deleting user:", error)
       toast.error("Failed to delete user.")
+    }
+  }
+
+  const openVipModal = (user) => {
+    // Set default expiry date to 30 days from now
+    const defaultExpiry = new Date()
+    defaultExpiry.setDate(defaultExpiry.getDate() + 30)
+    const defaultExpiryString = defaultExpiry.toISOString().slice(0, 16) // Format: YYYY-MM-DDTHH:MM
+    
+    vipUser.value = {
+      ...user,
+      password: '',
+      vipType: '',
+      expiryDate: defaultExpiryString
+    }
+    showPassword.value = false
+    showVipModal.value = true
+  }
+
+  const closeVipModal = () => {
+    showVipModal.value = false
+    vipUser.value = {}
+    showPassword.value = false
+  }
+
+  const togglePassword = () => {
+    showPassword.value = !showPassword.value
+  }
+
+  const addVip = async () => {
+    // Validate expiry date is in the future
+    const selectedDate = new Date(vipUser.value.expiryDate)
+    const now = new Date()
+    
+    if (selectedDate <= now) {
+      toast.error("VIP expiry date must be in the future")
+      return
+    }
+
+    loadingVip.value = true
+    try {
+      const config = configuration()
+      await axiosInstance.post(
+        `/rcon/add-vip`,
+        {
+          name: vipUser.value.username,
+          password: vipUser.value.password,
+          vipType: vipUser.value.vipType,
+          expiresISO: selectedDate.toISOString()
+        },
+        config
+      )
+      closeVipModal()
+      await fetchUsers()
+      toast.success("VIP added successfully.")
+    } catch (error) {
+      console.error("Error adding VIP:", error)
+      toast.error(error.response?.data?.message || "Failed to add VIP.")
+    } finally {
+      loadingVip.value = false
     }
   }
 
@@ -944,6 +1083,16 @@
     transform: scale(1.1);
   }
 
+  .action-btn.vip {
+    background: #667eea;
+    color: white;
+  }
+
+  .action-btn.vip:hover {
+    background: #5a67d8;
+    transform: scale(1.1);
+  }
+
   .action-btn.delete {
     background: #ef4444;
     color: white;
@@ -1180,6 +1329,68 @@
     background: #f9fafb;
     color: #6b7280;
     cursor: not-allowed;
+  }
+
+  .form-text {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #ef4444;
+    font-weight: 500;
+  }
+
+  /* Password Input Group */
+  .password-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .password-input {
+    padding-right: 48px;
+  }
+
+  .password-toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 16px;
+  }
+
+  .password-toggle-btn:hover:not(:disabled) {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  .password-toggle-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Datetime input styling */
+  .form-control[type="datetime-local"] {
+    font-family: inherit;
+    color: #374151;
+  }
+
+  .form-control[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .form-control[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    background: #f3f4f6;
   }
 
   /* Checkbox Group */
