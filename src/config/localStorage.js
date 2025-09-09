@@ -11,6 +11,7 @@ export function isTokenAvaible() {
 export function removeToken() {
     store.dispatch('updateToken', null);
     store.dispatch('updateLogged', false);
+    store.dispatch('updateUser', null);
 }
 
 export function getToken() {
