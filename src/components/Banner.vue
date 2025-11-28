@@ -15,12 +15,12 @@
         Welcome to the <strong>best CS 1.6 Zombie Plague server</strong> – Zm-WestCStrike. Join our intense zombie survival battles and experience top-tier Counter-Strike 1.6 multiplayer gameplay.
       </p>
       <div class="server-info fade-in">
-        <p>Server IP: <span class="fw-bold">51.77.72.157:27015</span></p>
+        <p>Server IP: <span class="fw-bold">81.181.244.15:27015</span></p>
         <p>Status: <span class="online fw-bolder">Online</span></p>
         <p>Players: <span>{{players}}/32</span></p>
       </div>
         <a
-          href="steam://connect/51.77.72.157:27015"
+          href="steam://connect/81.181.244.15:27015"
           class="btn text-white"
           target="_self"
           rel="noopener"

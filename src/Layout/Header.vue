@@ -11,7 +11,7 @@
           </div>
           <div class="server-info">
             <span class="info-icon">🌐</span>
-            <span class="info-text">Connect to: <strong>51.77.72.157:27015</strong></span>
+            <span class="info-text">Connect to: <strong>81.181.244.15:27015</strong></span>
           </div>
           <div class="quick-actions">
             <button class="action-btn" @click="openLoginModal" v-if="!loggedIn">

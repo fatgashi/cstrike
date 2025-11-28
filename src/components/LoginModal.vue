@@ -93,7 +93,7 @@
             <div class="server-info">
               <div class="server-badge">
                 <span class="badge-icon">🌐</span>
-                <span class="badge-text">51.77.72.157:27015</span>
+                <span class="badge-text">81.181.244.15:27015</span>
               </div>
               <div class="server-badge">
                 <span class="badge-icon">🟢</span>

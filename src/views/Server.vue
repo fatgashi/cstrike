@@ -66,7 +66,7 @@
               <div class="option-icon">🎮</div>
               <div class="option-content">
                 <span class="option-label">Steam Connect</span>
-                <a href="steam://connect/51.77.72.157:27015" class="steam-connect-btn">
+                <a href="steam://connect/81.181.244.15:27015" class="steam-connect-btn">
                   <span class="btn-icon">🎯</span>
                   Join Server
                 </a>
