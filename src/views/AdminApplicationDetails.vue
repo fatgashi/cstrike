@@ -215,8 +215,8 @@
           <div class="card-body">
             <!-- No Comments State -->
             <div v-if="comments.length === 0" class="no-comments">
-              <i class="far fa-comment-dots text-muted mb-3" style="font-size: 2rem;"></i>
-              <p class="text-muted">No comments yet. Be the first to add one!</p>
+              <i class="far fa-comment-dots text-white mb-3" style="font-size: 2rem;"></i>
+              <p class="text-white">No comments yet. Be the first to add one!</p>
             </div>
   
             <!-- Comments List -->
