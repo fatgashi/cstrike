@@ -11,4 +11,7 @@ module.exports = defineConfig({
       })
     ],
   },
+  // Ensure sitemap.xml is copied to dist
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
+  // Vue CLI automatically copies files from public/ to dist/, so sitemap.xml will be included
 });
