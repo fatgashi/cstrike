@@ -27,6 +27,7 @@ const LevelRewards = () => import("../views/LevelRewards.vue");
 const AdminPromotions = () => import("../views/AdminPromotion.vue");
 const ApplyForPromotions = () => import("../views/ApplyForPromotion.vue");
 const AdminPromotionsDetails = () => import("../views/AdminPromotionDetails.vue");
+const BannedPlayers = () => import("../views/BannedPlayers.vue");
 
 const routers = [
     {
@@ -43,6 +44,11 @@ const routers = [
                 path: "server",
                 name: "Server",
                 component: Server
+            },
+            {
+                path: "banned-players",
+                name: "BannedPlayers",
+                component: BannedPlayers
             },
             {
                 path: "vip-info",

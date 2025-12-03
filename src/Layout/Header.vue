@@ -146,6 +146,7 @@ export default {
       navLinks: [
         { label: "Home", to: "/home" },
         { label: "Server", to: "/server" },
+        { label: "Banned Players", to: "/banned-players" },
         { label: "Forum", to: "/forum" },
         { label: "Rewards", to: "/level-rewards" },
         { label: "Maps", to: "/maps" },
@@ -198,6 +199,7 @@ export default {
       const iconMap = {
         'Home': '🏠',
         'Server': '🖥️',
+        'Banned Players': '🚫',
         'Forum': '💬',
         'Rewards': '🏆',
         'Maps': '🗺️',
