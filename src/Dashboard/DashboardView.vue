@@ -370,67 +370,79 @@
           <div class="modal-header">
             <h5 class="modal-title">
               <i class="fas fa-crown"></i>
-              Add VIP: {{ vipUser.username }}
+              {{ vipModalMode === 'update' ? 'Update VIP' : 'Add VIP' }}: {{ vipUser.username }}
             </h5>
             <button type="button" class="btn-close" @click="closeVipModal">
               <i class="fas fa-times"></i>
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-grid">
+            <div v-if="loadingUserData" class="visits-loading">
+              <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading user data from server...</p>
+              </div>
+            </div>
+            <div v-else class="form-grid">
               <div class="form-group">
                 <label class="form-label">Username</label>
                 <input type="text" class="form-control" v-model="vipUser.username" :disabled="loadingVip" readonly>
               </div>
-              <div class="form-group">
-                <label class="form-label">Password</label>
-                <div class="password-input-group">
-                  <input 
-                    :type="showPassword ? 'text' : 'password'" 
-                    class="form-control password-input" 
-                    v-model="vipUser.password" 
-                    :disabled="loadingVip" 
-                    placeholder="Enter VIP password"
-                  >
-                  <button 
-                    type="button" 
-                    class="password-toggle-btn" 
-                    @click="togglePassword" 
-                    :disabled="loadingVip"
-                    :title="showPassword ? 'Hide password' : 'Show password'"
-                  >
-                    <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                  </button>
+              <div v-if="vipModalMode === 'update' && vipCurrentExpireDisplay" class="form-group current-expiry-display">
+                <label class="form-label">Current expiry</label>
+                <p class="current-expiry-value">{{ vipCurrentExpireDisplay }}</p>
+              </div>
+              <template v-if="vipModalMode === 'add'">
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <div class="password-input-group">
+                    <input 
+                      :type="showPassword ? 'text' : 'password'" 
+                      class="form-control password-input" 
+                      v-model="vipUser.password" 
+                      :disabled="loadingVip" 
+                      placeholder="Enter VIP password"
+                    >
+                    <button 
+                      type="button" 
+                      class="password-toggle-btn" 
+                      @click="togglePassword" 
+                      :disabled="loadingVip"
+                      :title="showPassword ? 'Hide password' : 'Show password'"
+                    >
+                      <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                  </div>
+                  <small class="form-text" v-if="!vipUser.password">Password is required</small>
                 </div>
-                <small class="form-text" v-if="!vipUser.password">Password is required</small>
-              </div>
-              <div class="form-group">
-                <label class="form-label">VIP Type</label>
-                <select class="form-control" v-model="vipUser.vipType" :disabled="loadingVip">
-                  <option value="">Select VIP Type</option>
-                  <option value="gold">Gold</option>
-                  <option value="silver">Silver</option>
-                </select>
-                <small class="form-text" v-if="!vipUser.vipType">VIP Type is required</small>
-              </div>
+                <div class="form-group">
+                  <label class="form-label">VIP Type</label>
+                  <select class="form-control" v-model="vipUser.vipType" :disabled="loadingVip">
+                    <option value="">Select VIP Type</option>
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                  </select>
+                  <small class="form-text" v-if="!vipUser.vipType">VIP Type is required</small>
+                </div>
+              </template>
               <div class="form-group">
                 <label class="form-label">VIP Expiry Date & Time</label>
                 <input type="datetime-local" class="form-control" v-model="vipUser.expiryDate" :disabled="loadingVip">
               </div>
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer" v-if="!loadingUserData">
             <button type="button" class="btn btn-secondary" @click="closeVipModal">
               <i class="fas fa-times"></i> Cancel
             </button>
             <button 
               type="button" 
               class="btn btn-primary"
-              :disabled="loadingVip || !vipUser.password || !vipUser.vipType || !vipUser.expiryDate"
+              :disabled="loadingVip || !vipUser.expiryDate || (vipModalMode === 'add' && (!vipUser.password || !vipUser.vipType))"
               @click="addVip"
             >
               <span v-if="loadingVip" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              <i class="fas fa-crown"></i> Add VIP
+              <i class="fas fa-crown"></i> {{ vipModalMode === 'update' ? 'Update VIP' : 'Add VIP' }}
             </button>
           </div>
         </div>
@@ -460,6 +472,9 @@
   const vipUser = ref({})
   const loadingVip = ref(false)
   const showPassword = ref(false)
+  const loadingUserData = ref(false)
+  const vipModalMode = ref('add') // 'add' | 'update' - update when user is already Gold VIP
+  const vipCurrentExpireDisplay = ref('') // current expiry shown for Gold VIP in update mode
 
   // Website Visits Tracking
   const selectedDate = ref('')
@@ -599,12 +614,33 @@
     }
   }
 
-  const openVipModal = (user) => {
-    // Set default expiry date to 30 days from now
+  const parseExpireDateToDatetimeLocal = (expireDate) => {
+    if (!expireDate || expireDate === 'Unknown') return null
+    const match = expireDate.match(/^(\d{4})\/(\d{2})\/(\d{2})\|(\d{2}):(\d{2})/)
+    if (!match) return null
+    const [, y, m, d, h, min] = match
+    return `${y}-${m}-${d}T${h}:${min}`
+  }
+
+  const fetchUserDataForVip = async (username) => {
+    try {
+      const config = configuration()
+      const res = await axiosInstance.get(
+        `/user/user-data?name=${encodeURIComponent(username)}`,
+        config
+      )
+      return res.data
+    } catch (error) {
+      console.error('Error fetching user data for VIP:', error)
+      return { success: false, data: { found: false } }
+    }
+  }
+
+  const openVipModal = async (user) => {
     const defaultExpiry = new Date()
     defaultExpiry.setDate(defaultExpiry.getDate() + 30)
-    const defaultExpiryString = defaultExpiry.toISOString().slice(0, 16) // Format: YYYY-MM-DDTHH:MM
-    
+    const defaultExpiryString = defaultExpiry.toISOString().slice(0, 16)
+
     vipUser.value = {
       ...user,
       password: '',
@@ -612,24 +648,74 @@
       expiryDate: defaultExpiryString
     }
     showPassword.value = false
+    vipModalMode.value = 'add'
     showVipModal.value = true
+    loadingUserData.value = true
+
+    try {
+      const result = await fetchUserDataForVip(user.username)
+      const data = result?.data
+
+      if (!result?.success || !data?.found) {
+        toast.info(data?.message || 'User not found on server. You can still add VIP manually.')
+        loadingUserData.value = false
+        return
+      }
+
+      const vip = data.vip
+      const password = data.password
+      const expireDate = data.expireDate
+
+      if (vip === 'Gold') {
+        vipModalMode.value = 'update'
+        vipCurrentExpireDisplay.value = (expireDate && expireDate !== 'Unknown')
+          ? expireDate.replace('|', ' ')
+          : (expireDate || 'Unknown')
+        const parsedExpiry = parseExpireDateToDatetimeLocal(expireDate)
+        if (parsedExpiry) {
+          vipUser.value.expiryDate = parsedExpiry
+        }
+      } else {
+        vipModalMode.value = 'add'
+        if (password) {
+          vipUser.value.password = password
+        }
+        if (vip === 'Silver') {
+          vipUser.value.vipType = 'silver'
+        } else {
+          vipUser.value.vipType = 'gold'
+        }
+      }
+    } finally {
+      loadingUserData.value = false
+    }
   }
 
   const closeVipModal = () => {
     showVipModal.value = false
     vipUser.value = {}
     showPassword.value = false
+    vipModalMode.value = 'add'
+    loadingUserData.value = false
+    vipCurrentExpireDisplay.value = ''
   }
 
   const togglePassword = () => {
     showPassword.value = !showPassword.value
   }
 
+  const datetimeLocalToExpiresFormat = (datetimeLocal) => {
+    if (!datetimeLocal) return ''
+    const [datePart, timePart] = datetimeLocal.split('T')
+    const [y, m, d] = datePart.split('-')
+    const [h, min] = (timePart || '00:00').split(':')
+    return `${y}/${m}/${d}|${h}:${min}`
+  }
+
   const addVip = async () => {
-    // Validate expiry date is in the future
     const selectedDate = new Date(vipUser.value.expiryDate)
     const now = new Date()
-    
+
     if (selectedDate <= now) {
       toast.error("VIP expiry date must be in the future")
       return
@@ -638,22 +724,42 @@
     loadingVip.value = true
     try {
       const config = configuration()
-      await axiosInstance.post(
-        `/rcon/add-vip`,
-        {
-          name: vipUser.value.username,
-          password: vipUser.value.password,
-          vipType: vipUser.value.vipType,
-          expiresISO: selectedDate.toISOString()
-        },
-        config
-      )
-      closeVipModal()
-      await fetchUsers()
-      toast.success("VIP added successfully.")
+
+      if (vipModalMode.value === 'update') {
+        await axiosInstance.post(
+          `/user/update-vip`,
+          {
+            username: vipUser.value.username,
+            expires: datetimeLocalToExpiresFormat(vipUser.value.expiryDate)
+          },
+          config
+        )
+        closeVipModal()
+        await fetchUsers()
+        toast.success("VIP updated successfully.")
+      } else {
+        if (!vipUser.value.password || !vipUser.value.vipType) {
+          toast.error("Password and VIP type are required")
+          loadingVip.value = false
+          return
+        }
+        await axiosInstance.post(
+          `/rcon/add-vip`,
+          {
+            name: vipUser.value.username,
+            password: vipUser.value.password,
+            vipType: vipUser.value.vipType,
+            expiresISO: selectedDate.toISOString()
+          },
+          config
+        )
+        closeVipModal()
+        await fetchUsers()
+        toast.success("VIP added successfully.")
+      }
     } catch (error) {
-      console.error("Error adding VIP:", error)
-      toast.error(error.response?.data?.message || "Failed to add VIP.")
+      console.error("Error adding/updating VIP:", error)
+      toast.error(error.response?.data?.message || "Failed to add/update VIP.")
     } finally {
       loadingVip.value = false
     }
@@ -1337,6 +1443,17 @@
     font-size: 12px;
     color: #ef4444;
     font-weight: 500;
+  }
+
+  .current-expiry-display .current-expiry-value {
+    margin: 0;
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #166534;
   }
 
   /* Password Input Group */
