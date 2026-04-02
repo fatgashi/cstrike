@@ -27,15 +27,16 @@
         </div>
       </div>
 
-      <!-- Stats Cards -->
+      <!-- Stats Cards (site-wide totals from API when available) -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon">
             <i class="fas fa-users"></i>
           </div>
           <div class="stat-content">
-            <div class="stat-number">{{ users.length }}</div>
+            <div class="stat-number">{{ totalUsersStat }}</div>
             <div class="stat-label">Total Users</div>
+            <div v-if="listStats" class="stat-sublabel">Site-wide</div>
           </div>
         </div>
         <div class="stat-card">
@@ -45,6 +46,7 @@
           <div class="stat-content">
             <div class="stat-number">{{ vipUsersCount }}</div>
             <div class="stat-label">VIP Users</div>
+            <div class="stat-sublabel">This page</div>
           </div>
         </div>
         <div class="stat-card">
@@ -52,8 +54,9 @@
             <i class="fas fa-shield-alt"></i>
           </div>
           <div class="stat-content">
-            <div class="stat-number">{{ adminUsersCount }}</div>
-            <div class="stat-label">Admin Users</div>
+            <div class="stat-number">{{ adminUsersStat }}</div>
+            <div class="stat-label">Staff / admins</div>
+            <div v-if="listStats" class="stat-sublabel">Site-wide</div>
           </div>
         </div>
         <div class="stat-card">
@@ -61,11 +64,15 @@
             <i class="fas fa-ban"></i>
           </div>
           <div class="stat-content">
-            <div class="stat-number">{{ suspendedUsersCount }}</div>
+            <div class="stat-number">{{ suspendedUsersStat }}</div>
             <div class="stat-label">Suspended</div>
+            <div v-if="listStats" class="stat-sublabel">Site-wide</div>
           </div>
         </div>
       </div>
+      <p v-if="listStats" class="stats-hint">
+        Summary cards marked “Site-wide” include all accounts and ignore search; the table and range below use your current filter and page.
+      </p>
 
       <!-- Website Visits Tracking Section -->
       <div class="visits-section">
@@ -140,7 +147,12 @@
         <div class="table-header">
           <h3 class="table-title">User List</h3>
           <div class="table-actions">
-            <span class="results-count">Showing {{ users.length }} users</span>
+            <span class="results-count">
+              <template v-if="paginationTotalUsers > 0">
+                Showing {{ tableRangeStart }}–{{ tableRangeEnd }} of {{ paginationTotalUsers }} users
+              </template>
+              <template v-else>No users match</template>
+            </span>
           </div>
         </div>
         
@@ -481,6 +493,11 @@
   const visitStats = ref(null)
   const visitsLoading = ref(false)
 
+  /** Site-wide stats from GET /user/users (`stats`); null if API omits (legacy). */
+  const listStats = ref(null)
+  /** Total rows matching current search (pagination scope). */
+  const paginationTotalUsers = ref(0)
+
   // Computed Properties
   const vipUsersCount = computed(() => {
     return users.value.filter(user => user.isVIP).length
@@ -492,6 +509,37 @@
 
   const suspendedUsersCount = computed(() => {
     return users.value.filter(user => user.suspended).length
+  })
+
+  const totalUsersStat = computed(() => {
+    if (listStats.value != null && typeof listStats.value.totalUsers === 'number') {
+      return listStats.value.totalUsers
+    }
+    return paginationTotalUsers.value
+  })
+
+  const adminUsersStat = computed(() => {
+    if (listStats.value != null && typeof listStats.value.adminUsers === 'number') {
+      return listStats.value.adminUsers
+    }
+    return adminUsersCount.value
+  })
+
+  const suspendedUsersStat = computed(() => {
+    if (listStats.value != null && typeof listStats.value.suspendedUsers === 'number') {
+      return listStats.value.suspendedUsers
+    }
+    return suspendedUsersCount.value
+  })
+
+  const tableRangeStart = computed(() => {
+    if (!users.value.length || !paginationTotalUsers.value) return 0
+    return (currentPage.value - 1) * limit.value + 1
+  })
+
+  const tableRangeEnd = computed(() => {
+    if (!users.value.length) return 0
+    return (currentPage.value - 1) * limit.value + users.value.length
   })
 
   const visiblePages = computed(() => {
@@ -533,8 +581,11 @@
       const config = configuration()
       const res = await axiosInstance.get(`/user/users?page=${currentPage.value}&limit=${limit.value}&search=${search.value}`, config)
       users.value = res.data.data
-      totalPages.value = res.data.pagination.totalPages
-      currentPage.value = res.data.pagination.currentPage
+      const pag = res.data.pagination
+      totalPages.value = pag.totalPages
+      currentPage.value = pag.currentPage
+      paginationTotalUsers.value = typeof pag.totalUsers === 'number' ? pag.totalUsers : (res.data.data?.length ?? 0)
+      listStats.value = res.data.stats && typeof res.data.stats === 'object' ? res.data.stats : null
     } catch (error) {
       console.error("Error fetching users:", error)
       toast.error("Failed to fetch users")
@@ -979,6 +1030,23 @@
     font-size: 14px;
     color: #64748b;
     font-weight: 500;
+  }
+
+  .stat-sublabel {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .stats-hint {
+    font-size: 13px;
+    color: #64748b;
+    margin: -16px 0 28px 0;
+    line-height: 1.45;
+    max-width: 920px;
   }
 
   /* Table Container */
