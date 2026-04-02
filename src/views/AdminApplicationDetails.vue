@@ -2,6 +2,13 @@
   <div>
     <br>
     <div class="admin-application-container">
+      <div class="back-row">
+        <router-link to="/forum/admin-applications" class="back-to-applications">
+          <i class="fas fa-arrow-left me-2"></i>
+          Back to applications
+        </router-link>
+      </div>
+
       <!-- Header Section -->
       <div class="page-header">
         <div class="header-content">
@@ -181,6 +188,37 @@
                 <i class="fas fa-times me-2"></i>Reject
               </button>
             </div>
+
+            <div v-if="currentUser && currentUser.role === 'superadmin'" class="vote-roster-section">
+              <h5 class="vote-roster-title">
+                <i class="fas fa-users me-2"></i>Who voted
+              </h5>
+              <p v-if="applicationVoteRoster.length === 0" class="vote-roster-empty">
+                No votes recorded yet.
+              </p>
+              <ul v-else class="vote-roster-list">
+                <li
+                  v-for="entry in applicationVoteRoster"
+                  :key="entry.id"
+                  class="vote-roster-item"
+                >
+                  <div class="roster-main">
+                    <strong class="roster-name">{{ entry.name }}</strong>
+                    <span class="roster-role">{{ entry.adminRole }}</span>
+                  </div>
+                  <div class="roster-meta">
+                    <span
+                      class="roster-vote"
+                      :class="entry.vote === 'approve' ? 'roster-vote-approve' : 'roster-vote-reject'"
+                    >
+                      <i :class="entry.vote === 'approve' ? 'fas fa-check' : 'fas fa-times'"></i>
+                      {{ entry.vote }}
+                    </span>
+                    <span class="roster-time">{{ formatDate(entry.votedAt) }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
   
@@ -290,8 +328,8 @@
             </div>
             
             <div v-else class="login-required">
-              <i class="fas fa-lock text-muted mb-2"></i>
-              <p class="text-muted">You must be logged in as an admin to comment on applications.</p>
+              <i class="fas fa-lock login-required-icon mb-2"></i>
+              <p class="login-required-text">You must be logged in as an admin to comment on applications.</p>
             </div>
           </div>
         </div>
@@ -314,6 +352,7 @@ export default {
       application: null,
       user: {},
       votes: [],
+      applicationVoteRoster: [],
       comments: [],
       newCommentText: "",
       currentUser: {
@@ -382,8 +421,36 @@ export default {
         } else {
           this.hasVoted = true;
         }
+
+        if (this.currentUser?.role === "superadmin") {
+          await this.fetchSuperAdminApplicationVotes();
+        } else {
+          this.applicationVoteRoster = [];
+        }
       } catch (error) {
         console.error("Error fetching votes:", error);
+        this.applicationVoteRoster = [];
+      }
+    },
+
+    async fetchSuperAdminApplicationVotes() {
+      if (this.currentUser?.role !== "superadmin") {
+        this.applicationVoteRoster = [];
+        return;
+      }
+      try {
+        const response = await axiosInstance.get(
+          `/admin/super-admin/application-votes/${this.$route.params.id}`,
+          configuration()
+        );
+        if (response.data?.success && Array.isArray(response.data.votes)) {
+          this.applicationVoteRoster = response.data.votes;
+        } else {
+          this.applicationVoteRoster = [];
+        }
+      } catch (error) {
+        console.error("Error fetching super admin application votes:", error);
+        this.applicationVoteRoster = [];
       }
     },
 
@@ -565,6 +632,30 @@ export default {
   padding: 20px;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
   min-height: 100vh;
+}
+
+.back-row {
+  margin-bottom: 16px;
+}
+
+.back-to-applications {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.back-to-applications:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateX(-2px);
 }
 
 /* Page Header */
@@ -791,11 +882,12 @@ export default {
 .keyword-info {
   margin-left: 15px;
   font-size: 0.9rem;
+  color: #fff;
 }
 
 .keyword {
-  background: rgba(52, 152, 219, 0.2);
-  color: #3498db;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
   padding: 2px 8px;
   border-radius: 6px;
   font-family: 'Courier New', monospace;
@@ -886,6 +978,96 @@ export default {
 .voting-actions .btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.vote-roster-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vote-roster-title {
+  color: #ecf0f1;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.vote-roster-empty {
+  color: #95a5a6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.vote-roster-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vote-roster-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.roster-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.roster-name {
+  color: #fff;
+  font-weight: 600;
+}
+
+.roster-role {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(149, 165, 166, 0.35);
+  color: #ecf0f1;
+}
+
+.roster-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.roster-vote {
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.roster-vote-approve {
+  color: #2ecc71;
+}
+
+.roster-vote-reject {
+  color: #e74c3c;
+}
+
+.roster-time {
+  color: #bdc3c7;
+  font-size: 0.85rem;
 }
 
 /* Attachments */
@@ -1125,7 +1307,16 @@ export default {
 .login-required {
   text-align: center;
   padding: 40px 20px;
-  color: #6c757d;
+}
+
+.login-required-icon {
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.login-required-text {
+  color: #fff;
+  margin: 0;
 }
 
 /* Responsive Design */
