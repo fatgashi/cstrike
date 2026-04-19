@@ -1,4 +1,42 @@
 /* src/assets/main.css (or in App.vue in <style> section) */
+
+/*
+ * Modal / scrollbar: avoid layout jump when Bootstrap sets body overflow:hidden.
+ * Do NOT use scrollbar-gutter: stable here — it left an empty light strip on the
+ * right (browser default) against this dark theme.
+ * overflow-y: scroll keeps a constant scrollbar track width on most layouts.
+ */
+html {
+  overflow-y: scroll;
+  background-color: #0a0a0a;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: #0a0a0a;
+}
+
+/*
+ * Bootstrap ScrollBarHelper sets inline padding-right on body, .modal, .sticky-top, etc.
+ * We keep a stable scrollbar on html, so that padding only creates a visible gap.
+ * !important beats Bootstrap’s inline values. Keep selectors PurgeCSS-safelisted (postcss.config.js).
+ */
+html body.modal-open {
+  padding-right: 0 !important;
+}
+
+.modal.show,
+.modal.fade.show {
+  padding-right: 0 !important;
+}
+
+/* Bootstrap targets .sticky-top; our header is sticky via CSS but other pages may use the class */
+body.modal-open .sticky-top {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
 :root {
   --primary-bg: #1c1c1c;     /* Dark Grey */
   --secondary-bg: #2b2b2b;   /* Gunmetal Grey */

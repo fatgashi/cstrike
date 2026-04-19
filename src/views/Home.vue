@@ -146,16 +146,17 @@ export default {
         toast.error(err.response?.data?.message || "Failed to claim reward.");
       }
     },
+    async onHomeUserLoggedIn() {
+      if (this.$store.state.user) {
+        await this.checkDailyReward();
+      }
+    },
+    onHomeUserLoggedOut() {
+      this.showDailyBanner = false;
+    },
     listenToAuthChanges() {
-      eventBus.on("userLoggedIn", async () => {
-        if (this.$store.state.user) {
-          await this.checkDailyReward();
-        }
-      });
-
-      eventBus.on("userLoggedOut", () => {
-        this.showDailyBanner = false;
-      });
+      eventBus.on("userLoggedIn", this.onHomeUserLoggedIn);
+      eventBus.on("userLoggedOut", this.onHomeUserLoggedOut);
     },
   },
   computed: {
@@ -186,8 +187,8 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.matchHeight);
-    eventBus.off("userLoggedIn");
-    eventBus.off("userLoggedOut");
+    eventBus.off("userLoggedIn", this.onHomeUserLoggedIn);
+    eventBus.off("userLoggedOut", this.onHomeUserLoggedOut);
   },
 };
 </script>

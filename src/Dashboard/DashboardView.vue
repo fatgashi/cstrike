@@ -5,7 +5,8 @@
         <div class="header-content">
           <div class="header-left">
             <h2 class="page-title">User Management</h2>
-            <p class="page-subtitle">Manage registered users, roles, and permissions</p>
+            <p v-if="isSuperAdminUser" class="page-subtitle">Manage registered users, roles, and permissions</p>
+            <p v-else-if="isOwnerUser" class="page-subtitle">View all accounts and use the VIP actions only — you cannot edit or delete users.</p>
           </div>
           <div class="header-actions">
             <div class="search-container">
@@ -70,12 +71,12 @@
           </div>
         </div>
       </div>
-      <p v-if="listStats" class="stats-hint">
+      <p v-if="listStats && isSuperAdminUser" class="stats-hint">
         Summary cards marked “Site-wide” include all accounts and ignore search; the table and range below use your current filter and page.
       </p>
 
       <!-- Website Visits Tracking Section -->
-      <div class="visits-section">
+      <div v-if="isSuperAdminUser" class="visits-section">
         <div class="visits-header">
           <h3 class="visits-title">
             <i class="fas fa-chart-line"></i>
@@ -217,13 +218,28 @@
                   </div>
                 </td>
                 <td class="user-actions">
-                  <button class="action-btn edit" @click="openEditModal(user)" title="Edit User">
+                  <button
+                    v-if="isSuperAdminUser"
+                    class="action-btn edit"
+                    @click="openEditModal(user)"
+                    title="Edit User"
+                  >
                     <i class="fas fa-edit"></i>
                   </button>
-                  <button class="action-btn vip" @click="openVipModal(user)" title="Add VIP">
+                  <button
+                    v-if="isSuperAdminUser || isOwnerUser"
+                    class="action-btn vip"
+                    @click="openVipModal(user)"
+                    title="Add or update VIP"
+                  >
                     <i class="fas fa-crown"></i>
                   </button>
-                  <button class="action-btn delete" @click="deleteUser(user.ID)" title="Delete User">
+                  <button
+                    v-if="isSuperAdminUser"
+                    class="action-btn delete"
+                    @click="deleteUser(user.ID)"
+                    title="Delete User"
+                  >
                     <i class="fas fa-trash"></i>
                   </button>
                 </td>
@@ -273,8 +289,8 @@
         </div>
       </div>
 
-      <!-- Edit Modal -->
-      <div v-if="showEditModal" class="custom-modal-overlay" @click="closeEditModal">
+      <!-- Edit Modal (super-admin only) -->
+      <div v-if="isSuperAdminUser && showEditModal" class="custom-modal-overlay" @click="closeEditModal">
         <div class="custom-modal" @click.stop>
           <div class="modal-header">
             <h5 class="modal-title">
@@ -300,6 +316,7 @@
                 <select class="form-control" v-model="editUser.role" :disabled="loadingSave">
                   <option value="client">Client</option>
                   <option value="admin">Admin</option>
+                  <option value="owner">Owner</option>
                   <option value="superadmin">SuperAdmin</option>
                 </select>
               </div>
@@ -425,7 +442,7 @@
                       <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                     </button>
                   </div>
-                  <small class="form-text" v-if="!vipUser.password">Password is required</small>
+                  <small class="form-text text-muted">Optional — leave blank if your server accepts empty VIP passwords.</small>
                 </div>
                 <div class="form-group">
                   <label class="form-label">VIP Type</label>
@@ -450,7 +467,7 @@
             <button 
               type="button" 
               class="btn btn-primary"
-              :disabled="loadingVip || !vipUser.expiryDate || (vipModalMode === 'add' && (!vipUser.password || !vipUser.vipType))"
+              :disabled="loadingVip || !vipUser.expiryDate || (vipModalMode === 'add' && !vipUser.vipType)"
               @click="addVip"
             >
               <span v-if="loadingVip" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -467,9 +484,14 @@
   import { useToast } from 'vue-toastification'
   import configuration from '../config/config'
   import axiosInstance from '../config/axios' // Use configured axios instance
+  import { getCurrentUser } from '../config/userLogic'
 
   // Toast
   const toast = useToast()
+
+  const currentUserRole = ref('')
+  const isSuperAdminUser = computed(() => currentUserRole.value === 'superadmin')
+  const isOwnerUser = computed(() => currentUserRole.value === 'owner')
 
   // Reactive Data
   const users = ref([])
@@ -504,7 +526,9 @@
   })
 
   const adminUsersCount = computed(() => {
-    return users.value.filter(user => user.role === 'admin' || user.role === 'superadmin').length
+    return users.value.filter(user =>
+      user.role === 'admin' || user.role === 'owner' || user.role === 'superadmin'
+    ).length
   })
 
   const suspendedUsersCount = computed(() => {
@@ -567,6 +591,8 @@
     switch (role) {
       case 'superadmin':
         return 'superadmin'
+      case 'owner':
+        return 'owner'
       case 'admin':
         return 'admin'
       case 'client':
@@ -600,6 +626,7 @@
   }
 
   const openEditModal = (user) => {
+    if (!isSuperAdminUser.value) return
     editUser.value = { 
       ...user, 
       apAdd: 0,
@@ -616,6 +643,7 @@
   }
 
   const saveChanges = async () => {
+    if (!isSuperAdminUser.value) return
     loadingSave.value = true
     try {
       const config = configuration()
@@ -651,6 +679,7 @@
   }
 
   const deleteUser = async (id) => {
+    if (!isSuperAdminUser.value) return
     const confirmed = confirm("Are you sure you want to delete this user?")
     if (!confirmed) return
 
@@ -789,8 +818,8 @@
         await fetchUsers()
         toast.success("VIP updated successfully.")
       } else {
-        if (!vipUser.value.password || !vipUser.value.vipType) {
-          toast.error("Password and VIP type are required")
+        if (!vipUser.value.vipType) {
+          toast.error("VIP type is required")
           loadingVip.value = false
           return
         }
@@ -798,7 +827,7 @@
           `/rcon/add-vip`,
           {
             name: vipUser.value.username,
-            password: vipUser.value.password,
+            password: (vipUser.value.password || '').trim(),
             vipType: vipUser.value.vipType,
             expiresISO: selectedDate.toISOString()
           },
@@ -845,13 +874,21 @@
   }
 
   // Lifecycle
-  onMounted(() => {
-    fetchUsers()
-    
-    // Initialize date to today and fetch visit stats
-    const today = new Date().toISOString().split('T')[0]
-    selectedDate.value = today
-    fetchVisitStats()
+  onMounted(async () => {
+    try {
+      const me = await getCurrentUser()
+      if (me && typeof me === 'object' && me.role) {
+        currentUserRole.value = me.role
+      }
+    } catch (e) {
+      console.warn('DashboardView: could not load profile role', e)
+    }
+    await fetchUsers()
+    if (isSuperAdminUser.value) {
+      const today = new Date().toISOString().split('T')[0]
+      selectedDate.value = today
+      fetchVisitStats()
+    }
   })
   </script>
   
@@ -1159,6 +1196,11 @@
   .role-badge.admin {
     background: #d1fae5;
     color: #065f46;
+  }
+
+  .role-badge.owner {
+    background: #fce7f3;
+    color: #9d174d;
   }
 
   .role-badge.client {

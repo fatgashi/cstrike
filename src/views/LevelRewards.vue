@@ -185,20 +185,20 @@ export default {
         this.loading = false;
       }
     },
-    async listenToAuthChanges() {
-      eventBus.on("userLoggedIn", async () => {
-        if (this.$store.state.user) {
-          this.currentUser = this.$store.state.user;
-          await this.fetchRewards();
-        }
-      });
-      
-      // Also listen for logout events
-      eventBus.on("userLoggedOut", () => {
-        this.currentUser = null;
-        this.rewards = [];
-        this.loading = false;
-      });
+    async onLevelRewardsLoggedIn() {
+      if (this.$store.state.user) {
+        this.currentUser = this.$store.state.user;
+        await this.fetchRewards();
+      }
+    },
+    onLevelRewardsLoggedOut() {
+      this.currentUser = null;
+      this.rewards = [];
+      this.loading = false;
+    },
+    listenToAuthChanges() {
+      eventBus.on("userLoggedIn", this.onLevelRewardsLoggedIn);
+      eventBus.on("userLoggedOut", this.onLevelRewardsLoggedOut);
     },
     async claimReward(level) {
       const toast = useToast();
@@ -234,8 +234,8 @@ export default {
     // If no user, don't fetch rewards - just wait for login event
   },
   beforeUnmount() {
-    eventBus.off("userLoggedIn");
-    eventBus.off("userLoggedOut");
+    eventBus.off("userLoggedIn", this.onLevelRewardsLoggedIn);
+    eventBus.off("userLoggedOut", this.onLevelRewardsLoggedOut);
   },
 };
 </script>

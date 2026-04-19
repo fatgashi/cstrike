@@ -136,7 +136,7 @@
                   <i :class="application.rulesRead ? 'fas fa-check' : 'fas fa-times'"></i>
                   {{ application.rulesRead || "No" }}
                 </span>
-                <span v-if="currentUser && (currentUser.role === 'admin' || currentUser.role === 'superadmin')" class="keyword-info">
+                <span v-if="currentUser && ['admin', 'owner', 'superadmin'].includes(currentUser.role)" class="keyword-info">
                   Keyword: <code class="keyword">{{ application.expectedKeyword }}</code>
                 </span>
               </div>
@@ -180,7 +180,7 @@
             </div>
   
             <!-- Voting Buttons -->
-            <div v-if="!hasVoted && currentUser && (currentUser.role === 'superadmin' || currentUser.role === 'admin')" class="voting-actions">
+            <div v-if="!hasVoted && currentUser && ['admin', 'owner', 'superadmin'].includes(currentUser.role)" class="voting-actions">
               <button class="btn btn-success btn-lg me-3" @click="submitVote('approve')">
                 <i class="fas fa-check me-2"></i>Approve
               </button>
@@ -289,7 +289,7 @@
             </div>
   
             <!-- Add Comment Form -->
-            <div v-if="currentUser && (currentUser.role === 'superadmin' || currentUser.role === 'admin')" class="comment-form">
+            <div v-if="currentUser && ['admin', 'owner', 'superadmin'].includes(currentUser.role)" class="comment-form">
               <h5>Add a Comment</h5>
               <form @submit.prevent="submitComment">
                 <div class="form-group">
@@ -612,14 +612,13 @@ export default {
   mounted() {
     this.fetchApplication();
 
-    eventBus.on("userLoggedIn", async () => {
-      console.log("🔥 userLoggedIn event received in Header.vue");
-      await this.role(); // this.loggedIn updates automatically now
-    });
+    this._onAdminAppDetailsLoggedIn = async () => {
+      await this.role();
+    };
+    eventBus.on("userLoggedIn", this._onAdminAppDetailsLoggedIn);
   },
   beforeUnmount() {
-    // ✅ Remove event listener to prevent memory leaks
-    eventBus.off("userLoggedIn");
+    eventBus.off("userLoggedIn", this._onAdminAppDetailsLoggedIn);
   },
 };
 </script>

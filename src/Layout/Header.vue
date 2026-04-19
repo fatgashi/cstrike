@@ -105,7 +105,11 @@
                    </div>
                  </div>
                 <div class="dropdown-content">
-                  <router-link v-if="userData.role === 'superadmin'" to="/dashboard" class="dropdown-item">
+                  <router-link
+                    v-if="userData.role === 'superadmin' || userData.role === 'owner'"
+                    to="/dashboard"
+                    class="dropdown-item"
+                  >
                     <span class="item-icon">⚙️</span>
                     <span class="item-text">Dashboard</span>
                   </router-link>
@@ -223,7 +227,7 @@ export default {
       
       this.closeUserMenu();
 
-      if (this.$router.currentRoute.path !== '/home') {
+      if (this.$route.path !== '/home') {
         await this.$router.replace({ path: '/home' });
       }
 
@@ -262,38 +266,39 @@ export default {
         this.userProfileData = null;
       }
     },
+
+    async onHeaderUserLoggedIn() {
+      await this.role();
+      await this.fetchUserProfile();
+    },
+
+    async onHeaderProfileUpdated() {
+      await this.fetchUserProfile();
+    },
+
+    onDocumentClickCloseMenu(event) {
+      const dropdown = event.target.closest('.user-dropdown-wrapper');
+      if (!dropdown && this.showUserMenu) {
+        this.showUserMenu = false;
+      }
+    },
   },
 
   async mounted() {
     if (this.loggedIn) {
       await this.role();
-      await this.fetchUserProfile(); // Fetch complete profile data
+      await this.fetchUserProfile();
     }
 
-          eventBus.on("userLoggedIn", async () => {
-        console.log("🔥 userLoggedIn event received in Header.vue");
-        await this.role();
-        await this.fetchUserProfile(); // Fetch complete profile data after login
-      });
-
-      // Listen for profile updates
-      eventBus.on("profileUpdated", async () => {
-        console.log("🔥 profileUpdated event received in Header.vue");
-        await this.fetchUserProfile(); // Refresh profile data when profile is updated
-      });
-
-    // Add click outside listener for dropdown
-    document.addEventListener('click', (event) => {
-      const dropdown = event.target.closest('.user-dropdown-wrapper');
-      if (!dropdown && this.showUserMenu) {
-        this.showUserMenu = false;
-      }
-    });
+    eventBus.on("userLoggedIn", this.onHeaderUserLoggedIn);
+    eventBus.on("profileUpdated", this.onHeaderProfileUpdated);
+    document.addEventListener('click', this.onDocumentClickCloseMenu);
   },
 
   beforeUnmount() {
-    eventBus.off("userLoggedIn");
-    eventBus.off("profileUpdated");
+    eventBus.off("userLoggedIn", this.onHeaderUserLoggedIn);
+    eventBus.off("profileUpdated", this.onHeaderProfileUpdated);
+    document.removeEventListener('click', this.onDocumentClickCloseMenu);
   },
 
 

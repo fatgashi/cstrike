@@ -2,8 +2,8 @@
   <div class="container">
     <br>
     <h2 v-if="user" class="text-start text-white mb-3 fw-bolder">Promotion Request: {{ user.username }}</h2>
-    <div v-if="!['admin', 'superadmin'].includes(currUser?.role)" class="alert alert-danger text-center mt-4">
-  🚫 You are not part of the staff team. Only Admins and Superadmins can view promotion applications.
+    <div v-if="!['admin', 'owner', 'superadmin'].includes(currUser?.role)" class="alert alert-danger text-center mt-4">
+  🚫 You are not part of the staff team. Only staff (admin, owner, super-admin) can view promotion applications.
     </div>
     <div v-else>
     <div v-if="application" class="p-3 mb-3" style="background-color: #1a1a1a;">
@@ -57,7 +57,7 @@
           </div>
         </div>
 
-        <div v-if="!hasVoted && ['admin', 'superadmin'].includes(currentUser?.role) && application.userId != currentUser.ID">
+        <div v-if="!hasVoted && ['admin', 'owner', 'superadmin'].includes(currentUser?.role) && application.userId != currentUser.ID">
           <hr class="bg-white">
           <h5>Vote on Application</h5>
           <button class="btn btn-success me-2" @click="submitVote('approve')">✅ Approve</button>
@@ -98,7 +98,7 @@
         </div>
 
         <hr class="bg-white">
-        <div v-if="['admin', 'superadmin'].includes(currentUser?.role)">
+        <div v-if="['admin', 'owner', 'superadmin'].includes(currentUser?.role)">
           <form @submit.prevent="submitComment">
             <textarea v-model="newCommentText" class="form-control bg-dark text-white mb-2" required placeholder="Write a comment..."></textarea>
             <input type="file" @change="handleFileUpload" class="form-control bg-dark text-white mb-2">

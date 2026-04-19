@@ -5,9 +5,13 @@ import { jwtDecode } from 'jwt-decode';
 import router from "../router";
 
 export function getTokenExpiration(token) {
-    const decoded = jwtDecode(token);
-    if (decoded.exp) {
-        return decoded.exp * 1000; // Convert to milliseconds
+    try {
+        const decoded = jwtDecode(token);
+        if (decoded.exp) {
+            return decoded.exp * 1000; // Convert to milliseconds
+        }
+    } catch {
+        /* invalid token */
     }
     return null;
 }
@@ -27,8 +31,8 @@ export async function isAdmin(){
         
         return user.role == 'admin' ? true : false;
 
-    } catch(err) {
-        return err.message;
+    } catch {
+        return false;
     }
 
 }
@@ -46,13 +50,28 @@ export async function isSuperAdmin(){
             return user.role == 'superadmin' ? true : false;
         }
         return false;
-    } catch(err) {
-        return err.message;
+    } catch {
+        return false;
     }
 
 }
 
+/** JWT/site role: can use VIP RCON tools (`/rcon/add-vip`, `/user/update-vip`). */
+export async function isSuperAdminOrOwner() {
+    const config = configuration();
+    try {
+        if (!isTokenAvaible()) return false;
+        const user = await axios.get(`/user/profile`, config).then((res) => res.data);
+        return user.role === "superadmin" || user.role === "owner";
+    } catch {
+        return false;
+    }
+}
+
 export async function isClient(){
+    if (!isTokenAvaible()) {
+        return false;
+    }
     const config = configuration();
 
     try {
@@ -62,8 +81,8 @@ export async function isClient(){
         
         return user.role;
 
-    } catch(err) {
-        return err.message;
+    } catch {
+        return false;
     }
 
 }
@@ -72,17 +91,13 @@ export async function getCurrentUser(){
     const config = configuration();
 
     try {
-        if(isTokenAvaible()){
-            const user = await axios.get(`/user/profile`, config).then(res => {
-                return res.data;
-            });
-            
-            return user;
-
+        if (!isTokenAvaible()) {
+            return null;
         }
-
-    } catch(err) {
-        return err.message;
+        const res = await axios.get(`/user/profile`, config);
+        return res.data;
+    } catch {
+        return null;
     }
 
 }

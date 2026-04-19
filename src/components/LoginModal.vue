@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- PurgeCSS: class name appears only on body via Bootstrap JS -->
+    <span class="modal-open" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;clip:rect(0,0,0,0)"></span>
     <div
       class="modal fade"
       ref="myModal"
@@ -141,7 +143,7 @@ export default {
         this.$store.dispatch('updateUser', data.user);
         eventBus.emit("userLoggedIn");
 
-        if (data.user.role === 'superadmin') {
+        if (data.user.role === 'superadmin' || data.user.role === 'owner') {
           this.$router.push('/dashboard/home');
         }
 
@@ -173,20 +175,44 @@ export default {
 
   mounted(){
     // Configure modal (no custom click handlers needed)
-    this.modal = new Modal(this.$refs.myModal, {
+    const modalEl = this.$refs.myModal;
+    this.modal = new Modal(modalEl, {
       backdrop: 'static', // won't close on backdrop click
       keyboard: true,     // ESC closes (set to false if you want to prevent it)
       focus: true
     });
 
-    eventBus.on("showLoginModal", () => {
-      console.log("🔥 Received showLoginModal event in LoginModal.vue");
-      this.modal.show();
-    });
+    // Bootstrap ScrollBarHelper sets inline padding-right on body + .modal; neutralize it.
+    this._stripModalScrollPadding = () => {
+      if (!document.body.classList.contains('modal-open')) return;
+      document.body.style.setProperty('padding-right', '0', 'important');
+      modalEl.style.setProperty('padding-right', '0', 'important');
+    };
+    this._clearModalPaddingImportant = () => {
+      document.body.style.removeProperty('padding-right');
+      modalEl.style.removeProperty('padding-right');
+    };
+    modalEl.addEventListener('shown.bs.modal', this._stripModalScrollPadding);
+    modalEl.addEventListener('hidden.bs.modal', this._clearModalPaddingImportant);
+    window.addEventListener('resize', this._stripModalScrollPadding);
+
+    this._onShowLoginModal = () => {
+      if (this.modal) {
+        this.modal.show();
+      }
+    };
+    eventBus.on("showLoginModal", this._onShowLoginModal);
   },
 
   beforeUnmount() {
-    eventBus.off("showLoginModal");
+    const modalEl = this.$refs.myModal;
+    if (modalEl) {
+      modalEl.removeEventListener('shown.bs.modal', this._stripModalScrollPadding);
+      modalEl.removeEventListener('hidden.bs.modal', this._clearModalPaddingImportant);
+    }
+    window.removeEventListener('resize', this._stripModalScrollPadding);
+    this._clearModalPaddingImportant();
+    eventBus.off("showLoginModal", this._onShowLoginModal);
   }
 };
 </script>

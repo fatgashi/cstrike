@@ -230,6 +230,9 @@ export default {
   methods: {
     async fetchUserProfile() {
       const userData = await getCurrentUser();
+      if (!userData) {
+        return;
+      }
       if (userData.dateOfBirth) {
         userData.dateOfBirth = new Date(userData.dateOfBirth).toISOString().split('T')[0];
       }

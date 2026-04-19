@@ -10,6 +10,9 @@ module.exports = {
            // ✅ Toastification core
           /^Vue-Toastification/,
           /^vue-toastification/,
+          // Bootstrap Modal (body.modal-open etc. are added only via JS — must not be purged)
+          'modal-open',
+          'modal-backdrop',
           // Bootstrap dropdown
           'dropdown-menu',
           'dropdown-menu-end',
@@ -32,7 +35,7 @@ module.exports = {
           'align-items-center',
           'justify-content-between',
         ],
-        deep: [/dropdown/, /show/, /btn/, /shadow/, /text-/],
+        deep: [/dropdown/, /show/, /btn/, /shadow/, /text-/, /^modal/, /backdrop/],
       },
       defaultExtractor: content => content.match(/[\w-/:]+/g) || [],
     }),

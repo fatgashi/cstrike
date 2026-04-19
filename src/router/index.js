@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import routes from './routes.js';
-import { getCurrentUser, isClient, isSuperAdmin } from '../config/userLogic.js';
+import { getCurrentUser, isClient, isSuperAdmin, isSuperAdminOrOwner } from '../config/userLogic.js';
 
 // Optional: Event bus replacement for Vue 3
 import mitt from 'mitt';
@@ -16,6 +16,16 @@ router.beforeEach(async (to, from, next) => {
     if (to.matched.some(record => record.meta.requireSuperAdmin)) {
       const adminStatus = await isSuperAdmin();
       if (adminStatus === true) return next();
+      const ownerOrSa = await isSuperAdminOrOwner();
+      if (ownerOrSa === true) {
+        return next({ path: "/dashboard/home", replace: true });
+      }
+      return next("/home");
+    }
+
+    if (to.matched.some(record => record.meta.requireSuperAdminOrOwner)) {
+      const elevated = await isSuperAdminOrOwner();
+      if (elevated === true) return next();
       return next("/home");
     }
 

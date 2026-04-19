@@ -143,16 +143,26 @@ const userData = reactive({})
 const isMounted = ref(false)
 const sidebarRef = ref(null)
 
-// Navigation Links
-const navigationLinks = [
-  { name: "Dashboard", path: "/dashboard/home", icon: "fas fa-tachometer-alt" },
-  { name: "Ban List", path: "/dashboard/banlist", icon: "fas fa-ban" },
-  { name: "Commands", path: "/dashboard/commands", icon: "fas fa-terminal" },
-]
+const navigationLinks = computed(() => {
+  const role = userData.role
+  if (role === 'owner') {
+    return [
+      { name: 'Dashboard', path: '/dashboard/home', icon: 'fas fa-tachometer-alt' },
+    ]
+  }
+  if (role === 'superadmin') {
+    return [
+      { name: 'Dashboard', path: '/dashboard/home', icon: 'fas fa-tachometer-alt' },
+      { name: 'Commands', path: '/dashboard/commands', icon: 'fas fa-terminal' },
+      { name: 'Mod logs', path: '/dashboard/mod-logs', icon: 'fas fa-clipboard-list' },
+    ]
+  }
+  return []
+})
 
 // Computed Properties
 const pageTitle = computed(() => {
-  return route.meta?.title || "Dashboard Home"
+  return route.meta?.title || 'Dashboard'
 })
 
 const userAvatarUrl = computed(() => {

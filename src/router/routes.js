@@ -12,7 +12,6 @@ const LargeMaps = () => import("../views/LargeMaps.vue");
 const PlayerData = () => import(/* webpackChunkName: "player-data" */ "../views/PlayerData.vue");
 const DashboardLayout = () => import("../DashboardLayout/DashboardLayout.vue");
 const DashboardView = () => import("../Dashboard/DashboardView.vue");
-const DashboardBanlist = () => import("../Dashboard/DashboardBanListView.vue");
 const EmailVerification = () => import("../views/EmailVerification.vue");
 const VerifyEmailView = () => import("../views/VerifyEmailView.vue");
 const Forum = () => import("../views/Forum.vue");
@@ -23,6 +22,7 @@ const ForgotPassword = () => import("../views/ForgotPasswordView.vue");
 const ResetPassword = () => import("../views/ResetPasswordView.vue");
 const RulesView = () => import("../views/RulesView.vue");
 const DashboardCommands = () => import("../Dashboard/DashboardCommand.vue");
+const DashboardModLogsView = () => import("../Dashboard/DashboardModLogsView.vue");
 const LevelRewards = () => import("../views/LevelRewards.vue");
 const AdminPromotions = () => import("../views/AdminPromotion.vue");
 const ApplyForPromotions = () => import("../views/ApplyForPromotion.vue");
@@ -147,28 +147,31 @@ const routers = [
         component: DashboardLayout,
         redirect: "/dashboard/home",
         meta: {
-            requireSuperAdmin: true
+            requireSuperAdminOrOwner: true
         },
         children: [
             {
                 path: "/dashboard/home",
                 name: "DashboardView",
-                component: DashboardView
-            },
-            {
-                path: "/dashboard/banlist",
-                name: "DashboardBanlist",
-                component: DashboardBanlist,
-                meta: {
-                    title: "Ban List"
-                }
+                component: DashboardView,
+                meta: { title: "User management" }
             },
             {
                 path: "/dashboard/commands",
                 name: "DashboardCommands",
                 component: DashboardCommands,
                 meta: {
-                    title: "Command Page"
+                    title: "Command Page",
+                    requireSuperAdmin: true
+                }
+            },
+            {
+                path: "/dashboard/mod-logs",
+                name: "DashboardModLogs",
+                component: DashboardModLogsView,
+                meta: {
+                    title: "Moderation logs",
+                    requireSuperAdmin: true
                 }
             },
 
