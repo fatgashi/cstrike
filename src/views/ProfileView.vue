@@ -206,6 +206,7 @@ import { getCurrentUser } from '../config/userLogic';
 import { getToken } from '../config/localStorage';
 import { useToast } from 'vue-toastification';
 import axiosInstance from '../config/axios'
+import { eventBus } from '../router';
 
 export default {
   data() {
@@ -275,6 +276,7 @@ export default {
         toast.success("Profile updated successfully!");
         await this.fetchUserProfile();
         this.profilePreview = null;
+        eventBus.emit('profileUpdated');
       } catch (error) {
         toast.error(error.response?.data?.error || 'Failed to update profile.');
         console.error('Error updating profile:', error.response?.data?.error);

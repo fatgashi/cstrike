@@ -195,7 +195,6 @@ export default {
     },
     
     openLoginModal() {
-      console.log("🔥 Triggering showLoginModal event from Header.vue");
       eventBus.emit("showLoginModal");
     },
 
@@ -233,7 +232,7 @@ export default {
 
       this.$store.dispatch('clearToken');
       eventBus.emit("userLoggedOut");
-      this.user = [];
+      this.user = {};
       this.userProfileData = null; // Clear profile data on logout
       toast.warning("You have been logged out.");
     },

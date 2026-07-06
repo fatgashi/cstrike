@@ -104,7 +104,7 @@
         </router-link>
 
         <!-- Announcements -->
-        <router-link to="" class="category-card announcements">
+        <div class="category-card announcements disabled-card" role="button" aria-disabled="true" title="Announcements coming soon">
           <div class="card-background" :style="{ backgroundImage: 'url(' + require('@/assets/forum/announcements.webp') + ')' }"></div>
           <div class="card-overlay"></div>
           <div class="card-content">
@@ -127,7 +127,7 @@
               <i class="fas fa-arrow-right"></i>
             </div>
           </div>
-        </router-link>
+        </div>
       </div>
     </div>
 
@@ -297,6 +297,18 @@ export default {
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.disabled-card {
+  cursor: not-allowed;
+}
+
+.disabled-card:hover {
+  transform: none;
+}
+
+.disabled-card:hover .card-background {
+  transform: none;
 }
 
 .category-card:hover {

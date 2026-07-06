@@ -3,7 +3,7 @@
     <br>
     <h2 class="text-center text-white mb-3 fw-bolder">Admin Promotion Applications</h2>
 
-    <div v-if="!['admin', 'owner', 'superadmin'].includes(currUser?.role)" class="alert alert-danger text-center mt-4">
+    <div v-if="!['admin', 'owner', 'superadmin'].includes(currentUser?.role)" class="alert alert-danger text-center mt-4">
       🚫 You are not part of the staff team. Only staff (admin, owner, super-admin) can view promotion applications.
     </div>
 

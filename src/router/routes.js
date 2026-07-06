@@ -161,7 +161,7 @@ const routers = [
                 name: "DashboardCommands",
                 component: DashboardCommands,
                 meta: {
-                    title: "Command Page",
+                    title: "Commands",
                     requireSuperAdmin: true
                 }
             },
@@ -174,7 +174,6 @@ const routers = [
                     requireSuperAdmin: true
                 }
             },
-
     ]
     },
     {

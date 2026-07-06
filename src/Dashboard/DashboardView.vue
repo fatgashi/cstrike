@@ -169,7 +169,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in users" :key="user._id" class="user-row">
+              <tr v-for="user in users" :key="user.ID" class="user-row">
                 <td class="user-info">
                   <div class="user-avatar">
                     <img 
@@ -233,6 +233,14 @@
                     title="Add or update VIP"
                   >
                     <i class="fas fa-crown"></i>
+                  </button>
+                  <button
+                    v-if="isSuperAdminUser || isOwnerUser"
+                    class="action-btn amx"
+                    @click="openAmxAdminModal(user)"
+                    title="Add AMX Admin"
+                  >
+                    <i class="fas fa-shield-alt"></i>
                   </button>
                   <button
                     v-if="isSuperAdminUser"
@@ -476,6 +484,13 @@
           </div>
         </div>
       </div>
+
+      <AddAmxAdminModal
+        :is-open="showAmxAdminModal"
+        :selected-user="selectedAmxAdminUser"
+        @close="closeAmxAdminModal"
+        @success="handleAmxAdminAdded"
+      />
     </div>
   </template>
   
@@ -485,6 +500,7 @@
   import configuration from '../config/config'
   import axiosInstance from '../config/axios' // Use configured axios instance
   import { getCurrentUser } from '../config/userLogic'
+  import AddAmxAdminModal from '../components/modals/AddAmxAdminModal.vue'
 
   // Toast
   const toast = useToast()
@@ -509,6 +525,8 @@
   const loadingUserData = ref(false)
   const vipModalMode = ref('add') // 'add' | 'update' - update when user is already Gold VIP
   const vipCurrentExpireDisplay = ref('') // current expiry shown for Gold VIP in update mode
+  const showAmxAdminModal = ref(false)
+  const selectedAmxAdminUser = ref(null)
 
   // Website Visits Tracking
   const selectedDate = ref('')
@@ -605,7 +623,8 @@
   const fetchUsers = async () => {
     try {
       const config = configuration()
-      const res = await axiosInstance.get(`/user/users?page=${currentPage.value}&limit=${limit.value}&search=${search.value}`, config)
+      const encodedSearch = encodeURIComponent(search.value || '')
+      const res = await axiosInstance.get(`/user/users?page=${currentPage.value}&limit=${limit.value}&search=${encodedSearch}`, config)
       users.value = res.data.data
       const pag = res.data.pagination
       totalPages.value = pag.totalPages
@@ -743,7 +762,6 @@
       }
 
       const vip = data.vip
-      const password = data.password
       const expireDate = data.expireDate
 
       if (vip === 'Gold') {
@@ -757,9 +775,6 @@
         }
       } else {
         vipModalMode.value = 'add'
-        if (password) {
-          vipUser.value.password = password
-        }
         if (vip === 'Silver') {
           vipUser.value.vipType = 'silver'
         } else {
@@ -778,6 +793,20 @@
     vipModalMode.value = 'add'
     loadingUserData.value = false
     vipCurrentExpireDisplay.value = ''
+  }
+
+  const openAmxAdminModal = (user) => {
+    selectedAmxAdminUser.value = user
+    showAmxAdminModal.value = true
+  }
+
+  const closeAmxAdminModal = () => {
+    showAmxAdminModal.value = false
+    selectedAmxAdminUser.value = null
+  }
+
+  const handleAmxAdminAdded = () => {
+    // Keep this as a hook for future row refreshes.
   }
 
   const togglePassword = () => {
@@ -1306,6 +1335,16 @@
 
   .action-btn.vip:hover {
     background: #5a67d8;
+    transform: scale(1.1);
+  }
+
+  .action-btn.amx {
+    background: #0ea5e9;
+    color: white;
+  }
+
+  .action-btn.amx:hover {
+    background: #0284c7;
     transform: scale(1.1);
   }
 

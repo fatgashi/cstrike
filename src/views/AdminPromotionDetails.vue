@@ -2,7 +2,7 @@
   <div class="container">
     <br>
     <h2 v-if="user" class="text-start text-white mb-3 fw-bolder">Promotion Request: {{ user.username }}</h2>
-    <div v-if="!['admin', 'owner', 'superadmin'].includes(currUser?.role)" class="alert alert-danger text-center mt-4">
+    <div v-if="!['admin', 'owner', 'superadmin'].includes(currentUser?.role)" class="alert alert-danger text-center mt-4">
   🚫 You are not part of the staff team. Only staff (admin, owner, super-admin) can view promotion applications.
     </div>
     <div v-else>
