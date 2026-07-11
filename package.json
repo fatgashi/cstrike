@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run sitemap && vue-cli-service build",
+    "test": "node --test ./src/__tests__/*.test.js",
     "lint": "vue-cli-service lint",
     "sitemap": "node generate-sitemap.js"
   },

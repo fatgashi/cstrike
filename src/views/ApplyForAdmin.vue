@@ -25,8 +25,23 @@
       </div>
     </div>
 
+    <!-- Authentication Alert -->
+    <div v-if="!isLoggedIn" class="auth-alert">
+      <div class="alert-content">
+        <div class="alert-icon">🔒</div>
+        <div class="alert-text">
+          <h3>Authentication Required</h3>
+          <p>You must be logged in to submit an admin application.</p>
+          <button class="login-btn" @click="buss.emit('showLoginModal')">
+            <span class="btn-icon">🔐</span>
+            Login Now
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Application Form Section -->
-    <div class="form-section">
+    <div v-else class="form-section">
       <div class="form-container">
         <!-- Loading State -->
         <div v-if="loading" class="loading-container">
@@ -330,6 +345,7 @@ import { useToast } from "vue-toastification";
 import configuration from "../config/config";
 import axiosInstance from '../config/axios'
 import { Tooltip } from "bootstrap";
+import { eventBus } from "../router";
 
 export default {
   data() {
@@ -352,11 +368,18 @@ export default {
       votePhotoAttachment: null,
       photoPreview: null,
       votePhotoPreview: null,
+      buss: eventBus,
     };
   },
   methods: {
     async submitApplication() {
       const toast = useToast();
+
+      if (!this.isLoggedIn) {
+        this.buss.emit('showLoginModal');
+        toast.error("You must be logged in to submit an application.");
+        return;
+      }
 
       this.loading = true;
       this.errorMessage = "";
@@ -413,6 +436,9 @@ export default {
     },
   },
   computed: {
+    isLoggedIn() {
+      return !!this.$store.state.user;
+    },
     isSubmitDisabled() {
       return !this.application.rulesRead || this.application.rulesRead.trim() === "";
     }
@@ -491,6 +517,61 @@ export default {
 .form-section {
   max-width: 800px;
   margin: 0 auto;
+}
+
+/* Authentication Alert */
+.auth-alert {
+  max-width: 760px;
+  margin: 0 auto 32px;
+}
+
+.alert-content {
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(255, 26, 26, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.alert-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.alert-text h3 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.alert-text p {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.login-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .form-container {

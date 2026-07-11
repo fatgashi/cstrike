@@ -82,7 +82,9 @@ import {
   faCalendarDay,
   faEye,
   faUserFriends,
-  faChartBar
+  faChartBar,
+  faToggleOn,
+  faToggleOff
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -184,6 +186,8 @@ library.add(
   faEye,
   faUserFriends,
   faChartBar,
+  faToggleOn,
+  faToggleOff,
   // Regular icons
   faCalendarAlt,
   faCommentDots,

@@ -23,6 +23,7 @@ const ResetPassword = () => import("../views/ResetPasswordView.vue");
 const RulesView = () => import("../views/RulesView.vue");
 const DashboardCommands = () => import("../Dashboard/DashboardCommand.vue");
 const DashboardModLogsView = () => import("../Dashboard/DashboardModLogsView.vue");
+const DashboardScheduledMessagesView = () => import("../Dashboard/DashboardScheduledMessagesView.vue");
 const LevelRewards = () => import("../views/LevelRewards.vue");
 const AdminPromotions = () => import("../views/AdminPromotion.vue");
 const ApplyForPromotions = () => import("../views/ApplyForPromotion.vue");
@@ -118,8 +119,7 @@ const routers = [
             },
             {
                 path: "/forum/apply-for-admin",
-                component: ApplyForAdmin,
-                meta: { requireClient: true }
+                component: ApplyForAdmin
             },
             {
                 path: "/profile",
@@ -171,6 +171,15 @@ const routers = [
                 component: DashboardModLogsView,
                 meta: {
                     title: "Moderation logs",
+                    requireSuperAdmin: true
+                }
+            },
+            {
+                path: "/dashboard/server-messages",
+                name: "DashboardScheduledMessages",
+                component: DashboardScheduledMessagesView,
+                meta: {
+                    title: "Scheduled server messages",
                     requireSuperAdmin: true
                 }
             },

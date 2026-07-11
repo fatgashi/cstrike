@@ -155,6 +155,7 @@ const navigationLinks = computed(() => {
       { name: 'Dashboard', path: '/dashboard/home', icon: 'fas fa-tachometer-alt' },
       { name: 'Commands', path: '/dashboard/commands', icon: 'fas fa-terminal' },
       { name: 'Mod logs', path: '/dashboard/mod-logs', icon: 'fas fa-clipboard-list' },
+      { name: 'Server messages', path: '/dashboard/server-messages', icon: 'fas fa-bullhorn' },
     ]
   }
   return []
