@@ -24,6 +24,7 @@ const RulesView = () => import("../views/RulesView.vue");
 const DashboardCommands = () => import("../Dashboard/DashboardCommand.vue");
 const DashboardModLogsView = () => import("../Dashboard/DashboardModLogsView.vue");
 const DashboardScheduledMessagesView = () => import("../Dashboard/DashboardScheduledMessagesView.vue");
+const DashboardKofiPaymentsView = () => import("../Dashboard/DashboardKofiPaymentsView.vue");
 const LevelRewards = () => import("../views/LevelRewards.vue");
 const AdminPromotions = () => import("../views/AdminPromotion.vue");
 const ApplyForPromotions = () => import("../views/ApplyForPromotion.vue");
@@ -180,6 +181,15 @@ const routers = [
                 component: DashboardScheduledMessagesView,
                 meta: {
                     title: "Scheduled server messages",
+                    requireSuperAdmin: true
+                }
+            },
+            {
+                path: "/dashboard/kofi-payments",
+                name: "DashboardKofiPayments",
+                component: DashboardKofiPaymentsView,
+                meta: {
+                    title: "Ko-fi Payments",
                     requireSuperAdmin: true
                 }
             },

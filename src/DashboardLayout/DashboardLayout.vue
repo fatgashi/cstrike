@@ -156,6 +156,7 @@ const navigationLinks = computed(() => {
       { name: 'Commands', path: '/dashboard/commands', icon: 'fas fa-terminal' },
       { name: 'Mod logs', path: '/dashboard/mod-logs', icon: 'fas fa-clipboard-list' },
       { name: 'Server messages', path: '/dashboard/server-messages', icon: 'fas fa-bullhorn' },
+      { name: 'Ko-fi Payments', path: '/dashboard/kofi-payments', icon: 'fas fa-credit-card' },
     ]
   }
   return []
