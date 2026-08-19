@@ -781,11 +781,7 @@
         }
       } else {
         vipModalMode.value = 'add'
-        if (vip === 'Silver') {
-          vipUser.value.vipType = 'silver'
-        } else {
-          vipUser.value.vipType = 'gold'
-        }
+        vipUser.value.vipType = 'gold'
       }
     } finally {
       loadingUserData.value = false
