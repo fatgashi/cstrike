@@ -35,6 +35,25 @@ test('kofi payments view has operational actions and confirmation copy', () => {
   assert.doesNotMatch(view, /entitlementCode[\s\S]{0,40}v-model/);
 });
 
+test('detail separates Ko-fi payer identity from CS player request', () => {
+  const view = read('Dashboard/DashboardKofiPaymentsView.vue');
+  const api = read('api/kofiPaymentsApi.js');
+  assert.match(view, /data-testid="kofi-buyer-contact"/);
+  assert.match(view, /data-testid="kofi-buyer-display-name"/);
+  assert.match(view, /data-testid="kofi-buyer-email"/);
+  assert.match(view, /data-testid="kofi-player-request"/);
+  assert.match(view, /data-testid="kofi-additional-details"/);
+  assert.match(view, /Ko-fi display name/);
+  assert.match(view, /Not provided/);
+  assert.match(view, /Anonymous/);
+  assert.match(view, /This is not the CS nickname/);
+  assert.match(api, /buyer:\s*\{/);
+  assert.match(api, /delete item\.buyer/);
+  const tableBlock = view.slice(view.indexOf('<thead>'), view.indexOf('</thead>'));
+  assert.doesNotMatch(tableBlock, /email/i);
+  assert.doesNotMatch(tableBlock, /Ko-fi display name/);
+});
+
 test('kofi payments API uses Superadmin admin endpoints', () => {
   const apiFile = read('api/kofiPaymentsApi.js');
   assert.match(apiFile, /\/admin\/kofi-payments/);

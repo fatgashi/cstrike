@@ -94,7 +94,7 @@
         <div v-if="loading && !payments.length" class="loading-state">Loading Ko-fi payments...</div>
         <div v-else-if="!payments.length" class="empty-state">
           <h4>No payments for this filter</h4>
-          <p>Open reviews appear here by default.</p>
+          <p>Try another review filter or search.</p>
         </div>
         <div v-else class="table-wrap">
           <table class="data-table">
@@ -171,10 +171,48 @@
               <div><dt>Entitlement</dt><dd>{{ detail.entitlementCode || '—' }}</dd></div>
             </dl>
           </section>
-          <section>
-            <h4>Buyer input</h4>
-            <p class="preserve">{{ detail.buyerSubmittedDetails || detail.customerMessage || 'Not provided' }}</p>
-            <p class="hint">Submitted nickname (immutable): {{ detail.submittedNickname || '—' }}</p>
+          <section data-testid="kofi-buyer-contact">
+            <h4>Buyer / Ko-fi payer</h4>
+            <p class="hint">Contact identity from Ko-fi. This is not the CS nickname. Anonymous is a valid Ko-fi display name.</p>
+            <dl class="detail-grid">
+              <div>
+                <dt>Ko-fi display name</dt>
+                <dd data-testid="kofi-buyer-display-name">{{ detail.buyer?.displayName || '—' }}</dd>
+              </div>
+              <div>
+                <dt>Ko-fi email</dt>
+                <dd data-testid="kofi-buyer-email">
+                  <span>{{ detail.buyer?.email || 'Not provided' }}</span>
+                  <button
+                    v-if="detail.buyer?.email"
+                    type="button"
+                    class="btn btn-secondary copy-btn"
+                    data-testid="kofi-copy-email"
+                    @click="copyEmail"
+                  >
+                    Copy
+                  </button>
+                </dd>
+              </div>
+            </dl>
+          </section>
+          <section data-testid="kofi-player-request">
+            <h4>CS player request</h4>
+            <p class="hint">What the buyer submitted as the in-game nickname. Superadmin must select a registered player explicitly.</p>
+            <dl class="detail-grid">
+              <div>
+                <dt>Additional details</dt>
+                <dd class="preserve" data-testid="kofi-additional-details">{{ detail.buyerSubmittedDetails || 'Not provided' }}</dd>
+              </div>
+              <div>
+                <dt>Submitted player</dt>
+                <dd data-testid="kofi-submitted-player">{{ detail.submittedNickname || 'Not provided' }}</dd>
+              </div>
+              <div>
+                <dt>Review reason</dt>
+                <dd>{{ detail.reviewReasonCode || '—' }}</dd>
+              </div>
+            </dl>
           </section>
           <section>
             <h4>Resolution</h4>
@@ -338,7 +376,7 @@ const payments = ref([]);
 const stats = reactive({ needsReview: 0, completedToday: 0, fulfilled: 0, failedOrReview: 0 });
 const pagination = reactive({ currentPage: 1, totalPages: 1, totalItems: 0 });
 const page = ref(1);
-const reviewFilter = ref('open');
+const reviewFilter = ref('all');
 const statusFilter = ref('');
 const sourceFilter = ref('');
 const outcomeFilter = ref('');
@@ -360,6 +398,17 @@ function formatDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '—';
   return date.toLocaleString();
+}
+
+async function copyEmail() {
+  const email = detail.value?.buyer?.email;
+  if (!email || typeof navigator === 'undefined' || !navigator.clipboard) return;
+  try {
+    await navigator.clipboard.writeText(email);
+    toast.success('Email copied.');
+  } catch {
+    toast.error('Could not copy email.');
+  }
 }
 
 function truncateText(value, max) {
@@ -543,7 +592,8 @@ onMounted(fetchPayments);
 .btn-close { border: none; background: transparent; font-size: 22px; cursor: pointer; }
 .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 16px; }
 .detail-grid dt { font-size: 12px; color: #64748b; }
-.detail-grid dd { margin: 0; font-weight: 600; }
+.detail-grid dd { margin: 0; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.copy-btn { padding: 4px 8px; font-size: 12px; }
 .preserve { white-space: pre-wrap; }
 .hint { font-size: 12px; color: #64748b; }
 .player-results, .audit-list { list-style: none; padding: 0; }

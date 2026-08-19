@@ -51,6 +51,10 @@ function normalizePayment(record = {}) {
     resolutionDiscordSentAt: record.resolutionDiscordSentAt || null,
     providerTitleRaw: record.providerTitleRaw || '',
     customerMessage: record.customerMessage || '',
+    buyer: {
+      displayName: record.buyer && record.buyer.displayName ? record.buyer.displayName : '',
+      email: record.buyer && record.buyer.email ? record.buyer.email : '',
+    },
     orderSnapshot: record.orderSnapshot || null,
   };
 }
@@ -60,7 +64,11 @@ function normalizeListResponse(data = {}) {
   const paginationRaw = data.pagination || {};
   return {
     success: Boolean(data.success),
-    items: itemsRaw.map(normalizePayment),
+    items: itemsRaw.map((record) => {
+      const item = normalizePayment(record);
+      delete item.buyer;
+      return item;
+    }),
     pagination: {
       currentPage: Number(paginationRaw.currentPage ?? paginationRaw.page ?? 1) || 1,
       totalPages: Number(paginationRaw.totalPages ?? paginationRaw.pages ?? 1) || 1,
