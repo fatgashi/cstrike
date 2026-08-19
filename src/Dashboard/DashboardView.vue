@@ -450,7 +450,8 @@
                       <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                     </button>
                   </div>
-                  <small class="form-text text-muted">Optional — leave blank if your server accepts empty VIP passwords.</small>
+                  <small class="form-text text-muted" v-if="vipUser.hasExistingPassword">Existing AMX password loaded from the server. Change it only if you intend to replace it.</small>
+                  <small class="form-text text-muted" v-else>Optional — leave blank if your server accepts empty VIP passwords.</small>
                 </div>
                 <div class="form-group">
                   <label class="form-label">VIP Type</label>
@@ -743,6 +744,7 @@
     vipUser.value = {
       ...user,
       password: '',
+      hasExistingPassword: false,
       vipType: '',
       expiryDate: defaultExpiryString
     }
@@ -763,6 +765,10 @@
 
       const vip = data.vip
       const expireDate = data.expireDate
+      const existingPassword = typeof data.password === 'string' ? data.password : ''
+      vipUser.value.password = existingPassword
+      vipUser.value.hasExistingPassword = Boolean(data.hasPassword || existingPassword)
+      showPassword.value = Boolean(existingPassword)
 
       if (vip === 'Gold') {
         vipModalMode.value = 'update'
